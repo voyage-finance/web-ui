@@ -1,5 +1,6 @@
-import { MantineProvider } from '@mantine/core';
+import { AppShell, MantineProvider } from '@mantine/core';
 import React from 'react';
+import Navigation from './Navigation';
 
 const Layout: React.FC = (props) => {
   const { children } = props;
@@ -9,6 +10,18 @@ const Layout: React.FC = (props) => {
       withNormalizeCSS
       theme={{
         colors: {
+          dark: [
+            '#2B2F53',
+            '#282C4B',
+            '#252843',
+            '#22253C',
+            '#202236',
+            '#1D2031',
+            '#1B1D2C',
+            '#181A28',
+            '#151724',
+            '#131421',
+          ],
           brand: [
             '#FFFBF8',
             '#FFE2C9',
@@ -60,6 +73,11 @@ const Layout: React.FC = (props) => {
         },
         primaryColor: 'brand',
         fontFamily: 'Titillium Web, sans-serif',
+        fontSizes: {
+          sm: 11,
+          md: 14,
+          lg: 16,
+        },
         headings: { fontFamily: 'Titillium Web, sans-serif' },
         other: {
           gradients: {
@@ -68,7 +86,16 @@ const Layout: React.FC = (props) => {
         },
       }}
     >
-      {children}
+      <AppShell
+        header={<Navigation />}
+        styles={(theme) => ({
+          main: {
+            background: theme.fn.linearGradient(180, '#333c62', '#25283d'),
+          },
+        })}
+      >
+        {children}
+      </AppShell>
     </MantineProvider>
   );
 };
