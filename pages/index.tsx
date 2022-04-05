@@ -1,10 +1,13 @@
+// noinspection HtmlUnknownTarget
+
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import { createStyles } from '@mantine/core';
+import { Button, useMantineTheme } from '@mantine/core';
 import styles from '../styles/Home.module.css';
 
 const Home: NextPage = () => {
+  const { other } = useMantineTheme();
   return (
     <div className={styles.container}>
       <Head>
@@ -27,6 +30,13 @@ const Home: NextPage = () => {
           <a href="https://nextjs.org/docs" className={styles.card}>
             <h2>Documentation &rarr;</h2>
             <p>Find in-depth information about Next.js features and API.</p>
+            <Button>Test Primary</Button>
+            <Button variant="gradient" gradient={other.gradients.brand}>
+              Test Primary Gradient
+            </Button>
+            <Button color="accent-green">Test Accent Green</Button>
+            <Button color="accent-pink">Test Accent Pink</Button>
+            <Button color="accent-blue">Test Accent Blue</Button>
           </a>
 
           <a href="https://nextjs.org/learn" className={styles.card}>
