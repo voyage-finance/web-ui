@@ -18,6 +18,7 @@
     "next": "12.1.4",
     "react": "18.0.0",
     "react-dom": "18.0.0",
+    "tabler-icons-react": "^1.44.0",
     "wagmi": "^0.2.24"
   },
   "devDependencies": {
