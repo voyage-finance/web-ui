@@ -8,7 +8,7 @@ import {
   UnstyledButton,
   Divider,
 } from '@mantine/core';
-import ConnectWallet from './ConnectWallet';
+import WalletNavItem from '../WalletNavItem';
 
 const HEADER_HEIGHT = 48;
 
@@ -96,7 +96,7 @@ const Navigation: React.FC = () => {
           orientation="vertical"
         />
         <Group sx={{ height: '100%' }}>
-          <ConnectWallet />
+          <WalletNavItem />
         </Group>
       </Group>
     </Header>
