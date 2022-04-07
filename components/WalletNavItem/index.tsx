@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Group, Avatar, Text, Menu } from '@mantine/core';
 import { ChevronDown, Logout } from 'tabler-icons-react';
 import ConnectBtn from './ConnectBtn';
-import MetamaskSvg from '../../assets/icons/metamask.svg';
+import MetamaskSvg from '@assets/icons/metamask.svg';
 
 const ConnectWallet: React.FC = () => {
   const [{ data: accountData }, disconnect] = useAccount({
