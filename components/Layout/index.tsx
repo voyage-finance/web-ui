@@ -9,6 +9,7 @@ const Layout: React.FC = (props) => {
       withGlobalStyles
       withNormalizeCSS
       theme={{
+        colorScheme: 'dark',
         colors: {
           dark: [
             '#2B2F53',
