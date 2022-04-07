@@ -13,12 +13,6 @@ const ConnectBtn: React.FC = () => {
         opened={showOptions}
         onClose={() => setShowOptions(false)}
         title="Choose wallet option"
-        styles={(theme) => ({
-          modal: {
-            backgroundColor: theme.colors.dark[6],
-            color: 'white',
-          },
-        })}
       >
         <Group direction="column" align="center">
           {connectData.connectors.map((connector) => (
