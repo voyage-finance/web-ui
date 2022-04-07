@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Group, Avatar, Text, Menu } from '@mantine/core';
 import { ChevronDown, Logout } from 'tabler-icons-react';
 import ConnectBtn from './ConnectBtn';
+import MetamaskSvg from '../../assets/icons/metamask.svg';
 
 const ConnectWallet: React.FC = () => {
   const [{ data: accountData }, disconnect] = useAccount({
@@ -29,7 +30,7 @@ const ConnectWallet: React.FC = () => {
               },
             })}
           >
-            <Avatar src="./metamask.svg" radius="xl" size={20} />
+            <Avatar src={MetamaskSvg.src} radius="xl" size={20} />
             <Text size="sm" color={'white'}>
               {getShortenedAddress(accountData.address)}
             </Text>
