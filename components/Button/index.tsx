@@ -1,12 +1,13 @@
 import {
   Button as MaintineButton,
   useMantineTheme,
-  SharedButtonProps,
+  ButtonProps,
 } from '@mantine/core';
+import React from 'react';
 
 type BaseProps = Pick<
-  SharedButtonProps,
-  Exclude<keyof SharedButtonProps, 'size'>
+  ButtonProps<'button'>,
+  Exclude<keyof ButtonProps<'button'>, 'size'>
 >;
 
 interface IProps extends BaseProps {
