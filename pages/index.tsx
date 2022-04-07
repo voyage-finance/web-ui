@@ -3,8 +3,9 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import { Button, useMantineTheme } from '@mantine/core';
+import { Grid, Group, Title, useMantineTheme } from '@mantine/core';
 import styles from '../styles/Home.module.css';
+import Button from '@components/Button';
 
 const Home: NextPage = () => {
   const { other } = useMantineTheme();
@@ -18,49 +19,68 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Welcome to <a href="https://nextjs.org">Voyage!</a>
         </h1>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-            <Button>Test Primary</Button>
-            <Button variant="gradient" gradient={other.gradients.brand}>
-              Test Primary Gradient
-            </Button>
-            <Button color="accent-green">Test Accent Green</Button>
-            <Button color="accent-pink">Test Accent Pink</Button>
-            <Button color="accent-blue">Test Accent Blue</Button>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        <div>
+          <div className={styles.card}>
+            <Title order={3} style={{ color: 'white' }}>
+              Buttons
+            </Title>
+            <Group direction="column">
+              <Group>
+                <Button size="s">Primary small</Button>
+                <Button>Primary Regular</Button>
+                <Button size="l">Primary Large</Button>
+                <Button size="xl">Primary XL</Button>
+              </Group>
+              <Group>
+                <Button size="s" kind="secondary">
+                  Primary small
+                </Button>
+                <Button kind="secondary">Primary Regular</Button>
+                <Button size="l" kind="secondary">
+                  Primary Large
+                </Button>
+                <Button size="xl" kind="secondary">
+                  Primary XL
+                </Button>
+              </Group>
+              <Group>
+                <Button kind="cancel" size="s">
+                  Primary small
+                </Button>
+                <Button kind="cancel">Primary Regular</Button>
+                <Button kind="cancel" size="l">
+                  Primary Large
+                </Button>
+                <Button kind="cancel" size="xl">
+                  Primary XL
+                </Button>
+              </Group>
+              <Group>
+                <Button loading>Primary Regular</Button>
+                <Button loading size="l">
+                  Primary Large
+                </Button>
+                <Button loading size="xl">
+                  Primary XL
+                </Button>
+              </Group>
+              <Group>
+                <Button disabled size="s">
+                  Primary small
+                </Button>
+                <Button disabled>Primary Regular</Button>
+                <Button disabled size="l">
+                  Primary Large
+                </Button>
+                <Button disabled size="xl">
+                  Primary XL
+                </Button>
+              </Group>
+            </Group>
+          </div>
         </div>
       </main>
 
