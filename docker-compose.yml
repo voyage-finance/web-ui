@@ -12,3 +12,9 @@ services:
       - /app/.next
     ports:
       - "3000:3000"
+  hh:
+    image: 596511190950.dkr.ecr.us-west-2.amazonaws.com/voyage-core-contracts:latest
+    container_name: voyage_core_contracts
+    ports:
+      - "8545:8545"
+
