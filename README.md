@@ -20,7 +20,12 @@ yarn dev
 
 Alternatively, use `docker-compose` which will run the application in Docker. This is useful for running all dependencies (e.g., `hardhat`, local Graph node) together with the UI, for a self-contained development environment.
 
+If using Docker, ensure to follow https://www.notion.so/Local-ECR-Setup-54e28106837645118e77fee0ec009c3d to set up your local development environment beforehand.
+
 ```shell
+# pull latest images
+AWS_PROFILE=prod docker-compose pull
+
 # first run, or force build
 docker-compose up -d --build
 
