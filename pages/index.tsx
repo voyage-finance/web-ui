@@ -6,9 +6,11 @@ import Image from 'next/image';
 import { Grid, Group, Title, useMantineTheme } from '@mantine/core';
 import styles from '../styles/Home.module.css';
 import Button from '@components/Button';
+import CTAButton from '@components/CTAButton';
+import { ArrowUpRight } from 'tabler-icons-react';
 
 const Home: NextPage = () => {
-  const { other } = useMantineTheme();
+  const { other, colors } = useMantineTheme();
   return (
     <div className={styles.container}>
       <Head>
@@ -78,6 +80,37 @@ const Home: NextPage = () => {
                 <Button disabled size="xl">
                   Primary XL
                 </Button>
+              </Group>
+            </Group>
+          </div>
+          <div className={styles.card}>
+            <Title order={3} style={{ color: 'white' }}>
+              Call to action
+            </Title>
+            <Group direction="column">
+              <Group>
+                <CTAButton>Call to action</CTAButton>
+                <CTAButton
+                  icon={
+                    <ArrowUpRight
+                      color={colors.brand[6]}
+                      style={{ padding: 4 }}
+                    />
+                  }
+                >
+                  Call to action
+                </CTAButton>
+                <CTAButton
+                  icon={
+                    <ArrowUpRight
+                      color={colors.brand[6]}
+                      style={{ padding: 4 }}
+                    />
+                  }
+                  iconPosition="right"
+                >
+                  Call to action
+                </CTAButton>
               </Group>
             </Group>
           </div>
