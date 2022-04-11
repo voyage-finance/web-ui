@@ -1,0 +1,19 @@
+.CTAButton {
+  display: flex;
+  align-items: center;
+  &:hover {
+    cursor: pointer;
+    .text {
+      position: relative;
+      &::after {
+        content: '';
+        background: linear-gradient(90deg, #ffa620 0%, #ef5b25 100%);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 1px;
+        width: 100%;
+      }
+    }
+  }
+}
