@@ -1,9 +1,19 @@
 import { useAccount } from 'wagmi';
 import { useEffect, useState } from 'react';
-import { Group, Avatar, Text, Menu } from '@mantine/core';
-import { ChevronDown, Logout } from 'tabler-icons-react';
+import { Group, Avatar, Text } from '@mantine/core';
+import {
+  ArrowUpRight,
+  ChevronDown,
+  Power,
+  Copy,
+  Wallet,
+  History,
+  Settings,
+} from 'tabler-icons-react';
 import ConnectBtn from './ConnectBtn';
 import MetamaskSvg from '@assets/icons/metamask.svg';
+import Menu, { MenuItem } from '@components/Menu';
+import Divider from '@components/Divider';
 
 const ConnectWallet: React.FC = () => {
   const [{ data: accountData }, disconnect] = useAccount({
@@ -38,9 +48,19 @@ const ConnectWallet: React.FC = () => {
           </Group>
         }
       >
-        <Menu.Item icon={<Logout size={14} />} onClick={disconnect}>
-          Disconnect
-        </Menu.Item>
+        <MenuItem icon={<Copy />} rightSection={<ArrowUpRight size={14} />}>
+          Copy address
+        </MenuItem>
+        <Divider />
+        <MenuItem icon={<Wallet />}>Balance</MenuItem>
+        <MenuItem icon={<History />}>History</MenuItem>
+        <MenuItem icon={<Settings />}>Settings</MenuItem>
+        <Divider />
+        <MenuItem icon={<Power color="#E84747" />} onClick={disconnect}>
+          <Text inherit color="#E84747">
+            Disconnect
+          </Text>
+        </MenuItem>
       </Menu>
     ) : (
       <ConnectBtn />
