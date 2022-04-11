@@ -6,9 +6,9 @@ import {
   Group,
   Header,
   UnstyledButton,
-  Divider,
 } from '@mantine/core';
 import WalletNavItem from '@components/WalletNavItem';
+import Divider from '@components/Divider';
 
 const HEADER_HEIGHT = 48;
 
@@ -90,7 +90,6 @@ const Navigation: React.FC = () => {
         <Divider
           sx={{
             marginLeft: 'auto',
-            borderLeftColor: 'rgba(255, 255, 255, 0.08)',
           }}
           size="sm"
           orientation="vertical"
