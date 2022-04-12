@@ -2,15 +2,11 @@
 
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
-import { Grid, Group, Title, useMantineTheme } from '@mantine/core';
-import styles from '../styles/Home.module.css';
-import Button from '@components/Button';
-import CTAButton from '@components/CTAButton';
-import { ArrowUpRight } from 'tabler-icons-react';
-
+import { useMantineTheme } from '@mantine/core';
+import styles from 'styles/Home.module.css';
 const Home: NextPage = () => {
   const { other, colors } = useMantineTheme();
+
   return (
     <div className={styles.container}>
       <Head>
@@ -19,116 +15,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Voyage!</a>
-        </h1>
-
-        <div>
-          <div className={styles.card}>
-            <Title order={3} style={{ color: 'white' }}>
-              Buttons
-            </Title>
-            <Group direction="column">
-              <Group>
-                <Button size="s">Primary small</Button>
-                <Button>Primary Regular</Button>
-                <Button size="l">Primary Large</Button>
-                <Button size="xl">Primary XL</Button>
-              </Group>
-              <Group>
-                <Button size="s" kind="secondary">
-                  Primary small
-                </Button>
-                <Button kind="secondary">Primary Regular</Button>
-                <Button size="l" kind="secondary">
-                  Primary Large
-                </Button>
-                <Button size="xl" kind="secondary">
-                  Primary XL
-                </Button>
-              </Group>
-              <Group>
-                <Button kind="cancel" size="s">
-                  Primary small
-                </Button>
-                <Button kind="cancel">Primary Regular</Button>
-                <Button kind="cancel" size="l">
-                  Primary Large
-                </Button>
-                <Button kind="cancel" size="xl">
-                  Primary XL
-                </Button>
-              </Group>
-              <Group>
-                <Button loading>Primary Regular</Button>
-                <Button loading size="l">
-                  Primary Large
-                </Button>
-                <Button loading size="xl">
-                  Primary XL
-                </Button>
-              </Group>
-              <Group>
-                <Button disabled size="s">
-                  Primary small
-                </Button>
-                <Button disabled>Primary Regular</Button>
-                <Button disabled size="l">
-                  Primary Large
-                </Button>
-                <Button disabled size="xl">
-                  Primary XL
-                </Button>
-              </Group>
-            </Group>
-          </div>
-          <div className={styles.card}>
-            <Title order={3} style={{ color: 'white' }}>
-              Call to action
-            </Title>
-            <Group direction="column">
-              <Group>
-                <CTAButton>Call to action</CTAButton>
-                <CTAButton
-                  icon={
-                    <ArrowUpRight
-                      color={colors.brand[6]}
-                      style={{ padding: 4 }}
-                    />
-                  }
-                >
-                  Call to action
-                </CTAButton>
-                <CTAButton
-                  icon={
-                    <ArrowUpRight
-                      color={colors.brand[6]}
-                      style={{ padding: 4 }}
-                    />
-                  }
-                  iconPosition="right"
-                >
-                  Call to action
-                </CTAButton>
-              </Group>
-            </Group>
-          </div>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      <main className={styles.main}></main>
     </div>
   );
 };
