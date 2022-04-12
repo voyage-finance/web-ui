@@ -1,0 +1,18 @@
+.main {
+  min-height: 100vh;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+.poolsTable {
+  margin-top: 36px;
+  color: white;
+  th {
+    color: #a4a5a8 !important;
+    &:first-child {
+      padding-left: 0;
+    }
+  }
+}

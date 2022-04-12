@@ -1,7 +1,6 @@
 import { AppShell, MantineProvider } from '@mantine/core';
 import React from 'react';
 import Navigation from './Navigation';
-
 const Layout: React.FC = (props) => {
   const { children } = props;
   return (
