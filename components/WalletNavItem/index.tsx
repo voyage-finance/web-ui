@@ -12,8 +12,8 @@ import {
 } from 'tabler-icons-react';
 import ConnectBtn from './ConnectBtn';
 import MetamaskSvg from '@assets/icons/metamask.svg';
-import Menu, { MenuItem } from '@components/Menu';
-import Divider from '@components/Divider';
+import Menu, { MenuItem } from '@components/base/Menu';
+import Divider from '@components/base/Divider';
 
 const ConnectWallet: React.FC = () => {
   const [{ data: accountData }, disconnect] = useAccount({

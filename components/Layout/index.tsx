@@ -92,6 +92,7 @@ const Layout: React.FC = (props) => {
         styles={(theme) => ({
           main: {
             background: theme.fn.linearGradient(180, '#333c62', '#25283d'),
+            padding: 20,
           },
         })}
       >

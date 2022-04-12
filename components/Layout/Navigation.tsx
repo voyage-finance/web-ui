@@ -8,7 +8,7 @@ import {
   UnstyledButton,
 } from '@mantine/core';
 import WalletNavItem from '@components/WalletNavItem';
-import Divider from '@components/Divider';
+import Divider from '@components/base/Divider';
 
 const HEADER_HEIGHT = 48;
 

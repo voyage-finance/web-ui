@@ -2,15 +2,11 @@
 
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import { Grid, Group, Title, useMantineTheme } from '@mantine/core';
 import styles from './index.module.scss';
-import Button from '@components/Button';
-import CTAButton from '@components/CTAButton';
+import Button from '@components/base/Button';
+import CTAButton from '@components/base/CTAButton';
 import { ArrowUpRight } from 'tabler-icons-react';
-import { useQuery } from '@apollo/client';
-import { GET_USERS } from 'graphql/queries/users';
-import { useEffect } from 'react';
 
 const Home: NextPage = () => {
   const { other, colors } = useMantineTheme();
