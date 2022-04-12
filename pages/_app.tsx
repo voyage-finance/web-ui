@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app';
-import Layout from '../components/Layout';
+import Layout from '../components/moleculas/Layout';
 import { chain, defaultChains, Provider } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { providers } from 'ethers';
