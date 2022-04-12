@@ -3,6 +3,8 @@ import Layout from '../components/Layout';
 import { chain, defaultChains, Provider } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { providers } from 'ethers';
+import { ApolloProvider } from '@apollo/client';
+import ApolloClient from 'graphql/apollo-client';
 
 const connectors = () => {
   return [
@@ -25,9 +27,11 @@ function MyApp(props: AppProps) {
           : providers.getDefaultProvider();
       }}
     >
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <ApolloProvider client={ApolloClient}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ApolloProvider>
     </Provider>
   );
 }
