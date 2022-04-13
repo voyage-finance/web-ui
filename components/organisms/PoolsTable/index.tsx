@@ -138,7 +138,9 @@ const PoolsTable: React.FC = () => {
         <tbody>
           {mounted &&
             (loading ? (
-              <Loader />
+              <td colSpan={9} align="center" style={{ padding: 20 }}>
+                <Loader />
+              </td>
             ) : (
               data.pools.map((pool: any) => <PoolRow key={pool.id} {...pool} />)
             ))}
