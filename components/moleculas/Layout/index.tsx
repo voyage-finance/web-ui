@@ -70,6 +70,7 @@ const Layout: React.FC = (props) => {
             '#0069EC',
             '#005FD5',
           ],
+          gray: ['#6F7073', '#A4A5A8'],
         },
         primaryColor: 'brand',
         fontFamily: 'Titillium Web, sans-serif',
