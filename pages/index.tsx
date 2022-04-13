@@ -6,14 +6,13 @@ import { Card, Grid, Group, useMantineTheme } from '@mantine/core';
 import styles from 'styles/Home.module.scss';
 import Image from 'next/image';
 import PoolsTable from '@components/organisms/PoolsTable';
-import { Title } from '@components/base';
+import { Text, Title } from '@components/base';
+import DepositInfoCard from '@components/organisms/DepositInfoCard';
 
 const DashboardCardsLine: React.FC = () => (
   <Grid>
     <Grid.Col span={3}>
-      <Card style={{ height: 256, padding: '20px 24px' }}>
-        <Title order={3}>Deposit</Title>
-      </Card>
+      <DepositInfoCard />
     </Grid.Col>
     <Grid.Col span={3}>
       <Card style={{ height: 256, padding: '20px 24px' }}>
