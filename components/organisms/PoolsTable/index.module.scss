@@ -2,5 +2,10 @@
   margin-top: 36px;
   td {
     vertical-align: top;
+    padding: 20px 0 !important;
+  }
+  th,
+  td {
+    border-bottom: 1px solid #575b79 !important;
   }
 }
