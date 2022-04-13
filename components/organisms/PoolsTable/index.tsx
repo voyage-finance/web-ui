@@ -1,12 +1,12 @@
 // noinspection HtmlUnknownTarget
-import { Group, Table, Title, Text, Loader } from '@mantine/core';
-import styles from 'styles/Home.module.scss';
+import { Group, Table, Loader, ThemeIcon } from '@mantine/core';
+import styles from './index.module.scss';
 import Image from 'next/image';
 import { useQuery } from '@apollo/client';
 import { GET_POOLS } from 'graphql/queries/pools';
 import { useEffect, useState } from 'react';
 import { Card } from '@mantine/core';
-import CTAButton from '@components/base/CTAButton';
+import { Text, Title, CTAButton } from '@components/base';
 
 const PoolRow: React.FC<any> = ({
   id,
@@ -23,9 +23,20 @@ const PoolRow: React.FC<any> = ({
   juniorAPY,
   juniorDeposit,
 }) => {
+  const BalanceTD = ({ amount, amountUSD }: any) => (
+    <Group direction="column" spacing={0} align="end">
+      <Title order={5}>
+        {amount}{' '}
+        <Text weight={400} component="span">
+          TUS
+        </Text>
+      </Title>
+      <Text type="secondary">${amountUSD}</Text>
+    </Group>
+  );
   return (
     <tr>
-      <td>
+      <td style={{ paddingLeft: 0 }}>
         <Group>
           <Image
             src="/crabada-cover.png"
@@ -34,46 +45,42 @@ const PoolRow: React.FC<any> = ({
             height={39}
           />
           <Group direction="column" spacing={0}>
-            <Title order={6}>{name}</Title>
-            <Text>{symbol}</Text>
+            <Title order={5}>
+              <Text inherit transform="uppercase">
+                {name}
+              </Text>
+            </Title>
+            <Text type="accent" weight="bold">
+              {symbol}
+            </Text>
           </Group>
         </Group>
       </td>
       <td>
-        <Group direction="column" spacing={0}>
-          <Title order={6}>{totalLuquidity}</Title>
-          <Text>${totalLuquidityUSD}</Text>
-        </Group>
+        <BalanceTD amount={totalLuquidity} amountUSD={totalLuquidityUSD} />
       </td>
       <td>
-        <Group direction="column" spacing={0}>
-          <Title order={6}>{seniorLuquidity}</Title>
-          <Text>${seniorLuquidityUSD}</Text>
-        </Group>
+        <BalanceTD amount={seniorLuquidity} amountUSD={seniorLuquidityUSD} />
       </td>
       <td>
-        <Title order={6}>{seniorAPY}%</Title>
+        <Title order={6} align="right">
+          {seniorAPY}%
+        </Title>
       </td>
       <td>
-        <Group direction="column" spacing={0}>
-          <Title order={6}>{seniorDeposit} TUS</Title>
-          <Text>${seniorDeposit}</Text>
-        </Group>
+        <BalanceTD amount={seniorDeposit} amountUSD={seniorDeposit} />
       </td>
       <td>
-        <Group direction="column" spacing={0}>
-          <Title order={6}>{juniorLuquidity}</Title>
-          <Text>${juniorLuquidityUSD}</Text>
-        </Group>
+        <BalanceTD amount={juniorLuquidity} amountUSD={juniorLuquidityUSD} />
       </td>
-      <td>
+      <td align="right">
         <Title order={6}>{juniorAPY}%</Title>
       </td>
       <td>
-        <Title order={6}>{juniorDeposit} TUS</Title>
+        <BalanceTD amount={juniorDeposit} amountUSD={juniorDeposit} />
       </td>
       <td>
-        <Group>
+        <Group style={{ justifyContent: 'end' }}>
           <CTAButton>Deposit</CTAButton>
           <CTAButton>Withdraw</CTAButton>
           <CTAButton>{'More >'}</CTAButton>
@@ -89,29 +96,43 @@ const PoolsTable: React.FC = () => {
   useEffect(() => {
     setMounted(true);
   }, []);
-  useEffect(() => {
-    console.log('[data]', data);
-  }, [data]);
+
+  const columns = [
+    'Project',
+    'Total Liquidity',
+    'Senior Liquidity',
+    'Senior APY',
+    'Your Deposit',
+    'Junior Liquidity',
+    'Junior APY',
+    'Your Deposit',
+    'Actions',
+  ];
+
   return (
     <Card
       style={{
         padding: 24,
-        color: 'white',
       }}
     >
       <Title order={5}>Pools</Title>
       <Table className={styles.poolsTable}>
         <thead>
           <tr>
-            <th>Project</th>
-            <th>Total Liquidity</th>
-            <th>Senior Liquidity</th>
-            <th>Senior APY</th>
-            <th>Your Deposit</th>
-            <th>Junior Liquidity</th>
-            <th>Junior APY</th>
-            <th>Your Deposit</th>
-            <th>Actions</th>
+            {columns.map((column, index) => (
+              <th
+                key={index}
+                style={{ paddingLeft: index === 0 ? 0 : undefined }}
+              >
+                <Text
+                  size="sm"
+                  type="secondary"
+                  align={index === 0 ? 'left' : 'right'}
+                >
+                  {column}
+                </Text>
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
