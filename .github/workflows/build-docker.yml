@@ -15,6 +15,10 @@ jobs:
         id: short-sha
         with:
           length: 6
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
       - name: Install buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
@@ -36,5 +40,5 @@ jobs:
           docker buildx build --push \
             -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
             -t $ECR_REGISTRY/$ECR_REPOSITORY:latest \
-            --platform linux/amd64,linux/arm64 \
+            --platform linux/amd64,linux/arm64,linux/arm/v7 \
             -f ./docker/Dockerfile .
