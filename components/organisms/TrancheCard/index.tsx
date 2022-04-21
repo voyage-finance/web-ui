@@ -1,6 +1,8 @@
 import { Button, Card, Divider, Text, Title } from '@components/base';
 import { Group } from '@mantine/core';
 import Image from 'next/image';
+import { useState } from 'react';
+import DepositTrancheModal from '../DepositTrancheModal';
 
 type IProps = {
   type: 'Senior' | 'Junior';
@@ -17,6 +19,7 @@ const TrancheCard: React.FC<IProps> = ({
   withdrawableUSD,
   type,
 }) => {
+  const [depositModalOpen, setDepositModalOpened] = useState(false);
   return (
     <Card px={32} py={29}>
       <Text type="gradient" weight={700} mb={16}>
@@ -72,11 +75,16 @@ const TrancheCard: React.FC<IProps> = ({
         </Group>
       </Group>
       <Group grow mt={16}>
-        <Button>Deposit</Button>
+        <Button onClick={() => setDepositModalOpened(true)}>Deposit</Button>
         <Button kind="secondary" disabled={withdrawable === 0}>
           Withdraw
         </Button>
       </Group>
+      <DepositTrancheModal
+        type={type}
+        opened={depositModalOpen}
+        onClose={() => setDepositModalOpened(false)}
+      />
     </Card>
   );
 };
