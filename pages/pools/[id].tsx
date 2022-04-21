@@ -4,11 +4,11 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { Grid, Group } from '@mantine/core';
 import styles from 'styles/Home.module.scss';
-import { Title, Text, Card, Divider, Button } from '@components/base';
+import { Title, Card } from '@components/base';
 import { GetServerSideProps } from 'next';
 import PoolDetailCard from '@components/organisms/PoolDetailCard';
-import Image from 'next/image';
 import TrancheCard from '@components/organisms/TrancheCard';
+import { useState } from 'react';
 
 const ChartCards: React.FC = () => (
   <Grid>
