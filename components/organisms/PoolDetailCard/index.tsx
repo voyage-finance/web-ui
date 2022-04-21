@@ -5,7 +5,7 @@ import { BrandDiscord, BrandTelegram, BrandTwitter } from 'tabler-icons-react';
 
 const PoolDetailCard: React.FC = () => {
   return (
-    <Card style={{ height: 776 }} px={27}>
+    <Card style={{ minHeight: 776, height: '100%' }} px={27}>
       <Title>Crabada</Title>
       <Group direction="column" mt={8} spacing={15} align="stretch">
         <Image
