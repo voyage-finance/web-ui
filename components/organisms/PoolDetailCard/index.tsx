@@ -1,5 +1,5 @@
-import { Divider, Text, Title } from '@components/base';
-import { Card, Group } from '@mantine/core';
+import { Divider, Text, Title, Card } from '@components/base';
+import { Group } from '@mantine/core';
 import Image from 'next/image';
 import { BrandDiscord, BrandTelegram, BrandTwitter } from 'tabler-icons-react';
 
