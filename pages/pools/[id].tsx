@@ -2,13 +2,15 @@
 
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { Card, Grid, Group, useMantineTheme } from '@mantine/core';
+import { Grid, Group } from '@mantine/core';
 import styles from 'styles/Home.module.scss';
-import { Title } from '@components/base';
+import { Title, Text, Card, Divider, Button } from '@components/base';
 import { GetServerSideProps } from 'next';
 import PoolDetailCard from '@components/organisms/PoolDetailCard';
+import Image from 'next/image';
+import TrancheCard from '@components/organisms/TrancheCard';
 
-const Cards: React.FC = () => (
+const ChartCards: React.FC = () => (
   <Grid>
     <Grid.Col span={4}>
       <Card style={{ height: 256, padding: '20px 24px' }}>
@@ -44,9 +46,28 @@ const PoolDetail: NextPage = () => {
           </Grid.Col>
           <Grid.Col span={9}>
             <Group direction="column" style={{ height: '100%' }} grow>
-              <Cards />
+              <ChartCards />
               <Card>
-                <Title>Deposit</Title>
+                <Grid>
+                  <Grid.Col span={6}>
+                    <TrancheCard
+                      type="Senior"
+                      total={0}
+                      totalUSD={0}
+                      withdrawable={0}
+                      withdrawableUSD={0}
+                    />
+                  </Grid.Col>
+                  <Grid.Col span={6}>
+                    <TrancheCard
+                      type="Junior"
+                      total={10000}
+                      totalUSD={10000}
+                      withdrawable={10000}
+                      withdrawableUSD={10000}
+                    />
+                  </Grid.Col>
+                </Grid>
               </Card>
             </Group>
           </Grid.Col>
