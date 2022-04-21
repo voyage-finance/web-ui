@@ -4,10 +4,9 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { Card, Grid, Group, useMantineTheme } from '@mantine/core';
 import styles from 'styles/Home.module.scss';
-import Image from 'next/image';
-import PoolsTable from '@components/organisms/PoolsTable';
-import { Text, Title } from '@components/base';
+import { Title } from '@components/base';
 import { GetServerSideProps } from 'next';
+import PoolDetailCard from '@components/organisms/PoolDetailCard';
 
 const Cards: React.FC = () => (
   <Grid>
@@ -30,8 +29,6 @@ const Cards: React.FC = () => (
 );
 
 const PoolDetail: NextPage = () => {
-  const { other, colors } = useMantineTheme();
-
   return (
     <div>
       <Head>
@@ -43,20 +40,7 @@ const PoolDetail: NextPage = () => {
       <main className={styles.main}>
         <Grid>
           <Grid.Col span={3}>
-            <Card style={{ height: 776 }}>
-              <Title>Crabada</Title>
-              <Image
-                src="/crabada-cover.png"
-                alt="crabada"
-                width={130}
-                height={39}
-              />
-              <Text>
-                A Fully Decentralised. Play-and-Earn Idle Game. Rediscover the
-                prosperous ancient Crabada Kingdom once ruled by Crustaco, King
-                of the Crabada.
-              </Text>
-            </Card>
+            <PoolDetailCard />
           </Grid.Col>
           <Grid.Col span={9}>
             <Group direction="column" style={{ height: '100%' }} grow>
