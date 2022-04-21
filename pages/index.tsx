@@ -2,11 +2,10 @@
 
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { Card, Grid, Group, useMantineTheme } from '@mantine/core';
+import { Grid, Group, useMantineTheme } from '@mantine/core';
 import styles from 'styles/Home.module.scss';
-import Image from 'next/image';
 import PoolsTable from '@components/organisms/PoolsTable';
-import { Text, Title } from '@components/base';
+import { Card, Title } from '@components/base';
 import DepositInfoCard from '@components/organisms/DepositInfoCard';
 
 const DashboardCardsLine: React.FC = () => (

@@ -5,8 +5,7 @@ import Image from 'next/image';
 import { useQuery } from '@apollo/client';
 import { GET_POOLS } from 'graphql/queries/pools';
 import { useEffect, useState } from 'react';
-import { Card } from '@mantine/core';
-import { Text, Title, CTAButton } from '@components/base';
+import { Card, Text, Title, CTAButton } from '@components/base';
 
 const PoolRow: React.FC<any> = ({
   id,

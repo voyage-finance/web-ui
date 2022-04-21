@@ -1,6 +1,5 @@
 import { Title, Text } from '@components/base';
-import { Loader } from '@mantine/core';
-import { Card } from '@mantine/core';
+import { Card } from '@components/base';
 
 const DepositInfoCard: React.FC = () => {
   return (
