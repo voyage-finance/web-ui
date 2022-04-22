@@ -6,6 +6,7 @@ import { useQuery } from '@apollo/client';
 import { GET_POOLS } from 'graphql/queries/pools';
 import { useEffect, useState } from 'react';
 import { Card, Text, Title, CTAButton } from '@components/base';
+import Link from 'next/link';
 
 const PoolRow: React.FC<any> = ({
   id,
@@ -82,7 +83,9 @@ const PoolRow: React.FC<any> = ({
         <Group style={{ justifyContent: 'end' }}>
           <CTAButton>Deposit</CTAButton>
           <CTAButton>Withdraw</CTAButton>
-          <CTAButton>{'More >'}</CTAButton>
+          <Link href={`/pools/${id}`} passHref>
+            <CTAButton>{'More >'}</CTAButton>
+          </Link>
         </Group>
       </td>
     </tr>
