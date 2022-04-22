@@ -9,6 +9,7 @@ import {
 } from '@mantine/core';
 import WalletNavItem from '@components/moleculas/WalletNavItem';
 import Divider from '@components/base/Divider';
+import { NavLink } from '@components/base';
 
 const HEADER_HEIGHT = 48;
 
@@ -17,32 +18,6 @@ const useStyles = createStyles((theme, _, getRef) => ({
     display: 'flex',
     alignItems: 'center',
     marginRight: 50,
-  },
-  button: {
-    boxSizing: 'border-box',
-    cursor: 'pointer',
-    fontSize: theme.fontSizes.lg,
-    lineHeight: '20px',
-    fontWeight: 700,
-    color: 'white',
-    borderWidth: 0,
-    [`&:hover .${getRef('border')}`]: {
-      width: '100%',
-    },
-    ['&:not(:last-child)']: {
-      marginRight: 40,
-    },
-  },
-  border: {
-    ref: getRef('border'),
-    height: 2,
-    width: 0,
-    background: theme.fn.linearGradient(
-      180,
-      theme.other.gradients.brand.from,
-      theme.other.gradients.brand.to
-    ),
-    transition: 'width 0.1s linear',
   },
 }));
 
@@ -68,24 +43,15 @@ const Navigation: React.FC = () => {
           />
         </Box>
         <Group sx={{ height: '100%' }}>
-          <UnstyledButton component={Link} href="/lend">
-            <div className={classes.button}>
-              <div>Lend</div>
-              <div className={classes.border} />
-            </div>
-          </UnstyledButton>
-          <UnstyledButton component={Link} href="/borrow">
-            <div className={classes.button}>
-              <div>Borrow</div>
-              <div className={classes.border} />
-            </div>
-          </UnstyledButton>
-          <UnstyledButton component={Link} href="/sponsor">
-            <div className={classes.button}>
-              <div>Sponsor</div>
-              <div className={classes.border} />
-            </div>
-          </UnstyledButton>
+          <NavLink href="/" exact>
+            Lend
+          </NavLink>
+          <NavLink href="/borrow" exact>
+            Borrow
+          </NavLink>
+          <NavLink href="/sponsor" exact>
+            Sponsor
+          </NavLink>
         </Group>
         <Divider
           sx={{

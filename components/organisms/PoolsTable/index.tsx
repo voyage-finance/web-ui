@@ -83,9 +83,9 @@ const PoolRow: React.FC<any> = ({
         <Group style={{ justifyContent: 'end' }}>
           <CTAButton>Deposit</CTAButton>
           <CTAButton>Withdraw</CTAButton>
-          <Link href={`/pools/${id}`} passHref>
-            <CTAButton>{'More >'}</CTAButton>
-          </Link>
+          <CTAButton>
+            <Link href={`/pools/${id}`}>{'More >'}</Link>
+          </CTAButton>
         </Group>
       </td>
     </tr>
