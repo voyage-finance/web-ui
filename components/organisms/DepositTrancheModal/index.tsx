@@ -1,5 +1,6 @@
 import { Divider, Text, Title, Modal } from '@components/base';
-import { Button, Group, Input, ModalProps } from '@mantine/core';
+import AmountInput from '@components/moleculas/AmountInput';
+import { Button, Group, Input, ModalProps, ThemeIcon } from '@mantine/core';
 import Image from 'next/image';
 
 type IProps = ModalProps & {
@@ -61,13 +62,7 @@ const DepositTrancheModal: React.FC<IProps> = ({ type, ...props }) => {
           </Text>{' '}
         </Text>
       </Group>
-      <Input
-        radius={10}
-        mt={12}
-        rightSection={<Text type="gradient">TUS</Text>}
-        type="number"
-        placeholder="0"
-      />
+      <AmountInput mt={16} />
       <Button fullWidth mt={16}>
         Confirm deposit
       </Button>
