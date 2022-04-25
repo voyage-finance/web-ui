@@ -6,7 +6,9 @@ import { useQuery } from '@apollo/client';
 import { GET_POOLS } from 'graphql/queries/pools';
 import { useEffect, useState } from 'react';
 import { Card, Text, Title, CTAButton } from '@components/base';
+import BN from 'bn.js';
 import Link from 'next/link';
+import { formatBn } from 'utils/bn';
 
 const PoolRow: React.FC<any> = ({
   id,
@@ -23,17 +25,23 @@ const PoolRow: React.FC<any> = ({
   juniorAPY,
   juniorDeposit,
 }) => {
-  const BalanceTD = ({ amount, amountUSD }: any) => (
-    <Group direction="column" spacing={0} align="end">
-      <Title order={5}>
-        {amount}{' '}
-        <Text weight={400} component="span">
-          TUS
-        </Text>
-      </Title>
-      <Text type="secondary">${amountUSD}</Text>
-    </Group>
-  );
+  const BalanceTD = ({ amount: _amount, amountUSD: _amountUSD }: any) => {
+    // imitating that we are receiving BN from server, but for now we receive int number from mock api
+    const amount = new BN(_amount);
+    const amountUSD = new BN(_amountUSD);
+
+    return (
+      <Group direction="column" spacing={0} align="end">
+        <Title order={5}>
+          {formatBn(amount)}{' '}
+          <Text weight={400} component="span">
+            TUS
+          </Text>
+        </Title>
+        <Text type="secondary">${formatBn(amountUSD, true)}</Text>
+      </Group>
+    );
+  };
   return (
     <tr>
       <td style={{ paddingLeft: 0 }}>
