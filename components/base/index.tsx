@@ -6,3 +6,4 @@ export { default as Divider } from './Divider';
 export { default as Menu } from './Menu';
 export { default as Card } from './Card';
 export { default as NavLink } from './NavLink';
+export { default as Modal } from './Modal';
