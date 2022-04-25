@@ -1,7 +1,7 @@
 import { useConnect } from 'wagmi';
 import { useState } from 'react';
-import { Modal, Group } from '@mantine/core';
-import Button from '@components/base/Button';
+import { Group } from '@mantine/core';
+import { Button, Modal } from '@components/base';
 
 const ConnectBtn: React.FC = () => {
   const [{ data: connectData, error }, connect] = useConnect();

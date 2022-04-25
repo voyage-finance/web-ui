@@ -1,5 +1,5 @@
-import { Divider, Text, Title } from '@components/base';
-import { Button, Group, Input, Modal, ModalProps } from '@mantine/core';
+import { Divider, Text, Title, Modal } from '@components/base';
+import { Button, Group, Input, ModalProps } from '@mantine/core';
 import Image from 'next/image';
 
 type IProps = ModalProps & {
@@ -8,11 +8,7 @@ type IProps = ModalProps & {
 
 const DepositTrancheModal: React.FC<IProps> = ({ type, ...props }) => {
   return (
-    <Modal
-      title={<Text type="gradient">Deposit to {type} Tranche</Text>}
-      centered
-      {...props}
-    >
+    <Modal title={`Deposit to ${type} Tranche`} centered {...props}>
       <Image
         src="/crabada-cover.png"
         alt="crabada"
