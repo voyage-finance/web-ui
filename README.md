@@ -4,11 +4,21 @@ Main UI to the Voyage protocol.
 
 # Dependencies
 
-* [TypeScript](https://www.typescriptlang.org/)
-* [Next.js](https://nextjs.org/)
-* [Mantine](https://mantine.dev/)
-* [Ethers](https://docs.ethers.io)
-* [wagmi](https://wagmi.sh/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Next.js](https://nextjs.org/)
+- [Mantine](https://mantine.dev/)
+- [Ethers](https://docs.ethers.io)
+- [wagmi](https://wagmi.sh/)
+
+## Architecture
+
+The folder structure is organized as `organisms`, `molecules`, `base` components
+
+- `base` : this folder are mostly for `atomic` components, or for those components that extend and customize the `mantine` components. For example, `components/base/Text/index.tsx` is an extension for `mantine's` text component with new `type` prop.
+- `moleculas`: are mainly combination of `atomic` elements, that are used several times and can be considered as a reusable common component.
+- `organisms`: are mainly complex structures, combination of moleculas and atoms. They have a business purpose, have a logic and functionalities, can live separately. Example: `components/organisms/DepositTrancheModal/index.tsx`
+
+and `pages` folder is the same structure as proposed by `next.js` .
 
 # Development
 
