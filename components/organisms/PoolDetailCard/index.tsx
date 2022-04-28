@@ -1,9 +1,18 @@
 import { Divider, Text, Title, Card } from '@components/base';
 import { Group } from '@mantine/core';
+import BN from 'bn.js';
 import Image from 'next/image';
 import { BrandDiscord, BrandTelegram, BrandTwitter } from 'tabler-icons-react';
+import { formatBn } from 'utils/bn';
 
-const PoolDetailCard: React.FC = () => {
+type IProps = {
+  reserveSize: BN;
+  availableLiquidity: BN;
+  seniorAPY: number;
+  juniorAPY: number;
+};
+
+const PoolDetailCard: React.FC<IProps> = (props) => {
   return (
     <Card style={{ minHeight: 776, height: '100%' }} px={27}>
       <Title>Crabada</Title>
@@ -32,7 +41,7 @@ const PoolDetailCard: React.FC = () => {
           <Group spacing={0} direction="column">
             <Text type="secondary">Reserve Size</Text>
             <Title order={4}>
-              200,000{' '}
+              {props.reserveSize.toString()}{' '}
               <Text component="span" inherit type="accent">
                 TUS
               </Text>
@@ -52,7 +61,7 @@ const PoolDetailCard: React.FC = () => {
           <Group spacing={0} direction="column">
             <Text type="secondary">Available Liquidity</Text>
             <Title order={4}>
-              1,000{' '}
+              {props.availableLiquidity.toString()}{' '}
               <Text component="span" inherit type="accent">
                 TUS
               </Text>
@@ -67,11 +76,11 @@ const PoolDetailCard: React.FC = () => {
         <Divider orientation="horizontal" />
         <Group spacing={0} direction="column">
           <Text type="secondary">Senior APY</Text>
-          <Title order={4}>54%</Title>
+          <Title order={4}>{props.seniorAPY}%</Title>
         </Group>
         <Group spacing={0} direction="column">
           <Text type="secondary">Junior APY</Text>
-          <Title order={4}>217%</Title>
+          <Title order={4}>{props.juniorAPY}%</Title>
         </Group>
       </Group>
     </Card>
