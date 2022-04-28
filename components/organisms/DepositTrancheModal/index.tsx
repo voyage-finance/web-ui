@@ -2,12 +2,36 @@ import { Divider, Text, Title, Modal } from '@components/base';
 import AmountInput from '@components/moleculas/AmountInput';
 import { Button, Group, Input, ModalProps, ThemeIcon } from '@mantine/core';
 import Image from 'next/image';
+import { useAccount, useContractWrite, useSigner } from 'wagmi';
+import Voyager from 'smartcontracts/Voyager.json';
+import Tus from 'smartcontracts/Tus.json';
+import { useEffect } from 'react';
 
 type IProps = ModalProps & {
   type: 'Senior' | 'Junior';
 };
 
 const DepositTrancheModal: React.FC<IProps> = ({ type, ...props }) => {
+  const [{ data: accountData }] = useAccount({
+    fetchEns: true,
+  });
+  const [{ data: signer }] = useSigner();
+  const [, deposit] = useContractWrite(
+    {
+      addressOrName: Voyager.address,
+      contractInterface: Voyager.abi,
+      signerOrProvider: signer,
+    },
+    'deposit'
+  );
+
+  const onDeposit = async () => {
+    const data = await deposit({
+      args: [Tus.address, '1', '100000', accountData?.address],
+    });
+    console.log('deposit res:', data);
+  };
+
   return (
     <Modal title={`Deposit to ${type} Tranche`} centered {...props}>
       <Image
@@ -63,7 +87,7 @@ const DepositTrancheModal: React.FC<IProps> = ({ type, ...props }) => {
         </Text>
       </Group>
       <AmountInput mt={16} />
-      <Button fullWidth mt={16}>
+      <Button fullWidth mt={16} onClick={onDeposit}>
         Confirm deposit
       </Button>
     </Modal>

@@ -8,7 +8,9 @@ import { Title, Card } from '@components/base';
 import { GetServerSideProps } from 'next';
 import PoolDetailCard from '@components/organisms/PoolDetailCard';
 import TrancheCard from '@components/organisms/TrancheCard';
-import { useState } from 'react';
+import { useConnect, useContractRead, useSigner } from 'wagmi';
+import VoyageProtocolDataProvider from 'smartcontracts/VoyageProtocolDataProvider.json';
+import Tus from 'smartcontracts/Tus.json';
 
 const ChartCards: React.FC = () => (
   <Grid>
@@ -31,6 +33,27 @@ const ChartCards: React.FC = () => (
 );
 
 const PoolDetail: NextPage = () => {
+  const [connected] = useConnect();
+  const [{ data: signer }] = useSigner();
+
+  // const VoyageDataProvider = useContract({
+  //   addressOrName: VoyageProtocolDataProvider.address,
+  //   contractInterface: VoyageProtocolDataProvider.abi,
+  //   signerOrProvider: signer,
+  // });
+
+  const [{ data: poolData }] = useContractRead(
+    {
+      addressOrName: VoyageProtocolDataProvider.address,
+      contractInterface: VoyageProtocolDataProvider.abi,
+    },
+    'getPoolData',
+    {
+      args: Tus.address,
+      watch: true,
+    }
+  );
+
   return (
     <div>
       <Head>
@@ -42,7 +65,14 @@ const PoolDetail: NextPage = () => {
       <main className={styles.main}>
         <Grid>
           <Grid.Col span={3}>
-            <PoolDetailCard />
+            <PoolDetailCard
+              reserveSize={
+                poolData ? poolData.totalLiquidity.sub(poolData.totalDebt) : 0
+              }
+              availableLiquidity={poolData ? poolData.totalLiquidity : 0}
+              seniorAPY={poolData ? poolData.seniorLiquidityRate.toNumber() : 0}
+              juniorAPY={poolData ? poolData.juniorLiquidityRate.toNumber() : 0}
+            />
           </Grid.Col>
           <Grid.Col span={9}>
             <Group direction="column" style={{ height: '100%' }} grow>
