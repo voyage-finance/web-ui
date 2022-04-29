@@ -1,5 +1,5 @@
 import { Divider, Text, Title, Card } from '@components/base';
-import { Group } from '@mantine/core';
+import { Group, LoadingOverlay } from '@mantine/core';
 import BN from 'bn.js';
 import Image from 'next/image';
 import { BrandDiscord, BrandTelegram, BrandTwitter } from 'tabler-icons-react';
@@ -10,11 +10,13 @@ type IProps = {
   availableLiquidity: BN;
   seniorAPY: number;
   juniorAPY: number;
+  loading: boolean;
 };
 
 const PoolDetailCard: React.FC<IProps> = (props) => {
   return (
     <Card style={{ minHeight: 776, height: '100%' }} px={27}>
+      <LoadingOverlay visible={props.loading} />
       <Title>Crabada</Title>
       <Group direction="column" mt={8} spacing={15} align="stretch">
         <Image
