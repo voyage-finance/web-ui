@@ -9,8 +9,9 @@ import { GetServerSideProps } from 'next';
 import PoolDetailCard from '@components/organisms/PoolDetailCard';
 import TrancheCard from '@components/organisms/TrancheCard';
 import { useConnect, useContractRead, useSigner } from 'wagmi';
-import VoyageProtocolDataProvider from 'smartcontracts/VoyageProtocolDataProvider.json';
-import Tus from 'smartcontracts/Tus.json';
+import VoyageProtocolDataProvider from 'deployments/localhost/VoyageProtocolDataProvider.json';
+import Tus from 'deployments/localhost/Tus.json';
+import { TrancheType } from 'types';
 
 const ChartCards: React.FC = () => (
   <Grid>
@@ -81,7 +82,7 @@ const PoolDetail: NextPage = () => {
                 <Grid>
                   <Grid.Col span={6}>
                     <TrancheCard
-                      type="Senior"
+                      type={TrancheType.Senior}
                       total={0}
                       totalUSD={0}
                       withdrawable={0}
@@ -90,7 +91,7 @@ const PoolDetail: NextPage = () => {
                   </Grid.Col>
                   <Grid.Col span={6}>
                     <TrancheCard
-                      type="Junior"
+                      type={TrancheType.Junior}
                       total={10000}
                       totalUSD={10000}
                       withdrawable={10000}

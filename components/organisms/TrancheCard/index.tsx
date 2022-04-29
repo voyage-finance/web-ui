@@ -2,10 +2,11 @@ import { Button, Card, Divider, Text, Title } from '@components/base';
 import { Group } from '@mantine/core';
 import Image from 'next/image';
 import { useState } from 'react';
+import { TrancheType } from 'types';
 import DepositTrancheModal from '../DepositTrancheModal';
 
 type IProps = {
-  type: 'Senior' | 'Junior';
+  type: TrancheType;
   total: number;
   totalUSD: number;
   withdrawable: number;
