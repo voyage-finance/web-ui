@@ -43,7 +43,7 @@ const PoolDetail: NextPage = () => {
   //   signerOrProvider: signer,
   // });
 
-  const [{ data: poolData }] = useContractRead(
+  const [{ data: poolData, loading }] = useContractRead(
     {
       addressOrName: VoyageProtocolDataProvider.address,
       contractInterface: VoyageProtocolDataProvider.abi,
@@ -67,6 +67,7 @@ const PoolDetail: NextPage = () => {
         <Grid>
           <Grid.Col span={3}>
             <PoolDetailCard
+              loading={loading!}
               reserveSize={
                 poolData ? poolData.totalLiquidity.sub(poolData.totalDebt) : 0
               }
