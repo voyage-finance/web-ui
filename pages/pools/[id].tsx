@@ -9,10 +9,9 @@ import { Card, Title } from '@components/base';
 import PoolDetailCard from '@components/organisms/PoolDetailCard';
 import TrancheCard from '@components/organisms/TrancheCard';
 import { useContractRead } from 'wagmi';
-import VoyageProtocolDataProvider from '../../abi/VoyageProtocolDataProvider.json';
-import Tus from 'deployments/localhost/Tus.json';
 import { TrancheType } from 'types';
-import { VOYAGE_DATA_PROVIDER_ADDRESS } from '../../abi/addresses';
+import VoyageProtocolDataProviderAbi from 'abi/VoyageProtocolDataProvider.json';
+import { VOYAGE_DATA_PROVIDER_ADDRESS, TUS_ADDRESS } from 'abi/addresses';
 
 const ChartCards: React.FC = () => (
   <Grid>
@@ -38,11 +37,11 @@ const PoolDetail: NextPage = () => {
   const [{ data: poolData, loading }] = useContractRead(
     {
       addressOrName: VOYAGE_DATA_PROVIDER_ADDRESS,
-      contractInterface: VoyageProtocolDataProvider,
+      contractInterface: VoyageProtocolDataProviderAbi,
     },
     'getPoolData',
     {
-      args: Tus.address,
+      args: TUS_ADDRESS,
       watch: true,
     }
   );
