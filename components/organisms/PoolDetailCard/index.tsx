@@ -15,7 +15,7 @@ type IProps = {
 
 const PoolDetailCard: React.FC<IProps> = (props) => {
   return (
-    <Card style={{ minHeight: 776, height: '100%' }} px={27}>
+    <Card style={{ height: '100%' }} px={27}>
       <LoadingOverlay visible={props.loading} />
       <Title>Crabada</Title>
       <Group direction="column" mt={8} spacing={15} align="stretch">
