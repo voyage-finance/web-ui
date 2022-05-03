@@ -5,6 +5,7 @@ import { InjectedConnector } from 'wagmi/connectors/injected';
 import { providers } from 'ethers';
 import { ApolloProvider } from '@apollo/client';
 import ApolloClient from 'graphql/apollo-client';
+import { NotificationsProvider } from '@mantine/notifications';
 
 const connectors = () => {
   return [
@@ -28,9 +29,11 @@ function MyApp(props: AppProps) {
       }}
     >
       <ApolloProvider client={ApolloClient}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <NotificationsProvider position="top-right">
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </NotificationsProvider>
       </ApolloProvider>
     </Provider>
   );
