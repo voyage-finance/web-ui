@@ -64,8 +64,8 @@ const PoolDetail: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <Grid>
-          <Grid.Col span={3}>
+        <Grid align="stretch">
+          <Grid.Col md={12} lg={3}>
             <PoolDetailCard
               loading={loading!}
               reserveSize={
@@ -76,32 +76,30 @@ const PoolDetail: NextPage = () => {
               juniorAPY={poolData ? poolData.juniorLiquidityRate.toNumber() : 0}
             />
           </Grid.Col>
-          <Grid.Col span={9}>
-            <Group direction="column" style={{ height: '100%' }} grow>
-              <ChartCards />
-              <Card>
-                <Grid>
-                  <Grid.Col span={6}>
-                    <TrancheCard
-                      type={TrancheType.Senior}
-                      total={0}
-                      totalUSD={0}
-                      withdrawable={0}
-                      withdrawableUSD={0}
-                    />
-                  </Grid.Col>
-                  <Grid.Col span={6}>
-                    <TrancheCard
-                      type={TrancheType.Junior}
-                      total={10000}
-                      totalUSD={10000}
-                      withdrawable={10000}
-                      withdrawableUSD={10000}
-                    />
-                  </Grid.Col>
-                </Grid>
-              </Card>
-            </Group>
+          <Grid.Col md={12} lg={9}>
+            <ChartCards />
+            <Card style={{ overflow: 'visible' }} mt={16}>
+              <Grid>
+                <Grid.Col span={6}>
+                  <TrancheCard
+                    type={TrancheType.Senior}
+                    total={0}
+                    totalUSD={0}
+                    withdrawable={0}
+                    withdrawableUSD={0}
+                  />
+                </Grid.Col>
+                <Grid.Col span={6}>
+                  <TrancheCard
+                    type={TrancheType.Junior}
+                    total={10000}
+                    totalUSD={10000}
+                    withdrawable={10000}
+                    withdrawableUSD={10000}
+                  />
+                </Grid.Col>
+              </Grid>
+            </Card>
           </Grid.Col>
         </Grid>
       </main>
