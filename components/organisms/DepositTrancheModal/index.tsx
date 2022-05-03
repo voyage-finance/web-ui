@@ -20,8 +20,10 @@ const DepositTrancheModal: React.FC<IProps> = ({
   ...props
 }) => {
   const [depositedAmount, setDepositedAmount] = useState('');
+  const [step, setStep] = useState(0);
   const onClose = () => {
     setDepositedAmount('');
+    setStep(0);
     _onClose();
   };
   return (
@@ -33,12 +35,16 @@ const DepositTrancheModal: React.FC<IProps> = ({
       onClose={onClose}
       {...props}
     >
-      {!depositedAmount ? (
+      {step === 0 && (
         <EnterAmountStep
           type={type}
-          onDeposited={(amount) => setDepositedAmount(amount)}
+          onDeposited={(amount) => {
+            setStep(1);
+            setDepositedAmount(amount);
+          }}
         />
-      ) : (
+      )}
+      {step === 1 && (
         <DepositSuccessStep
           type={type}
           amount={depositedAmount}
