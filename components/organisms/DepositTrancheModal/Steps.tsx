@@ -27,7 +27,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({ type, onDeposited }) => {
     'deposit'
   );
 
-  const form = useForm({ initialValues: { amount: '0' } });
+  const form = useForm({ initialValues: { amount: '' } });
 
   const onDeposit = async () => {
     await deposit({
@@ -95,7 +95,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({ type, onDeposited }) => {
           </Text>{' '}
         </Text>
       </Group>
-      <AmountInput mt={16} {...form.getInputProps('amount')} />
+      <AmountInput mt={16} {...form.getInputProps('amount')} type="number" />
       <Button fullWidth mt={16} onClick={onDeposit} loading={loading}>
         Confirm deposit
       </Button>
