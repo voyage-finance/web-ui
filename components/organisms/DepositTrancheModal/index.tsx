@@ -1,53 +1,79 @@
-import { Divider, Modal, Button, Text, Title } from '@components/base';
-import AmountInput from '@components/moleculas/AmountInput';
-import { Group, ModalProps } from '@mantine/core';
-import Image from 'next/image';
-import { useAccount, useContractWrite, useSigner } from 'wagmi';
-import Voyager from 'deployments/localhost/Voyager.json';
-import Tus from 'deployments/localhost/Tus.json';
-import { useForm } from '@mantine/hooks';
+import { Modal } from '@components/base';
+import { ModalProps } from '@mantine/core';
 import { useState } from 'react';
-import { DepositSuccessStep, EnterAmountStep } from './Steps';
+import { DepositStatusStep, EnterAmountStep } from './Steps';
 import { TrancheTextMap, TrancheType } from 'types';
+import { showNotification } from '@mantine/notifications';
 
 type IProps = ModalProps & {
   type: TrancheType;
 };
+
+enum STEP {
+  Deposit,
+  Success,
+  Error,
+}
 
 const DepositTrancheModal: React.FC<IProps> = ({
   type,
   onClose: _onClose,
   ...props
 }) => {
+  const [step, setStep] = useState(STEP.Deposit);
   const [depositedAmount, setDepositedAmount] = useState('');
-  const [step, setStep] = useState(0);
+  const [errorMessage, setErrorMessage] = useState('');
   const onClose = () => {
+    setStep(STEP.Deposit);
     setDepositedAmount('');
-    setStep(0);
+    setErrorMessage('');
     _onClose();
   };
+
+  const onDeposited = (amount: string) => {
+    setStep(STEP.Success);
+    setDepositedAmount(amount);
+    setErrorMessage('');
+    showNotification({
+      title: 'Deposit success',
+      message: `Your deposit of amount ${amount} was successfull`,
+      color: 'green',
+    });
+  };
+
+  const onError = (error: string) => {
+    setStep(STEP.Error);
+    setErrorMessage(error);
+    showNotification({
+      title: 'Transaction error',
+      message: error,
+      color: 'red',
+    });
+  };
+
   return (
     <Modal
       title={
-        !depositedAmount ? `Deposit to ${TrancheTextMap[type]} Tranche` : null
+        step === STEP.Deposit
+          ? `Deposit to ${TrancheTextMap[type]} Tranche`
+          : null
       }
       centered
       onClose={onClose}
       {...props}
     >
-      {step === 0 && (
+      {step === STEP.Deposit && (
         <EnterAmountStep
           type={type}
-          onDeposited={(amount) => {
-            setStep(1);
-            setDepositedAmount(amount);
-          }}
+          onDeposited={onDeposited}
+          onError={onError}
         />
       )}
-      {step === 1 && (
-        <DepositSuccessStep
+      {(step === STEP.Success || step === STEP.Error) && (
+        <DepositStatusStep
           type={type}
           amount={depositedAmount}
+          error={errorMessage}
           onClose={onClose}
         />
       )}

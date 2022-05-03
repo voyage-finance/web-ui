@@ -11,14 +11,19 @@ import { TrancheTextMap, TrancheType } from 'types';
 type IProps1 = {
   type: TrancheType;
   onDeposited: (amount: string) => void;
+  onError: (message: string) => void;
 };
 
-export const EnterAmountStep: React.FC<IProps1> = ({ type, onDeposited }) => {
+export const EnterAmountStep: React.FC<IProps1> = ({
+  type,
+  onDeposited,
+  onError,
+}) => {
   const [{ data: accountData }] = useAccount({
     fetchEns: true,
   });
   const [{ data: signer }] = useSigner();
-  const [{ loading, error }, deposit] = useContractWrite(
+  const [{ loading }, deposit] = useContractWrite(
     {
       addressOrName: Voyager.address,
       contractInterface: Voyager.abi,
@@ -30,7 +35,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({ type, onDeposited }) => {
   const form = useForm({ initialValues: { amount: '' } });
 
   const onDeposit = async () => {
-    await deposit({
+    const { error } = await deposit({
       args: [
         Tus.address,
         type == TrancheType.Senior ? '1' : '0',
@@ -38,7 +43,8 @@ export const EnterAmountStep: React.FC<IProps1> = ({ type, onDeposited }) => {
         accountData?.address,
       ],
     });
-    onDeposited(form.values.amount);
+    if (error) onError(error.message);
+    else onDeposited(form.values.amount);
   };
 
   return (
@@ -106,13 +112,15 @@ export const EnterAmountStep: React.FC<IProps1> = ({ type, onDeposited }) => {
 type IProps2 = {
   type: TrancheType;
   amount: string;
+  error: string;
   onClose: () => void;
 };
 
-export const DepositSuccessStep: React.FC<IProps2> = ({
+export const DepositStatusStep: React.FC<IProps2> = ({
   type,
   amount,
   onClose,
+  error,
 }) => {
   return (
     <>
@@ -121,42 +129,54 @@ export const DepositSuccessStep: React.FC<IProps2> = ({
           Deposit Success!{' '}
         </Text>
       </Title>
-      <Text align="center" my={16}>
-        You have successfully made a new deposit into the {TrancheTextMap[type]}{' '}
-        Tranche. Please view your summary below.
-      </Text>
-      <Image
-        src="/crabada-cover.png"
-        alt="crabada"
-        layout="responsive"
-        width={425}
-        height={108}
-        objectFit="cover"
-      />
-      <Divider my={16} orientation="horizontal" />
-      <Group position="apart">
-        <Text type="secondary">Your Deposit Made</Text>
-        <Group direction="column" spacing={0} align="end">
-          <Title order={5}>
-            +{amount}{' '}
-            <Text weight={400} component="span">
-              TUS
-            </Text>
-          </Title>
-          <Text type="secondary">${amount}</Text>
-        </Group>
-      </Group>
-      <Group position="apart" mt={16}>
-        <Text type="secondary">Your New Total Deposit</Text>
-        <Group direction="column" spacing={0} align="end">
-          <Title order={5}>
-            <Text inherit type="gradient" component="span">
-              +{amount} TUS
-            </Text>
-          </Title>
-          <Text type="secondary">${amount}</Text>
-        </Group>
-      </Group>
+      {!error ? (
+        <Text align="center" my={16}>
+          You have successfully made a new deposit into the{' '}
+          {TrancheTextMap[type]} Tranche. Please view your summary below.
+        </Text>
+      ) : (
+        <Text align="center" my={16}>
+          Transaction to deposit into the {TrancheTextMap[type]} Tranche was
+          unsuccessfull.
+          <Text type="danger">{error}</Text>
+        </Text>
+      )}
+      {!error && (
+        <>
+          <Image
+            src="/crabada-cover.png"
+            alt="crabada"
+            layout="responsive"
+            width={425}
+            height={108}
+            objectFit="cover"
+          />
+          <Divider my={16} orientation="horizontal" />
+          <Group position="apart">
+            <Text type="secondary">Your Deposit Made</Text>
+            <Group direction="column" spacing={0} align="end">
+              <Title order={5}>
+                +{amount}{' '}
+                <Text weight={400} component="span">
+                  TUS
+                </Text>
+              </Title>
+              <Text type="secondary">${amount}</Text>
+            </Group>
+          </Group>
+          <Group position="apart" mt={16}>
+            <Text type="secondary">Your New Total Deposit</Text>
+            <Group direction="column" spacing={0} align="end">
+              <Title order={5}>
+                <Text inherit type="gradient" component="span">
+                  +{amount} TUS
+                </Text>
+              </Title>
+              <Text type="secondary">${amount}</Text>
+            </Group>
+          </Group>
+        </>
+      )}
       <Button fullWidth mt={16} onClick={onClose}>
         Done
       </Button>
