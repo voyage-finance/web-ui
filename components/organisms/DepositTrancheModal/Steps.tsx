@@ -3,8 +3,8 @@ import AmountInput from '@components/moleculas/AmountInput';
 import { Group } from '@mantine/core';
 import Image from 'next/image';
 import { useAccount, useContractWrite, useSigner } from 'wagmi';
-import Voyager from 'deployments/localhost/Voyager.json';
-import Tus from 'deployments/localhost/Tus.json';
+import VoyagerAbi from 'abi/Voyager.json';
+import { VOYAGER_ADDRESS, TUS_ADDRESS } from 'abi/addresses';
 import { useForm } from '@mantine/hooks';
 import { TrancheTextMap, TrancheType } from 'types';
 
@@ -25,8 +25,8 @@ export const EnterAmountStep: React.FC<IProps1> = ({
   const [{ data: signer }] = useSigner();
   const [{ loading }, deposit] = useContractWrite(
     {
-      addressOrName: Voyager.address,
-      contractInterface: Voyager.abi,
+      addressOrName: VOYAGER_ADDRESS,
+      contractInterface: VoyagerAbi,
       signerOrProvider: signer,
     },
     'deposit'
@@ -37,7 +37,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
   const onDeposit = async () => {
     const { error } = await deposit({
       args: [
-        Tus.address,
+        TUS_ADDRESS,
         type == TrancheType.Senior ? '1' : '0',
         form.values.amount,
         accountData?.address,
