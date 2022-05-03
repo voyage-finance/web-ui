@@ -1,0 +1,2 @@
+export const VOYAGE_DATA_PROVIDER_ADDRESS = process.env
+  .NEXT_PUBLIC_VOYAGE_DATA_PROVIDER_ADDRESS as string;
