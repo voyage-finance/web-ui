@@ -1,17 +1,18 @@
 // noinspection HtmlUnknownTarget
 
 import type { NextPage } from 'next';
-import Head from 'next/head';
-import { Grid, Group } from '@mantine/core';
-import styles from 'styles/Home.module.scss';
-import { Title, Card } from '@components/base';
 import { GetServerSideProps } from 'next';
+import Head from 'next/head';
+import { Grid } from '@mantine/core';
+import styles from 'styles/Home.module.scss';
+import { Card, Title } from '@components/base';
 import PoolDetailCard from '@components/organisms/PoolDetailCard';
 import TrancheCard from '@components/organisms/TrancheCard';
-import { useConnect, useContractRead, useSigner } from 'wagmi';
-import VoyageProtocolDataProvider from 'deployments/localhost/VoyageProtocolDataProvider.json';
+import { useContractRead } from 'wagmi';
+import VoyageProtocolDataProvider from '../../abi/VoyageProtocolDataProvider.json';
 import Tus from 'deployments/localhost/Tus.json';
 import { TrancheType } from 'types';
+import { VOYAGE_DATA_PROVIDER_ADDRESS } from '../../abi/addresses';
 
 const ChartCards: React.FC = () => (
   <Grid>
@@ -34,19 +35,10 @@ const ChartCards: React.FC = () => (
 );
 
 const PoolDetail: NextPage = () => {
-  const [connected] = useConnect();
-  const [{ data: signer }] = useSigner();
-
-  // const VoyageDataProvider = useContract({
-  //   addressOrName: VoyageProtocolDataProvider.address,
-  //   contractInterface: VoyageProtocolDataProvider.abi,
-  //   signerOrProvider: signer,
-  // });
-
   const [{ data: poolData, loading }] = useContractRead(
     {
-      addressOrName: VoyageProtocolDataProvider.address,
-      contractInterface: VoyageProtocolDataProvider.abi,
+      addressOrName: VOYAGE_DATA_PROVIDER_ADDRESS,
+      contractInterface: VoyageProtocolDataProvider,
     },
     'getPoolData',
     {
