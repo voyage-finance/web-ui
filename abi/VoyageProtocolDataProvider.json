@@ -1,0 +1,332 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "contract IAddressResolver",
+        "name": "_addressResolver",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "addressResolver",
+    "outputs": [
+      {
+        "internalType": "contract IAddressResolver",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getAllVaults",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_reserve",
+        "type": "address"
+      }
+    ],
+    "name": "getPoolConfiguration",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "securityRequirement",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minSecurity",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "maxSecurity",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "loanTenure",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "optimalTrancheRatio",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "optimalIncomeRatio",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "isActive",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct DataTypes.PoolConfiguration",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "underlyingAsset",
+        "type": "address"
+      }
+    ],
+    "name": "getPoolData",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "totalLiquidity",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "juniorLiquidity",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "seniorLiquidity",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "juniorLiquidityRate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "seniorLiquidityRate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalDebt",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "borrowRate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "trancheRatio",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct DataTypes.PoolData",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getPoolTokens",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenAddress",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct DataTypes.FungibleTokenData[]",
+        "name": "tokens",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_reserve",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
+    ],
+    "name": "getUserPoolData",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "juniorTrancheBalance",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "withdrawableJuniorTrancheBalance",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "seniorTrancheBalance",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "withdrawableSeniorTrancheBalance",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct DataTypes.UserPoolData",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
+    ],
+    "name": "getUserVault",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_reserve",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_sponsor",
+        "type": "address"
+      }
+    ],
+    "name": "getVaultData",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "borrowRate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalDebt",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalSecurityDeposit",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "withdrawableSecurityDeposit",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "creditLimit",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "spendableBalance",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "gav",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "ltv",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "optimalAggregateRepaymentRate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "actualAggregateRepaymentRate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "healthFactor",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct DataTypes.VaultData",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
