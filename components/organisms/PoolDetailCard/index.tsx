@@ -1,22 +1,30 @@
 import { Divider, Text, Title, Card } from '@components/base';
 import { Group, LoadingOverlay } from '@mantine/core';
-import BN from 'bn.js';
 import Image from 'next/image';
 import { BrandDiscord, BrandTelegram, BrandTwitter } from 'tabler-icons-react';
-import { formatBn } from 'utils/bn';
+import { formatDecimals, fromBigNumber } from 'utils/bn';
+import BigNumber from 'bignumber.js';
 
 type IProps = {
-  reserveSize: BN;
-  availableLiquidity: BN;
-  seniorAPY: number;
-  juniorAPY: number;
+  totalDebt?: BigNumber;
+  availableLiquidity?: BigNumber;
+  seniorAPY?: BigNumber;
+  juniorAPY?: BigNumber;
   loading: boolean;
+  decimals?: BigNumber;
 };
 
-const PoolDetailCard: React.FC<IProps> = (props) => {
+const PoolDetailCard: React.FC<IProps> = ({
+  totalDebt,
+  availableLiquidity,
+  seniorAPY,
+  juniorAPY,
+  decimals,
+  loading,
+}) => {
   return (
     <Card style={{ height: '100%' }} px={27}>
-      <LoadingOverlay visible={props.loading} />
+      <LoadingOverlay visible={loading} />
       <Title>Crabada</Title>
       <Group direction="column" mt={8} spacing={15} align="stretch">
         <Image
@@ -43,46 +51,56 @@ const PoolDetailCard: React.FC<IProps> = (props) => {
           <Group spacing={0} direction="column">
             <Text type="secondary">Reserve Size</Text>
             <Title order={4}>
-              {props.reserveSize.toString()}{' '}
+              {availableLiquidity &&
+                totalDebt &&
+                decimals &&
+                formatDecimals(
+                  fromBigNumber(availableLiquidity).minus(
+                    fromBigNumber(totalDebt)
+                  ),
+                  decimals.toNumber()
+                )}{' '}
               <Text component="span" inherit type="accent">
                 TUS
               </Text>
             </Title>
-            <Text size="sm">$200,000.00</Text>
+            <Text size="sm">$00,000.00</Text>
           </Group>
           <Group spacing={0} direction="column">
             <Text type="secondary">Net Asset Value</Text>
             <Title order={4}>
-              500,000{' '}
+              0,000{' '}
               <Text component="span" inherit type="accent">
                 TUS
               </Text>
             </Title>
-            <Text size="sm">$500,000.00</Text>
+            <Text size="sm">$00,000.00</Text>
           </Group>
           <Group spacing={0} direction="column">
             <Text type="secondary">Available Liquidity</Text>
             <Title order={4}>
-              {props.availableLiquidity.toString()}{' '}
+              {availableLiquidity &&
+                decimals &&
+                formatDecimals(availableLiquidity, decimals.toNumber())}{' '}
               <Text component="span" inherit type="accent">
                 TUS
               </Text>
             </Title>
-            <Text size="sm">$1,000.00</Text>
+            <Text size="sm">$0,000.00</Text>
           </Group>
           <Group spacing={0} direction="column">
             <Text type="secondary">Active Vaults</Text>
-            <Title order={4}>88</Title>
+            <Title order={4}>-</Title>
           </Group>
         </Group>
         <Divider orientation="horizontal" />
         <Group spacing={0} direction="column">
           <Text type="secondary">Senior APY</Text>
-          <Title order={4}>{props.seniorAPY}%</Title>
+          <Title order={4}>{seniorAPY?.toString()}%</Title>
         </Group>
         <Group spacing={0} direction="column">
           <Text type="secondary">Junior APY</Text>
-          <Title order={4}>{props.juniorAPY}%</Title>
+          <Title order={4}>{juniorAPY?.toString()}%</Title>
         </Group>
       </Group>
     </Card>

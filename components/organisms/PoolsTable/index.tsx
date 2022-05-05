@@ -6,9 +6,8 @@ import { useQuery } from '@apollo/client';
 import { GET_POOLS } from 'graphql/queries/pools';
 import { useEffect, useState } from 'react';
 import { Card, Text, Title, CTAButton } from '@components/base';
-import BN from 'bn.js';
 import Link from 'next/link';
-import { formatBn } from 'utils/bn';
+import BigNumber from 'bignumber.js';
 
 const PoolRow: React.FC<any> = ({
   id,
@@ -27,18 +26,18 @@ const PoolRow: React.FC<any> = ({
 }) => {
   const BalanceTD = ({ amount: _amount, amountUSD: _amountUSD }: any) => {
     // imitating that we are receiving BN from server, but for now we receive int number from mock api
-    const amount = new BN(_amount);
-    const amountUSD = new BN(_amountUSD);
+    const amount = new BigNumber(_amount);
+    const amountUSD = new BigNumber(_amountUSD);
 
     return (
       <Group direction="column" spacing={0} align="end">
         <Title order={5}>
-          {formatBn(amount)}{' '}
+          {amount}{' '}
           <Text weight={400} component="span">
             TUS
           </Text>
         </Title>
-        <Text type="secondary">${formatBn(amountUSD, true)}</Text>
+        <Text type="secondary">{amountUSD}</Text>
       </Group>
     );
   };
