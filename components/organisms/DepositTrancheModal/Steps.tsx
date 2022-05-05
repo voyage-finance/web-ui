@@ -6,7 +6,7 @@ import { useAccount, useContractWrite, useSigner } from 'wagmi';
 import VoyagerAbi from 'abi/Voyager.json';
 import { VOYAGER_ADDRESS, TUS_ADDRESS } from 'abi/addresses';
 import { useForm } from '@mantine/hooks';
-import { TrancheTextMap, TrancheType } from 'types';
+import { PoolData, TrancheTextMap, TrancheType } from 'types';
 import { addDecimals } from 'utils/bn';
 import BigNumber from 'bignumber.js';
 
@@ -14,7 +14,9 @@ type IProps1 = {
   type: TrancheType;
   onDeposited: (amount: string) => void;
   onError: (message: string) => void;
-  decimals: BigNumber;
+  decimals: number;
+  totalDeposit: BigNumber;
+  APY?: BigNumber;
 };
 
 export const EnterAmountStep: React.FC<IProps1> = ({
@@ -22,6 +24,8 @@ export const EnterAmountStep: React.FC<IProps1> = ({
   onDeposited,
   onError,
   decimals,
+  totalDeposit,
+  APY,
 }) => {
   const [{ data: accountData }] = useAccount({
     fetchEns: true,
@@ -43,7 +47,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
       args: [
         TUS_ADDRESS,
         type == TrancheType.Senior ? '1' : '0',
-        addDecimals(form.values.amount, decimals.toNumber()),
+        addDecimals(form.values.amount, decimals),
         accountData?.address,
       ],
     });
@@ -65,16 +69,16 @@ export const EnterAmountStep: React.FC<IProps1> = ({
         <Group spacing={0} direction="column">
           <Text type="secondary">{TrancheTextMap[type]} Tranche Liquidity</Text>
           <Title order={4}>
-            100,000{' '}
+            {totalDeposit?.toString()}{' '}
             <Text component="span" inherit type="accent">
               TUS
             </Text>
           </Title>
-          <Text size="sm">$100,000.00</Text>
+          <Text size="sm">$-</Text>
         </Group>
         <Group spacing={0} direction="column" align={'end'}>
           <Text type="secondary">{TrancheTextMap[type]} APY</Text>
-          <Title order={4}>217%</Title>
+          <Title order={4}>{APY?.toString()}%</Title>
         </Group>
       </Group>
       <Divider my={16} orientation="horizontal" />
@@ -82,12 +86,12 @@ export const EnterAmountStep: React.FC<IProps1> = ({
         <Text type="secondary">Your Current Total Deposit</Text>
         <Group direction="column" spacing={0} align="end">
           <Title order={5}>
-            1000{' '}
+            {totalDeposit?.toString()}{' '}
             <Text weight={400} component="span">
               TUS
             </Text>
           </Title>
-          <Text type="secondary">$1000</Text>
+          <Text type="secondary">$-</Text>
         </Group>
       </Group>
       <Group position="apart" mt={16}>
@@ -101,7 +105,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
             size="xs"
             weight={700}
           >
-            10,000 TUS
+            - TUS
           </Text>{' '}
         </Text>
       </Group>

@@ -2,13 +2,13 @@ import { Modal } from '@components/base';
 import { ModalProps } from '@mantine/core';
 import { useState } from 'react';
 import { DepositStatusStep, EnterAmountStep } from './Steps';
-import { TrancheTextMap, TrancheType } from 'types';
+import { PoolData, TrancheTextMap, TrancheType } from 'types';
 import { showNotification } from '@mantine/notifications';
 import BigNumber from 'bignumber.js';
 
 type IProps = ModalProps & {
   type: TrancheType;
-  decimals?: BigNumber;
+  poolData?: PoolData;
 };
 
 enum STEP {
@@ -20,7 +20,7 @@ enum STEP {
 const DepositTrancheModal: React.FC<IProps> = ({
   type,
   onClose: _onClose,
-  decimals,
+  poolData,
   ...props
 }) => {
   const [step, setStep] = useState(STEP.Deposit);
@@ -65,12 +65,22 @@ const DepositTrancheModal: React.FC<IProps> = ({
       onClose={onClose}
       {...props}
     >
-      {step === STEP.Deposit && decimals && (
+      {step === STEP.Deposit && poolData && (
         <EnterAmountStep
           type={type}
           onDeposited={onDeposited}
           onError={onError}
-          decimals={decimals}
+          decimals={poolData.decimals}
+          totalDeposit={
+            type == TrancheType.Senior
+              ? poolData.seniorLiquidity
+              : poolData.juniorLiquidity
+          }
+          APY={
+            type == TrancheType.Senior
+              ? poolData.seniorLiquidityRate
+              : poolData.juniorLiquidityRate
+          }
         />
       )}
       {(step === STEP.Success || step === STEP.Error) && (

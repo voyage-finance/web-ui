@@ -4,24 +4,14 @@ import Image from 'next/image';
 import { BrandDiscord, BrandTelegram, BrandTwitter } from 'tabler-icons-react';
 import { formatDecimals, fromBigNumber } from 'utils/bn';
 import BigNumber from 'bignumber.js';
+import { PoolData } from 'types';
 
 type IProps = {
-  totalDebt?: BigNumber;
-  availableLiquidity?: BigNumber;
-  seniorAPY?: BigNumber;
-  juniorAPY?: BigNumber;
+  poolData?: PoolData;
   loading: boolean;
-  decimals?: BigNumber;
 };
 
-const PoolDetailCard: React.FC<IProps> = ({
-  totalDebt,
-  availableLiquidity,
-  seniorAPY,
-  juniorAPY,
-  decimals,
-  loading,
-}) => {
+const PoolDetailCard: React.FC<IProps> = ({ poolData, loading }) => {
   return (
     <Card style={{ height: '100%' }} px={27}>
       <LoadingOverlay visible={loading} />
@@ -51,15 +41,10 @@ const PoolDetailCard: React.FC<IProps> = ({
           <Group spacing={0} direction="column">
             <Text type="secondary">Reserve Size</Text>
             <Title order={4}>
-              {availableLiquidity &&
-                totalDebt &&
-                decimals &&
-                formatDecimals(
-                  fromBigNumber(availableLiquidity).minus(
-                    fromBigNumber(totalDebt)
-                  ),
-                  decimals.toNumber()
-                )}{' '}
+              {poolData &&
+                poolData.totalLiquidity
+                  .minus(poolData.totalDebt)
+                  .toString()}{' '}
               <Text component="span" inherit type="accent">
                 TUS
               </Text>
@@ -79,9 +64,7 @@ const PoolDetailCard: React.FC<IProps> = ({
           <Group spacing={0} direction="column">
             <Text type="secondary">Available Liquidity</Text>
             <Title order={4}>
-              {availableLiquidity &&
-                decimals &&
-                formatDecimals(availableLiquidity, decimals.toNumber())}{' '}
+              {poolData && poolData.totalLiquidity.toString()}{' '}
               <Text component="span" inherit type="accent">
                 TUS
               </Text>
@@ -96,11 +79,15 @@ const PoolDetailCard: React.FC<IProps> = ({
         <Divider orientation="horizontal" />
         <Group spacing={0} direction="column">
           <Text type="secondary">Senior APY</Text>
-          <Title order={4}>{seniorAPY?.toString()}%</Title>
+          <Title order={4}>
+            {poolData && poolData.seniorLiquidityRate.toString()}%
+          </Title>
         </Group>
         <Group spacing={0} direction="column">
           <Text type="secondary">Junior APY</Text>
-          <Title order={4}>{juniorAPY?.toString()}%</Title>
+          <Title order={4}>
+            {poolData && poolData.juniorLiquidityRate.toString()}%
+          </Title>
         </Group>
       </Group>
     </Card>
