@@ -143,6 +143,11 @@
             "internalType": "uint256",
             "name": "trancheRatio",
             "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "decimals",
+            "type": "uint256"
           }
         ],
         "internalType": "struct DataTypes.PoolData",

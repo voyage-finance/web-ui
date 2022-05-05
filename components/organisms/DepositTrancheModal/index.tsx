@@ -4,9 +4,11 @@ import { useState } from 'react';
 import { DepositStatusStep, EnterAmountStep } from './Steps';
 import { TrancheTextMap, TrancheType } from 'types';
 import { showNotification } from '@mantine/notifications';
+import BigNumber from 'bignumber.js';
 
 type IProps = ModalProps & {
   type: TrancheType;
+  decimals?: BigNumber;
 };
 
 enum STEP {
@@ -18,6 +20,7 @@ enum STEP {
 const DepositTrancheModal: React.FC<IProps> = ({
   type,
   onClose: _onClose,
+  decimals,
   ...props
 }) => {
   const [step, setStep] = useState(STEP.Deposit);
@@ -62,11 +65,12 @@ const DepositTrancheModal: React.FC<IProps> = ({
       onClose={onClose}
       {...props}
     >
-      {step === STEP.Deposit && (
+      {step === STEP.Deposit && decimals && (
         <EnterAmountStep
           type={type}
           onDeposited={onDeposited}
           onError={onError}
+          decimals={decimals}
         />
       )}
       {(step === STEP.Success || step === STEP.Error) && (

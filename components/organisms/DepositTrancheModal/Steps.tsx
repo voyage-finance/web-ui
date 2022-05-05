@@ -7,17 +7,21 @@ import VoyagerAbi from 'abi/Voyager.json';
 import { VOYAGER_ADDRESS, TUS_ADDRESS } from 'abi/addresses';
 import { useForm } from '@mantine/hooks';
 import { TrancheTextMap, TrancheType } from 'types';
+import { addDecimals } from 'utils/bn';
+import BigNumber from 'bignumber.js';
 
 type IProps1 = {
   type: TrancheType;
   onDeposited: (amount: string) => void;
   onError: (message: string) => void;
+  decimals: BigNumber;
 };
 
 export const EnterAmountStep: React.FC<IProps1> = ({
   type,
   onDeposited,
   onError,
+  decimals,
 }) => {
   const [{ data: accountData }] = useAccount({
     fetchEns: true,
@@ -39,7 +43,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
       args: [
         TUS_ADDRESS,
         type == TrancheType.Senior ? '1' : '0',
-        form.values.amount,
+        addDecimals(form.values.amount, decimals.toNumber()),
         accountData?.address,
       ],
     });

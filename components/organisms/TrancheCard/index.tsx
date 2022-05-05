@@ -1,9 +1,10 @@
 import { Button, Card, Divider, Text, Title } from '@components/base';
 import { Group } from '@mantine/core';
 import Image from 'next/image';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { TrancheType } from 'types';
 import DepositTrancheModal from '../DepositTrancheModal';
+import BigNumber from 'bignumber.js';
 
 type IProps = {
   type: TrancheType;
@@ -11,6 +12,7 @@ type IProps = {
   totalUSD: number;
   withdrawable: number;
   withdrawableUSD: number;
+  decimals?: BigNumber;
 };
 
 const TrancheCard: React.FC<IProps> = ({
@@ -19,6 +21,7 @@ const TrancheCard: React.FC<IProps> = ({
   withdrawable,
   withdrawableUSD,
   type,
+  decimals,
 }) => {
   const [depositModalOpen, setDepositModalOpened] = useState(false);
   return (
@@ -85,6 +88,7 @@ const TrancheCard: React.FC<IProps> = ({
         type={type}
         opened={depositModalOpen}
         onClose={() => setDepositModalOpened(false)}
+        decimals={decimals}
       />
     </Card>
   );

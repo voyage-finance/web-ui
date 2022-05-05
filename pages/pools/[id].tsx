@@ -42,7 +42,6 @@ const PoolDetail: NextPage = () => {
     'getPoolData',
     {
       args: TUS_ADDRESS,
-      watch: true,
     }
   );
 
@@ -59,12 +58,11 @@ const PoolDetail: NextPage = () => {
           <Grid.Col md={12} lg={3}>
             <PoolDetailCard
               loading={loading!}
-              reserveSize={
-                poolData ? poolData.totalLiquidity.sub(poolData.totalDebt) : 0
-              }
-              availableLiquidity={poolData ? poolData.totalLiquidity : 0}
-              seniorAPY={poolData ? poolData.seniorLiquidityRate.toNumber() : 0}
-              juniorAPY={poolData ? poolData.juniorLiquidityRate.toNumber() : 0}
+              totalDebt={poolData?.totalDebt}
+              availableLiquidity={poolData?.totalLiquidity}
+              seniorAPY={poolData?.seniorLiquidityRate}
+              juniorAPY={poolData?.juniorLiquidityRate}
+              decimals={poolData?.decimals}
             />
           </Grid.Col>
           <Grid.Col md={12} lg={9}>
@@ -78,6 +76,7 @@ const PoolDetail: NextPage = () => {
                     totalUSD={0}
                     withdrawable={0}
                     withdrawableUSD={0}
+                    decimals={poolData?.decimals}
                   />
                 </Grid.Col>
                 <Grid.Col span={6}>
@@ -87,6 +86,7 @@ const PoolDetail: NextPage = () => {
                     totalUSD={10000}
                     withdrawable={10000}
                     withdrawableUSD={10000}
+                    decimals={poolData?.decimals}
                   />
                 </Grid.Col>
               </Grid>
