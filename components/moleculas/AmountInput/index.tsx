@@ -1,15 +1,15 @@
 import { Text } from '@components/base';
-import { InputProps, Input } from '@mantine/core';
+import { InputProps, TextInput } from '@mantine/core';
 
 const AmountInput: React.FC<InputProps<any>> = (props) => {
   return (
-    <Input
+    <TextInput
       radius={10}
       rightSection={<Text type="gradient">TUS</Text>}
-      type="number"
       placeholder="0"
       size="md"
       {...props}
+      type="number"
       styles={(theme) => ({
         input: {
           textAlign: 'right',
