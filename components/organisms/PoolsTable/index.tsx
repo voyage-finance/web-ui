@@ -32,12 +32,12 @@ const PoolRow: React.FC<any> = ({
     return (
       <Group direction="column" spacing={0} align="end">
         <Title order={5}>
-          {amount}{' '}
+          {amount.toString()}{' '}
           <Text weight={400} component="span">
             TUS
           </Text>
         </Title>
-        <Text type="secondary">{amountUSD}</Text>
+        <Text type="secondary">{amountUSD.toString()}</Text>
       </Group>
     );
   };
