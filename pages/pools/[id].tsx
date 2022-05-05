@@ -8,11 +8,12 @@ import styles from 'styles/Home.module.scss';
 import { Card, Title } from '@components/base';
 import PoolDetailCard from '@components/organisms/PoolDetailCard';
 import TrancheCard from '@components/organisms/TrancheCard';
-import { useContractRead } from 'wagmi';
+import { useAccount, useContractRead } from 'wagmi';
 import { PoolData, TrancheType } from 'types';
 import VoyageProtocolDataProviderAbi from 'abi/VoyageProtocolDataProvider.json';
 import { VOYAGE_DATA_PROVIDER_ADDRESS, TUS_ADDRESS } from 'abi/addresses';
 import { rayToPercent, shiftDecimals } from 'utils/bn';
+import { useEffect } from 'react';
 
 const ChartCards: React.FC = () => (
   <Grid>
@@ -79,19 +80,19 @@ const PoolDetailPage: React.FC<{ poolData?: PoolData; loading: boolean }> = ({
 };
 
 const resultToPoolData = (res: any): PoolData => ({
-  totalLiquidity: shiftDecimals(res.totalLiquidity, res.decimals.toNumber()),
-  juniorLiquidity: shiftDecimals(res.juniorLiquidity, res.decimals.toNumber()),
-  seniorLiquidity: shiftDecimals(res.seniorLiquidity, res.decimals.toNumber()),
-  juniorLiquidityRate: rayToPercent(res.juniorLiquidityRate),
-  seniorLiquidityRate: rayToPercent(res.seniorLiquidityRate),
-  totalDebt: shiftDecimals(res.totalDebt, res.decimals.toNumber()),
-  borrowRate: rayToPercent(res.borrowRate),
-  trancheRatio: rayToPercent(res.trancheRatio),
-  decimals: res.decimals.toNumber(),
+  totalLiquidity: shiftDecimals(res[0], res[8].toNumber()),
+  juniorLiquidity: shiftDecimals(res[1], res[8].toNumber()),
+  seniorLiquidity: shiftDecimals(res[2], res[8].toNumber()),
+  juniorLiquidityRate: rayToPercent(res[3]),
+  seniorLiquidityRate: rayToPercent(res[4]),
+  totalDebt: shiftDecimals(res[5], res[8].toNumber()),
+  borrowRate: rayToPercent(res[6]),
+  trancheRatio: rayToPercent(res[7]),
+  decimals: res[8].toNumber(),
 });
 
 const PageWrapper: NextPage = () => {
-  const [{ data, loading }] = useContractRead(
+  const { data, isSuccess, isLoading, refetch } = useContractRead(
     {
       addressOrName: VOYAGE_DATA_PROVIDER_ADDRESS,
       contractInterface: VoyageProtocolDataProviderAbi,
@@ -104,8 +105,8 @@ const PageWrapper: NextPage = () => {
 
   return (
     <PoolDetailPage
-      poolData={data ? resultToPoolData(data) : undefined}
-      loading={loading || false}
+      poolData={isSuccess ? resultToPoolData(data) : undefined}
+      loading={isLoading || false}
     />
   );
 };

@@ -27,11 +27,13 @@ export const EnterAmountStep: React.FC<IProps1> = ({
   totalDeposit,
   APY,
 }) => {
-  const [{ data: accountData }] = useAccount({
-    fetchEns: true,
-  });
-  const [{ data: signer }] = useSigner();
-  const [{ loading }, deposit] = useContractWrite(
+  const { data: accountData } = useAccount();
+  const { data: signer } = useSigner();
+  const {
+    isLoading,
+    error,
+    writeAsync: deposit,
+  } = useContractWrite(
     {
       addressOrName: VOYAGER_ADDRESS,
       contractInterface: VoyagerAbi,
@@ -43,7 +45,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
   const form = useForm({ initialValues: { amount: '' } });
 
   const onDeposit = async () => {
-    const { error } = await deposit({
+    await deposit({
       args: [
         TUS_ADDRESS,
         type == TrancheType.Senior ? '1' : '0',
@@ -110,7 +112,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
         </Text>
       </Group>
       <AmountInput mt={16} {...form.getInputProps('amount')} type="number" />
-      <Button fullWidth mt={16} onClick={onDeposit} loading={loading}>
+      <Button fullWidth mt={16} onClick={onDeposit} loading={isLoading}>
         Confirm deposit
       </Button>
     </>
