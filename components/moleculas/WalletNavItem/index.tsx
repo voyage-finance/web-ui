@@ -1,4 +1,4 @@
-import { useAccount } from 'wagmi';
+import { useAccount, useDisconnect } from 'wagmi';
 import { useEffect, useState } from 'react';
 import { Group, Avatar, Text } from '@mantine/core';
 import {
@@ -16,9 +16,8 @@ import Menu, { MenuItem } from '@components/base/Menu';
 import Divider from '@components/base/Divider';
 
 const ConnectWallet: React.FC = () => {
-  const [{ data: accountData }, disconnect] = useAccount({
-    fetchEns: true,
-  });
+  const { data: accountData } = useAccount();
+  const { disconnect } = useDisconnect();
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -42,7 +41,7 @@ const ConnectWallet: React.FC = () => {
           >
             <Avatar src={MetamaskSvg.src} radius="xl" size={20} />
             <Text size="sm" color={'white'}>
-              {getShortenedAddress(accountData.address)}
+              {getShortenedAddress(accountData.address || '')}
             </Text>
             <ChevronDown size={12} color={'white'} />
           </Group>
@@ -56,7 +55,7 @@ const ConnectWallet: React.FC = () => {
         <MenuItem icon={<History />}>History</MenuItem>
         <MenuItem icon={<Settings />}>Settings</MenuItem>
         <Divider />
-        <MenuItem icon={<Power color="#E84747" />} onClick={disconnect}>
+        <MenuItem icon={<Power color="#E84747" />} onClick={() => disconnect()}>
           <Text inherit color="#E84747">
             Disconnect
           </Text>

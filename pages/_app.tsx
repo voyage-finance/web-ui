@@ -1,6 +1,6 @@
 import type { AppProps } from 'next/app';
 import Layout from '../components/moleculas/Layout';
-import { chain, defaultChains, Provider } from 'wagmi';
+import { chain, createClient, defaultChains, Provider } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { providers } from 'ethers';
 import { ApolloProvider } from '@apollo/client';
@@ -16,18 +16,20 @@ const connectors = () => {
   ];
 };
 
+const client = createClient({
+  autoConnect: true,
+  connectors,
+  provider: ({ chainId }) => {
+    return chainId === chain.hardhat.id
+      ? new providers.JsonRpcProvider('http://localhost:8545')
+      : providers.getDefaultProvider();
+  },
+});
+
 function MyApp(props: AppProps) {
   const { Component, pageProps } = props;
   return (
-    <Provider
-      autoConnect
-      connectors={connectors}
-      provider={({ chainId }) => {
-        return chainId === chain.hardhat.id
-          ? new providers.JsonRpcProvider('http://localhost:8545')
-          : providers.getDefaultProvider();
-      }}
-    >
+    <Provider client={client}>
       <ApolloProvider client={ApolloClient}>
         <NotificationsProvider position="top-right">
           <Layout>

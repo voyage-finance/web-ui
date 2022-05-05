@@ -4,7 +4,7 @@ import { Group } from '@mantine/core';
 import { Button, Modal } from '@components/base';
 
 const ConnectBtn: React.FC = () => {
-  const [{ data: connectData, error }, connect] = useConnect();
+  const { connectors, connect } = useConnect();
   const [showOptions, setShowOptions] = useState(false);
 
   return (
@@ -16,7 +16,7 @@ const ConnectBtn: React.FC = () => {
         title="Choose wallet option"
       >
         <Group direction="column" align="center">
-          {connectData.connectors.map((connector) => (
+          {connectors.map((connector) => (
             <Button
               disabled={!connector.ready}
               key={connector.id}
