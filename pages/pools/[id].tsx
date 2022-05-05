@@ -3,17 +3,18 @@
 import type { NextPage } from 'next';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import { Grid } from '@mantine/core';
+import { Grid, LoadingOverlay } from '@mantine/core';
 import styles from 'styles/Home.module.scss';
 import { Card, Title } from '@components/base';
 import PoolDetailCard from '@components/organisms/PoolDetailCard';
 import TrancheCard from '@components/organisms/TrancheCard';
-import { useAccount, useContractRead } from 'wagmi';
+import { useAccount, useConnect, useContractRead } from 'wagmi';
 import { PoolData, TrancheType } from 'types';
 import VoyageProtocolDataProviderAbi from 'abi/VoyageProtocolDataProvider.json';
 import { VOYAGE_DATA_PROVIDER_ADDRESS, TUS_ADDRESS } from 'abi/addresses';
 import { rayToPercent, shiftDecimals } from 'utils/bn';
 import { useEffect } from 'react';
+import ConnectingOverlay from '@components/moleculas/ConnectingOverlay';
 
 const ChartCards: React.FC = () => (
   <Grid>
@@ -35,10 +36,20 @@ const ChartCards: React.FC = () => (
   </Grid>
 );
 
-const PoolDetailPage: React.FC<{ poolData?: PoolData; loading: boolean }> = ({
-  poolData,
-  loading,
-}) => {
+const PoolDetailPage: React.FC = () => {
+  const { data, isSuccess, isLoading, refetch } = useContractRead(
+    {
+      addressOrName: VOYAGE_DATA_PROVIDER_ADDRESS,
+      contractInterface: VoyageProtocolDataProviderAbi,
+    },
+    'getPoolData',
+    {
+      args: TUS_ADDRESS,
+    }
+  );
+
+  const poolData = isSuccess ? resultToPoolData(data) : undefined;
+
   return (
     <div>
       <Head>
@@ -50,7 +61,7 @@ const PoolDetailPage: React.FC<{ poolData?: PoolData; loading: boolean }> = ({
       <main className={styles.main}>
         <Grid align="stretch">
           <Grid.Col md={12} lg={3}>
-            <PoolDetailCard loading={loading!} poolData={poolData} />
+            <PoolDetailCard loading={isLoading!} poolData={poolData} />
           </Grid.Col>
           <Grid.Col md={12} lg={9}>
             <ChartCards />
@@ -92,23 +103,9 @@ const resultToPoolData = (res: any): PoolData => ({
 });
 
 const PageWrapper: NextPage = () => {
-  const { data, isSuccess, isLoading, refetch } = useContractRead(
-    {
-      addressOrName: VOYAGE_DATA_PROVIDER_ADDRESS,
-      contractInterface: VoyageProtocolDataProviderAbi,
-    },
-    'getPoolData',
-    {
-      args: TUS_ADDRESS,
-    }
-  );
+  const { isConnected } = useConnect();
 
-  return (
-    <PoolDetailPage
-      poolData={isSuccess ? resultToPoolData(data) : undefined}
-      loading={isLoading || false}
-    />
-  );
+  return isConnected ? <PoolDetailPage /> : <ConnectingOverlay />;
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
