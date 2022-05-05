@@ -9,9 +9,10 @@ import { Card, Title } from '@components/base';
 import PoolDetailCard from '@components/organisms/PoolDetailCard';
 import TrancheCard from '@components/organisms/TrancheCard';
 import { useContractRead } from 'wagmi';
-import { TrancheType } from 'types';
+import { PoolData, TrancheType } from 'types';
 import VoyageProtocolDataProviderAbi from 'abi/VoyageProtocolDataProvider.json';
 import { VOYAGE_DATA_PROVIDER_ADDRESS, TUS_ADDRESS } from 'abi/addresses';
+import { rayToPercent, shiftDecimals } from 'utils/bn';
 
 const ChartCards: React.FC = () => (
   <Grid>
@@ -33,18 +34,10 @@ const ChartCards: React.FC = () => (
   </Grid>
 );
 
-const PoolDetail: NextPage = () => {
-  const [{ data: poolData, loading }] = useContractRead(
-    {
-      addressOrName: VOYAGE_DATA_PROVIDER_ADDRESS,
-      contractInterface: VoyageProtocolDataProviderAbi,
-    },
-    'getPoolData',
-    {
-      args: TUS_ADDRESS,
-    }
-  );
-
+const PoolDetailPage: React.FC<{ poolData?: PoolData; loading: boolean }> = ({
+  poolData,
+  loading,
+}) => {
   return (
     <div>
       <Head>
@@ -56,14 +49,7 @@ const PoolDetail: NextPage = () => {
       <main className={styles.main}>
         <Grid align="stretch">
           <Grid.Col md={12} lg={3}>
-            <PoolDetailCard
-              loading={loading!}
-              totalDebt={poolData?.totalDebt}
-              availableLiquidity={poolData?.totalLiquidity}
-              seniorAPY={poolData?.seniorLiquidityRate}
-              juniorAPY={poolData?.juniorLiquidityRate}
-              decimals={poolData?.decimals}
-            />
+            <PoolDetailCard loading={loading!} poolData={poolData} />
           </Grid.Col>
           <Grid.Col md={12} lg={9}>
             <ChartCards />
@@ -72,21 +58,15 @@ const PoolDetail: NextPage = () => {
                 <Grid.Col span={6}>
                   <TrancheCard
                     type={TrancheType.Senior}
-                    total={0}
-                    totalUSD={0}
+                    poolData={poolData}
                     withdrawable={0}
-                    withdrawableUSD={0}
-                    decimals={poolData?.decimals}
                   />
                 </Grid.Col>
                 <Grid.Col span={6}>
                   <TrancheCard
                     type={TrancheType.Junior}
-                    total={10000}
-                    totalUSD={10000}
-                    withdrawable={10000}
-                    withdrawableUSD={10000}
-                    decimals={poolData?.decimals}
+                    poolData={poolData}
+                    withdrawable={0}
                   />
                 </Grid.Col>
               </Grid>
@@ -98,6 +78,38 @@ const PoolDetail: NextPage = () => {
   );
 };
 
+const resultToPoolData = (res: any): PoolData => ({
+  totalLiquidity: shiftDecimals(res.totalLiquidity, res.decimals.toNumber()),
+  juniorLiquidity: shiftDecimals(res.juniorLiquidity, res.decimals.toNumber()),
+  seniorLiquidity: shiftDecimals(res.seniorLiquidity, res.decimals.toNumber()),
+  juniorLiquidityRate: rayToPercent(res.juniorLiquidityRate),
+  seniorLiquidityRate: rayToPercent(res.seniorLiquidityRate),
+  totalDebt: shiftDecimals(res.totalDebt, res.decimals.toNumber()),
+  borrowRate: rayToPercent(res.borrowRate),
+  trancheRatio: rayToPercent(res.trancheRatio),
+  decimals: res.decimals.toNumber(),
+});
+
+const PageWrapper: NextPage = () => {
+  const [{ data, loading }] = useContractRead(
+    {
+      addressOrName: VOYAGE_DATA_PROVIDER_ADDRESS,
+      contractInterface: VoyageProtocolDataProviderAbi,
+    },
+    'getPoolData',
+    {
+      args: TUS_ADDRESS,
+    }
+  );
+
+  return (
+    <PoolDetailPage
+      poolData={data ? resultToPoolData(data) : undefined}
+      loading={loading || false}
+    />
+  );
+};
+
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   return {
     props: {
@@ -106,4 +118,4 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   };
 };
 
-export default PoolDetail;
+export default PageWrapper;
