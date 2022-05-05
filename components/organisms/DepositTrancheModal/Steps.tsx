@@ -5,10 +5,10 @@ import Image from 'next/image';
 import { useAccount, useContractWrite, useSigner } from 'wagmi';
 import VoyagerAbi from 'abi/Voyager.json';
 import { VOYAGER_ADDRESS, TUS_ADDRESS } from 'abi/addresses';
-import { useForm } from '@mantine/hooks';
-import { PoolData, TrancheTextMap, TrancheType } from 'types';
 import { addDecimals } from 'utils/bn';
 import BigNumber from 'bignumber.js';
+import { useForm } from '@mantine/form';
+import { TrancheTextMap, TrancheType } from 'types';
 
 type IProps1 = {
   type: TrancheType;
@@ -42,7 +42,15 @@ export const EnterAmountStep: React.FC<IProps1> = ({
     'deposit'
   );
 
-  const form = useForm({ initialValues: { amount: '' } });
+  const form = useForm({
+    initialValues: { amount: '' },
+    validate: {
+      amount: (value) =>
+        value && new BigNumber(value).gt(0)
+          ? null
+          : 'Amount should be a positive number',
+    },
+  });
 
   const onDeposit = async () => {
     await deposit({
@@ -58,7 +66,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
   };
 
   return (
-    <>
+    <form onSubmit={form.onSubmit(onDeposit)}>
       <Image
         src="/crabada-cover.png"
         alt="crabada"
@@ -111,11 +119,17 @@ export const EnterAmountStep: React.FC<IProps1> = ({
           </Text>{' '}
         </Text>
       </Group>
-      <AmountInput mt={16} {...form.getInputProps('amount')} type="number" />
-      <Button fullWidth mt={16} onClick={onDeposit} loading={isLoading}>
-        Confirm deposit
+      <AmountInput mt={16} {...form.getInputProps('amount')} />
+      <Button
+        fullWidth
+        mt={16}
+        loading={isLoading}
+        type="submit"
+        disabled={!form.values.amount}
+      >
+        {form.values.amount ? 'Confirm deposit' : 'Enter Deposit Amount'}
       </Button>
-    </>
+    </form>
   );
 };
 
