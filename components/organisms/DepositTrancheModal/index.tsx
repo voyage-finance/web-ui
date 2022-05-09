@@ -9,6 +9,7 @@ import BigNumber from 'bignumber.js';
 type IProps = ModalProps & {
   type: TrancheType;
   poolData?: PoolData;
+  onDeposited: () => void;
 };
 
 enum STEP {
@@ -21,6 +22,7 @@ const DepositTrancheModal: React.FC<IProps> = ({
   type,
   onClose: _onClose,
   poolData,
+  onDeposited: _onDeposited,
   ...props
 }) => {
   const [step, setStep] = useState(STEP.Deposit);
@@ -42,6 +44,7 @@ const DepositTrancheModal: React.FC<IProps> = ({
       message: `Your deposit of amount ${amount} was successfull`,
       color: 'green',
     });
+    _onDeposited();
   };
 
   const onError = (error: string) => {
