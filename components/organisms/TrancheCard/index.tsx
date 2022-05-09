@@ -9,9 +9,15 @@ type IProps = {
   type: TrancheType;
   poolData?: PoolData;
   withdrawable: number;
+  onDeposited: () => void;
 };
 
-const TrancheCard: React.FC<IProps> = ({ type, poolData, withdrawable }) => {
+const TrancheCard: React.FC<IProps> = ({
+  type,
+  poolData,
+  withdrawable,
+  onDeposited,
+}) => {
   const [depositModalOpen, setDepositModalOpened] = useState(false);
   const currentDeposit =
     type === TrancheType.Senior
@@ -87,6 +93,7 @@ const TrancheCard: React.FC<IProps> = ({ type, poolData, withdrawable }) => {
           opened={depositModalOpen}
           onClose={() => setDepositModalOpened(false)}
           poolData={poolData}
+          onDeposited={onDeposited}
         />
       }
     </Card>
