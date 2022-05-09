@@ -72,6 +72,7 @@ const PoolDetailPage: React.FC = () => {
                     type={TrancheType.Senior}
                     poolData={poolData}
                     withdrawable={0}
+                    onDeposited={refetch}
                   />
                 </Grid.Col>
                 <Grid.Col span={6}>
@@ -79,6 +80,7 @@ const PoolDetailPage: React.FC = () => {
                     type={TrancheType.Junior}
                     poolData={poolData}
                     withdrawable={0}
+                    onDeposited={refetch}
                   />
                 </Grid.Col>
               </Grid>
