@@ -4,12 +4,19 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { PoolData, TrancheTextMap, TrancheType } from 'types';
 import DepositTrancheModal from '../DepositTrancheModal';
+import { fromBigNumber, toHexString } from 'utils/bn';
+import BigNumber from 'bignumber.js';
+import { MAX_UINT_AMOUNT } from 'consts';
+import { showNotification } from '@mantine/notifications';
 
 type IProps = {
   type: TrancheType;
   poolData?: PoolData;
   withdrawable: number;
   onDeposited: () => void;
+  isApproved?: boolean;
+  isApproving?: boolean;
+  onApprove: () => void;
 };
 
 const TrancheCard: React.FC<IProps> = ({
@@ -17,6 +24,9 @@ const TrancheCard: React.FC<IProps> = ({
   poolData,
   withdrawable,
   onDeposited,
+  isApproved,
+  isApproving,
+  onApprove,
 }) => {
   const [depositModalOpen, setDepositModalOpened] = useState(false);
   const currentDeposit =
@@ -27,6 +37,7 @@ const TrancheCard: React.FC<IProps> = ({
     type === TrancheType.Senior
       ? poolData?.seniorLiquidityRate
       : poolData?.juniorLiquidityRate;
+
   return (
     <Card px={32} py={29}>
       <Text type="gradient" weight={700} mb={16}>
@@ -81,21 +92,25 @@ const TrancheCard: React.FC<IProps> = ({
           <Text type="secondary">$-</Text>
         </Group>
       </Group>
-      <Group grow mt={16}>
-        <Button onClick={() => setDepositModalOpened(true)}>Deposit</Button>
-        <Button kind="secondary" disabled={withdrawable === 0}>
-          Withdraw
+      {isApproved ? (
+        <Group grow mt={16}>
+          <Button onClick={() => setDepositModalOpened(true)}>Deposit</Button>
+          <Button kind="secondary" disabled={withdrawable === 0}>
+            Withdraw
+          </Button>
+        </Group>
+      ) : (
+        <Button onClick={onApprove} loading={isApproving} mt={16} fullWidth>
+          Approve
         </Button>
-      </Group>
-      {
-        <DepositTrancheModal
-          type={type}
-          opened={depositModalOpen}
-          onClose={() => setDepositModalOpened(false)}
-          poolData={poolData}
-          onDeposited={onDeposited}
-        />
-      }
+      )}
+      <DepositTrancheModal
+        type={type}
+        opened={depositModalOpen}
+        onClose={() => setDepositModalOpened(false)}
+        poolData={poolData}
+        onDeposited={onDeposited}
+      />
     </Card>
   );
 };

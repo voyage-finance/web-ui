@@ -8,13 +8,27 @@ import styles from 'styles/Home.module.scss';
 import { Card, Title } from '@components/base';
 import PoolDetailCard from '@components/organisms/PoolDetailCard';
 import TrancheCard from '@components/organisms/TrancheCard';
-import { useAccount, useConnect, useContractRead } from 'wagmi';
+import { useConnect, useContractRead, useContractWrite } from 'wagmi';
 import { PoolData, TrancheType } from 'types';
 import VoyageProtocolDataProviderAbi from 'abi/VoyageProtocolDataProvider.json';
-import { VOYAGE_DATA_PROVIDER_ADDRESS, TUS_ADDRESS } from 'abi/addresses';
-import { rayToPercent, shiftDecimals } from 'utils/bn';
-import { useEffect } from 'react';
+import TusAbi from 'abi/Tus.json';
+import VoyagerAbi from 'abi/Voyager.json';
+import {
+  VOYAGE_DATA_PROVIDER_ADDRESS,
+  TUS_ADDRESS,
+  VOYAGER_ADDRESS,
+} from 'abi/addresses';
+import {
+  fromBigNumber,
+  rayToPercent,
+  shiftDecimals,
+  toHexString,
+} from 'utils/bn';
 import ConnectingOverlay from '@components/moleculas/ConnectingOverlay';
+import { useState } from 'react';
+import BigNumber from 'bignumber.js';
+import { MAX_UINT_AMOUNT } from 'consts';
+import { showNotification } from '@mantine/notifications';
 
 const ChartCards: React.FC = () => (
   <Grid>
@@ -50,6 +64,70 @@ const PoolDetailPage: React.FC = () => {
 
   const poolData = isSuccess ? resultToPoolData(data) : undefined;
 
+  const { data: EscrowContractAddress } = useContractRead(
+    {
+      addressOrName: VOYAGER_ADDRESS,
+      contractInterface: VoyagerAbi,
+    },
+    'getLiquidityManagerEscrowContractAddress'
+  );
+
+  const { data: allowanceAmount } = useContractRead(
+    {
+      addressOrName: TUS_ADDRESS,
+      contractInterface: TusAbi,
+    },
+    'allowance',
+    {
+      args: [
+        '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+        EscrowContractAddress,
+      ],
+    }
+  );
+
+  const {
+    isLoading: isApproving,
+    error: errorApprove,
+    writeAsync: approveTx,
+  } = useContractWrite(
+    {
+      addressOrName: TUS_ADDRESS,
+      contractInterface: TusAbi,
+    },
+    'increaseAllowance'
+  );
+
+  const [isApproved, setIsApproved] = useState(
+    allowanceAmount &&
+      fromBigNumber(allowanceAmount).isEqualTo(new BigNumber(MAX_UINT_AMOUNT))
+  );
+
+  const onApprove = async () => {
+    const amountNeeded = new BigNumber(MAX_UINT_AMOUNT).minus(
+      fromBigNumber(allowanceAmount)
+    );
+
+    await approveTx({
+      args: [EscrowContractAddress, toHexString(amountNeeded)],
+    });
+
+    if (errorApprove)
+      showNotification({
+        title: 'Transaction error',
+        message: errorApprove.message,
+        color: 'red',
+      });
+    else {
+      showNotification({
+        title: 'Allowance increased',
+        message: 'You can now start depositing',
+        color: 'green',
+      });
+      setIsApproved(true);
+    }
+  };
+
   return (
     <div>
       <Head>
@@ -73,6 +151,9 @@ const PoolDetailPage: React.FC = () => {
                     poolData={poolData}
                     withdrawable={0}
                     onDeposited={refetch}
+                    isApproved={isApproved}
+                    isApproving={isApproving}
+                    onApprove={onApprove}
                   />
                 </Grid.Col>
                 <Grid.Col span={6}>
@@ -81,6 +162,9 @@ const PoolDetailPage: React.FC = () => {
                     poolData={poolData}
                     withdrawable={0}
                     onDeposited={refetch}
+                    isApproved={isApproved}
+                    isApproving={isApproving}
+                    onApprove={onApprove}
                   />
                 </Grid.Col>
               </Grid>

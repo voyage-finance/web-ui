@@ -1,11 +1,11 @@
-import { Divider, Modal, Button, Text, Title } from '@components/base';
+import { Divider, Button, Text, Title } from '@components/base';
 import AmountInput from '@components/moleculas/AmountInput';
 import { Group } from '@mantine/core';
 import Image from 'next/image';
 import { useAccount, useContractWrite, useSigner } from 'wagmi';
 import VoyagerAbi from 'abi/Voyager.json';
 import { VOYAGER_ADDRESS, TUS_ADDRESS } from 'abi/addresses';
-import { addDecimals } from 'utils/bn';
+import { addDecimals, toHexString } from 'utils/bn';
 import BigNumber from 'bignumber.js';
 import { useForm } from '@mantine/form';
 import { TrancheTextMap, TrancheType } from 'types';
@@ -29,6 +29,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
 }) => {
   const { data: accountData } = useAccount();
   const { data: signer } = useSigner();
+
   const {
     isLoading,
     error,
@@ -57,7 +58,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
       args: [
         TUS_ADDRESS,
         type == TrancheType.Senior ? '1' : '0',
-        addDecimals(form.values.amount, decimals),
+        toHexString(addDecimals(form.values.amount, decimals)),
         accountData?.address,
       ],
     });
