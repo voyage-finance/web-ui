@@ -3,20 +3,24 @@
 import type { NextPage } from 'next';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import { Grid, LoadingOverlay } from '@mantine/core';
+import { Grid } from '@mantine/core';
 import styles from 'styles/Home.module.scss';
 import { Card, Title } from '@components/base';
 import PoolDetailCard from '@components/organisms/PoolDetailCard';
 import TrancheCard from '@components/organisms/TrancheCard';
-import { useConnect, useContractRead, useContractWrite } from 'wagmi';
+import {
+  useAccount,
+  useConnect,
+  useContractRead,
+  useContractWrite,
+} from 'wagmi';
 import { PoolData, TrancheType } from 'types';
 import VoyageProtocolDataProviderAbi from 'abi/VoyageProtocolDataProvider.json';
 import TusAbi from 'abi/Tus.json';
-import VoyagerAbi from 'abi/Voyager.json';
 import {
-  VOYAGE_DATA_PROVIDER_ADDRESS,
   TUS_ADDRESS,
-  VOYAGER_ADDRESS,
+  VOYAGE_DATA_PROVIDER_ADDRESS,
+  VOYAGE_LM_IMPL_ADDRESS,
 } from 'abi/addresses';
 import {
   fromBigNumber,
@@ -25,7 +29,7 @@ import {
   toHexString,
 } from 'utils/bn';
 import ConnectingOverlay from '@components/moleculas/ConnectingOverlay';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BigNumber from 'bignumber.js';
 import { MAX_UINT_AMOUNT } from 'consts';
 import { showNotification } from '@mantine/notifications';
@@ -51,6 +55,7 @@ const ChartCards: React.FC = () => (
 );
 
 const PoolDetailPage: React.FC = () => {
+  const account = useAccount();
   const { data, isSuccess, isLoading, refetch } = useContractRead(
     {
       addressOrName: VOYAGE_DATA_PROVIDER_ADDRESS,
@@ -64,14 +69,6 @@ const PoolDetailPage: React.FC = () => {
 
   const poolData = isSuccess ? resultToPoolData(data) : undefined;
 
-  const { data: EscrowContractAddress } = useContractRead(
-    {
-      addressOrName: VOYAGER_ADDRESS,
-      contractInterface: VoyagerAbi,
-    },
-    'getLiquidityManagerEscrowContractAddress'
-  );
-
   const { data: allowanceAmount } = useContractRead(
     {
       addressOrName: TUS_ADDRESS,
@@ -79,10 +76,7 @@ const PoolDetailPage: React.FC = () => {
     },
     'allowance',
     {
-      args: [
-        '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
-        EscrowContractAddress,
-      ],
+      args: [account.data?.address, VOYAGE_LM_IMPL_ADDRESS],
     }
   );
 
@@ -103,13 +97,21 @@ const PoolDetailPage: React.FC = () => {
       fromBigNumber(allowanceAmount).isEqualTo(new BigNumber(MAX_UINT_AMOUNT))
   );
 
+  useEffect(() => {
+    if (allowanceAmount) {
+      setIsApproved(
+        fromBigNumber(allowanceAmount).isEqualTo(new BigNumber(MAX_UINT_AMOUNT))
+      );
+    }
+  }, [allowanceAmount]);
+
   const onApprove = async () => {
     const amountNeeded = new BigNumber(MAX_UINT_AMOUNT).minus(
       fromBigNumber(allowanceAmount)
     );
 
     await approveTx({
-      args: [EscrowContractAddress, toHexString(amountNeeded)],
+      args: [VOYAGE_LM_IMPL_ADDRESS, toHexString(amountNeeded)],
     });
 
     if (errorApprove)
