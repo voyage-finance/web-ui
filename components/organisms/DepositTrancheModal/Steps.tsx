@@ -9,6 +9,8 @@ import { addDecimals, toHexString } from 'utils/bn';
 import BigNumber from 'bignumber.js';
 import { useForm } from '@mantine/form';
 import { TrancheTextMap, TrancheType } from 'types';
+import { useRouter } from 'next/router';
+import { getTokenSymbol } from 'utils/hooks';
 
 type IProps1 = {
   type: TrancheType;
@@ -17,6 +19,7 @@ type IProps1 = {
   decimals: number;
   totalDeposit: BigNumber;
   APY?: BigNumber;
+  symbol: string;
 };
 
 export const EnterAmountStep: React.FC<IProps1> = ({
@@ -26,7 +29,9 @@ export const EnterAmountStep: React.FC<IProps1> = ({
   decimals,
   totalDeposit,
   APY,
+  symbol,
 }) => {
+  const router = useRouter();
   const { data: accountData } = useAccount();
   const { data: signer } = useSigner();
 
@@ -82,7 +87,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
           <Title order={4}>
             {totalDeposit?.toString()}{' '}
             <Text component="span" inherit type="accent">
-              TUS
+              {symbol}
             </Text>
           </Title>
           <Text size="sm">$-</Text>
@@ -99,7 +104,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
           <Title order={5}>
             {totalDeposit?.toString()}{' '}
             <Text weight={400} component="span">
-              TUS
+              {symbol}
             </Text>
           </Title>
           <Text type="secondary">$-</Text>
@@ -116,11 +121,11 @@ export const EnterAmountStep: React.FC<IProps1> = ({
             size="xs"
             weight={700}
           >
-            - TUS
+            - {symbol}
           </Text>{' '}
         </Text>
       </Group>
-      <AmountInput mt={16} {...form.getInputProps('amount')} />
+      <AmountInput mt={16} {...form.getInputProps('amount')} symbol={symbol} />
       <Button
         fullWidth
         mt={16}
@@ -139,6 +144,7 @@ type IProps2 = {
   amount: string;
   error: string;
   onClose: () => void;
+  symbol: string;
 };
 
 export const DepositStatusStep: React.FC<IProps2> = ({
@@ -146,6 +152,7 @@ export const DepositStatusStep: React.FC<IProps2> = ({
   amount,
   onClose,
   error,
+  symbol,
 }) => {
   return (
     <>
@@ -183,7 +190,7 @@ export const DepositStatusStep: React.FC<IProps2> = ({
               <Title order={5}>
                 +{amount}{' '}
                 <Text weight={400} component="span">
-                  TUS
+                  {symbol}
                 </Text>
               </Title>
               <Text type="secondary">${amount}</Text>
@@ -194,7 +201,7 @@ export const DepositStatusStep: React.FC<IProps2> = ({
             <Group direction="column" spacing={0} align="end">
               <Title order={5}>
                 <Text inherit type="gradient" component="span">
-                  +{amount} TUS
+                  +{amount} {symbol}
                 </Text>
               </Title>
               <Text type="secondary">${amount}</Text>

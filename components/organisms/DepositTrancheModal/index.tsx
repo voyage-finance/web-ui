@@ -10,6 +10,7 @@ type IProps = ModalProps & {
   type: TrancheType;
   poolData?: PoolData;
   onDeposited: () => void;
+  symbol: string;
 };
 
 enum STEP {
@@ -23,6 +24,7 @@ const DepositTrancheModal: React.FC<IProps> = ({
   onClose: _onClose,
   poolData,
   onDeposited: _onDeposited,
+  symbol,
   ...props
 }) => {
   const [step, setStep] = useState(STEP.Deposit);
@@ -84,6 +86,7 @@ const DepositTrancheModal: React.FC<IProps> = ({
               ? poolData.seniorLiquidityRate
               : poolData.juniorLiquidityRate
           }
+          symbol={symbol}
         />
       )}
       {(step === STEP.Success || step === STEP.Error) && (
@@ -92,6 +95,7 @@ const DepositTrancheModal: React.FC<IProps> = ({
           amount={depositedAmount}
           error={errorMessage}
           onClose={onClose}
+          symbol={symbol}
         />
       )}
     </Modal>
