@@ -1,9 +1,7 @@
-import { Divider, Text, Title, Card } from '@components/base';
+import { Card, Divider, Text, Title } from '@components/base';
 import { Group, LoadingOverlay } from '@mantine/core';
 import Image from 'next/image';
 import { BrandDiscord, BrandTelegram, BrandTwitter } from 'tabler-icons-react';
-import { formatDecimals, fromBigNumber } from 'utils/bn';
-import BigNumber from 'bignumber.js';
 import { PoolData } from 'types';
 
 type IProps = {
@@ -41,10 +39,7 @@ const PoolDetailCard: React.FC<IProps> = ({ poolData, loading }) => {
           <Group spacing={0} direction="column">
             <Text type="secondary">Reserve Size</Text>
             <Title order={4}>
-              {poolData &&
-                poolData.totalLiquidity
-                  .minus(poolData.totalDebt)
-                  .toString()}{' '}
+              {poolData && poolData.totalLiquidity.toString()}{' '}
               <Text component="span" inherit type="accent">
                 TUS
               </Text>
@@ -64,7 +59,10 @@ const PoolDetailCard: React.FC<IProps> = ({ poolData, loading }) => {
           <Group spacing={0} direction="column">
             <Text type="secondary">Available Liquidity</Text>
             <Title order={4}>
-              {poolData && poolData.totalLiquidity.toString()}{' '}
+              {poolData &&
+                poolData.totalLiquidity
+                  .minus(poolData.totalDebt)
+                  .toString()}{' '}
               <Text component="span" inherit type="accent">
                 TUS
               </Text>
