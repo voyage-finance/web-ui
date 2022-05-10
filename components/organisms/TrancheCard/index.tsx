@@ -4,10 +4,6 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { PoolData, TrancheTextMap, TrancheType } from 'types';
 import DepositTrancheModal from '../DepositTrancheModal';
-import { fromBigNumber, toHexString } from 'utils/bn';
-import BigNumber from 'bignumber.js';
-import { MAX_UINT_AMOUNT } from 'consts';
-import { showNotification } from '@mantine/notifications';
 
 type IProps = {
   type: TrancheType;
@@ -29,6 +25,7 @@ const TrancheCard: React.FC<IProps> = ({
   onApprove,
 }) => {
   const [depositModalOpen, setDepositModalOpened] = useState(false);
+  // TODO: this should be the user's deposits, not pool deposits
   const currentDeposit =
     type === TrancheType.Senior
       ? poolData?.seniorLiquidity
