@@ -17,6 +17,7 @@ type IProps = {
   isApproved?: boolean;
   isApproving?: boolean;
   onApprove: () => void;
+  symbol: string;
 };
 
 const getLiqiuidityByTranche = (
@@ -40,6 +41,7 @@ const TrancheCard: React.FC<IProps> = ({
   isApproved,
   isApproving,
   onApprove,
+  symbol,
 }) => {
   const [depositModalOpen, setDepositModalOpened] = useState(false);
   const [priceData] = useAssetPrice(ReserveAssets.TUS);
@@ -69,7 +71,7 @@ const TrancheCard: React.FC<IProps> = ({
           <Title order={4}>
             {liquidity.toFixed()}{' '}
             <Text component="span" inherit type="accent">
-              TUS
+              {symbol}
             </Text>
           </Title>
           <Text size="sm">{`~${usdValue(
@@ -89,7 +91,7 @@ const TrancheCard: React.FC<IProps> = ({
           <Title order={5}>
             {liquidity.toFixed()}{' '}
             <Text weight={400} component="span">
-              TUS
+              {symbol}
             </Text>
           </Title>
           <Text type="secondary">{`~${usdValue(
@@ -104,7 +106,7 @@ const TrancheCard: React.FC<IProps> = ({
           <Title order={5}>
             {withdrawable}{' '}
             <Text weight={400} component="span">
-              TUS
+              {symbol}
             </Text>
           </Title>
           <Text type="secondary">$-</Text>
@@ -128,6 +130,7 @@ const TrancheCard: React.FC<IProps> = ({
         onClose={() => setDepositModalOpened(false)}
         poolData={poolData}
         onDeposited={onDeposited}
+        symbol={symbol}
       />
     </Card>
   );

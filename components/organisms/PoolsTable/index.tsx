@@ -34,7 +34,7 @@ const PoolRow: React.FC<any> = ({
         <Title order={5}>
           {amount.toString()}{' '}
           <Text weight={400} component="span">
-            TUS
+            {symbol}
           </Text>
         </Title>
         <Text type="secondary">{amountUSD.toString()}</Text>
@@ -91,7 +91,7 @@ const PoolRow: React.FC<any> = ({
           <CTAButton>Deposit</CTAButton>
           <CTAButton>Withdraw</CTAButton>
           <CTAButton>
-            <Link href={`/pools/${id}`}>{'More >'}</Link>
+            <Link href={`/pools/TUS`}>{'More >'}</Link>
           </CTAButton>
         </Group>
       </td>

@@ -1,11 +1,15 @@
 import { Text } from '@components/base';
 import { InputProps, TextInput } from '@mantine/core';
 
-const AmountInput: React.FC<InputProps<any>> = (props) => {
+type IProps = InputProps<any> & {
+  symbol?: string;
+};
+
+const AmountInput: React.FC<IProps> = ({ symbol, ...props }) => {
   return (
     <TextInput
       radius={10}
-      rightSection={<Text type="gradient">TUS</Text>}
+      rightSection={<Text type="gradient">{symbol}</Text>}
       placeholder="0"
       size="md"
       {...props}

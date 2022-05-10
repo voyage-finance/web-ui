@@ -8,20 +8,9 @@ import styles from 'styles/Home.module.scss';
 import { Card, Title } from '@components/base';
 import PoolDetailCard from '@components/organisms/PoolDetailCard';
 import TrancheCard from '@components/organisms/TrancheCard';
-import {
-  useAccount,
-  useConnect,
-  useContractRead,
-  useContractWrite,
-} from 'wagmi';
+import { useConnect } from 'wagmi';
 import { PoolData, TrancheType } from 'types';
-import VoyageProtocolDataProviderAbi from 'abi/VoyageProtocolDataProvider.json';
-import TusAbi from 'abi/Tus.json';
-import {
-  TUS_ADDRESS,
-  VOYAGE_DATA_PROVIDER_ADDRESS,
-  VOYAGE_LM_IMPL_ADDRESS,
-} from 'abi/addresses';
+import { VOYAGE_LM_IMPL_ADDRESS } from 'abi/addresses';
 import {
   fromBigNumber,
   rayToPercent,
@@ -33,6 +22,12 @@ import { useEffect, useState } from 'react';
 import BigNumber from 'bignumber.js';
 import { MAX_UINT_AMOUNT } from 'consts';
 import { showNotification } from '@mantine/notifications';
+import {
+  useFetchPoolTokens,
+  useGetAllowance,
+  useGetPoolData,
+  useIncreaseAllowance,
+} from 'utils/hooks';
 
 const ChartCards: React.FC = () => (
   <Grid>
@@ -54,43 +49,16 @@ const ChartCards: React.FC = () => (
   </Grid>
 );
 
-const PoolDetailPage: React.FC = () => {
-  const account = useAccount();
-  const { data, isSuccess, isLoading, refetch } = useContractRead(
-    {
-      addressOrName: VOYAGE_DATA_PROVIDER_ADDRESS,
-      contractInterface: VoyageProtocolDataProviderAbi,
-    },
-    'getPoolData',
-    {
-      args: TUS_ADDRESS,
-    }
-  );
-
+const PoolDetailPage: React.FC<{ symbol: string }> = ({ symbol }) => {
+  const { data, isSuccess, isLoading, refetch } = useGetPoolData(symbol);
   const poolData = isSuccess ? resultToPoolData(data) : undefined;
-
-  const { data: allowanceAmount } = useContractRead(
-    {
-      addressOrName: TUS_ADDRESS,
-      contractInterface: TusAbi,
-    },
-    'allowance',
-    {
-      args: [account.data?.address, VOYAGE_LM_IMPL_ADDRESS],
-    }
-  );
-
+  const { data: allowanceAmount } = useGetAllowance(symbol);
+  useFetchPoolTokens();
   const {
     isLoading: isApproving,
     error: errorApprove,
     writeAsync: approveTx,
-  } = useContractWrite(
-    {
-      addressOrName: TUS_ADDRESS,
-      contractInterface: TusAbi,
-    },
-    'increaseAllowance'
-  );
+  } = useIncreaseAllowance(symbol);
 
   const [isApproved, setIsApproved] = useState(
     allowanceAmount &&
@@ -98,6 +66,7 @@ const PoolDetailPage: React.FC = () => {
   );
 
   useEffect(() => {
+    console.log('allowanceAmount', allowanceAmount);
     if (allowanceAmount) {
       setIsApproved(
         fromBigNumber(allowanceAmount).isEqualTo(new BigNumber(MAX_UINT_AMOUNT))
@@ -141,7 +110,11 @@ const PoolDetailPage: React.FC = () => {
       <main className={styles.main}>
         <Grid align="stretch">
           <Grid.Col md={12} lg={3}>
-            <PoolDetailCard loading={isLoading!} poolData={poolData} />
+            <PoolDetailCard
+              loading={isLoading!}
+              poolData={poolData}
+              symbol={symbol}
+            />
           </Grid.Col>
           <Grid.Col md={12} lg={9}>
             <ChartCards />
@@ -156,6 +129,7 @@ const PoolDetailPage: React.FC = () => {
                     isApproved={isApproved}
                     isApproving={isApproving}
                     onApprove={onApprove}
+                    symbol={symbol}
                   />
                 </Grid.Col>
                 <Grid.Col span={6}>
@@ -167,6 +141,7 @@ const PoolDetailPage: React.FC = () => {
                     isApproved={isApproved}
                     isApproving={isApproving}
                     onApprove={onApprove}
+                    symbol={symbol}
                   />
                 </Grid.Col>
               </Grid>
@@ -190,16 +165,20 @@ const resultToPoolData = (res: any): PoolData => ({
   decimals: res[8].toNumber(),
 });
 
-const PageWrapper: NextPage = () => {
+const PageWrapper: NextPage<{ symbol: string }> = ({ symbol }) => {
   const { isConnected } = useConnect();
 
-  return isConnected ? <PoolDetailPage /> : <ConnectingOverlay />;
+  return isConnected ? (
+    <PoolDetailPage symbol={symbol} />
+  ) : (
+    <ConnectingOverlay />
+  );
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   return {
     props: {
-      id: params?.id,
+      symbol: params?.id,
     },
   };
 };

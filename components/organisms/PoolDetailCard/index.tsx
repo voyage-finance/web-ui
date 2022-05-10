@@ -11,11 +11,12 @@ import { Zero } from '../../../utils/bn';
 type IProps = {
   poolData?: PoolData;
   loading: boolean;
+  symbol: string;
 };
 
 const LOADING_COPY = 'Loading...';
 
-const PoolDetailCard: React.FC<IProps> = ({ poolData, loading }) => {
+const PoolDetailCard: React.FC<IProps> = ({ poolData, loading, symbol }) => {
   const [priceData, priceDataLoading] = useAssetPrice(ReserveAssets.TUS);
   console.log('priceDataLoading: ', priceDataLoading);
   console.log('priceData: ', priceData);
@@ -55,7 +56,7 @@ const PoolDetailCard: React.FC<IProps> = ({ poolData, loading }) => {
             <Title order={4}>
               {poolData && poolData.totalLiquidity.toString()}{' '}
               <Text component="span" inherit type="accent">
-                TUS
+                {symbol}
               </Text>
             </Title>
             <Text size="sm">
@@ -72,7 +73,7 @@ const PoolDetailCard: React.FC<IProps> = ({ poolData, loading }) => {
             <Title order={4}>
               {loading ? LOADING_COPY : Zero.toFixed()}{' '}
               <Text component="span" inherit type="accent">
-                TUS
+                {symbol}
               </Text>
             </Title>
             <Text size="sm">{usdValue(Zero, priceData.latestPrice)}</Text>
@@ -82,7 +83,7 @@ const PoolDetailCard: React.FC<IProps> = ({ poolData, loading }) => {
             <Title order={4}>
               {availableLiquidity.toFixed()}{' '}
               <Text component="span" inherit type="accent">
-                TUS
+                {symbol}
               </Text>
             </Title>
             <Text size="sm">
