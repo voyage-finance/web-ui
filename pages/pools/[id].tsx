@@ -23,11 +23,11 @@ import BigNumber from 'bignumber.js';
 import { MAX_UINT_AMOUNT } from 'consts';
 import { showNotification } from '@mantine/notifications';
 import {
-  useFetchPoolTokens,
   useGetAllowance,
   useGetPoolData,
   useIncreaseAllowance,
 } from 'utils/hooks';
+import { useSupportedTokens } from '../../hooks/useFetchPoolTokens';
 
 const ChartCards: React.FC = () => (
   <Grid>
@@ -53,12 +53,13 @@ const PoolDetailPage: React.FC<{ symbol: string }> = ({ symbol }) => {
   const { data, isSuccess, isLoading, refetch } = useGetPoolData(symbol);
   const poolData = isSuccess ? resultToPoolData(data) : undefined;
   const { data: allowanceAmount } = useGetAllowance(symbol);
-  useFetchPoolTokens();
   const {
     isLoading: isApproving,
     error: errorApprove,
     writeAsync: approveTx,
   } = useIncreaseAllowance(symbol);
+  const supportedTokens = useSupportedTokens();
+  console.log('supported tokens: ', supportedTokens);
 
   const [isApproved, setIsApproved] = useState(
     allowanceAmount &&
