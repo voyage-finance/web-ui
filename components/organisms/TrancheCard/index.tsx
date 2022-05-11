@@ -4,6 +4,10 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { PoolData, TrancheTextMap, TrancheType } from 'types';
 import DepositTrancheModal from '../DepositTrancheModal';
+import { useAssetPrice } from '../../../hooks/useAssetPrice';
+import { ReserveAssets } from '../../../consts';
+import { Zero } from '../../../utils/bn';
+import { usdValue } from '../../../utils/price';
 
 type IProps = {
   type: TrancheType;
@@ -13,6 +17,19 @@ type IProps = {
   isApproved?: boolean;
   isApproving?: boolean;
   onApprove: () => void;
+};
+
+const getLiqiuidityByTranche = (
+  poolData: PoolData | undefined,
+  tranche: TrancheType
+) => {
+  if (!poolData) {
+    return Zero;
+  }
+
+  return tranche === TrancheType.Senior
+    ? poolData.seniorLiquidity
+    : poolData.juniorLiquidity;
 };
 
 const TrancheCard: React.FC<IProps> = ({
@@ -25,11 +42,9 @@ const TrancheCard: React.FC<IProps> = ({
   onApprove,
 }) => {
   const [depositModalOpen, setDepositModalOpened] = useState(false);
+  const [priceData] = useAssetPrice(ReserveAssets.TUS);
   // TODO: this should be the user's deposits, not pool deposits
-  const currentDeposit =
-    type === TrancheType.Senior
-      ? poolData?.seniorLiquidity
-      : poolData?.juniorLiquidity;
+  const liquidity = getLiqiuidityByTranche(poolData, type);
   const currentAPY =
     type === TrancheType.Senior
       ? poolData?.seniorLiquidityRate
@@ -52,12 +67,15 @@ const TrancheCard: React.FC<IProps> = ({
         <Group spacing={0} direction="column">
           <Text type="secondary">{TrancheTextMap[type]} Tranche Liquidity</Text>
           <Title order={4}>
-            {currentDeposit?.toString()}{' '}
+            {liquidity.toFixed()}{' '}
             <Text component="span" inherit type="accent">
               TUS
             </Text>
           </Title>
-          <Text size="sm">$ XXX</Text>
+          <Text size="sm">{`~${usdValue(
+            liquidity,
+            priceData.latestPrice
+          )}`}</Text>
         </Group>
         <Group spacing={0} direction="column" align={'end'}>
           <Text type="secondary">{TrancheTextMap[type]} APY</Text>
@@ -69,12 +87,15 @@ const TrancheCard: React.FC<IProps> = ({
         <Text type="secondary">Your Total Deposit</Text>
         <Group direction="column" spacing={0} align="end">
           <Title order={5}>
-            {currentDeposit?.toString()}{' '}
+            {liquidity.toFixed()}{' '}
             <Text weight={400} component="span">
               TUS
             </Text>
           </Title>
-          <Text type="secondary">$-</Text>
+          <Text type="secondary">{`~${usdValue(
+            liquidity,
+            priceData.latestPrice
+          )}`}</Text>
         </Group>
       </Group>
       <Group position="apart">
