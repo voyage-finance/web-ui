@@ -79,16 +79,6 @@
             "type": "uint256"
           },
           {
-            "internalType": "address",
-            "name": "seniorLiquidityToken",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "juniorLiquidityToken",
-            "type": "address"
-          },
-          {
             "internalType": "bool",
             "name": "isActive",
             "type": "bool"
@@ -228,6 +218,11 @@
           {
             "internalType": "uint256",
             "name": "withdrawableSeniorTrancheBalance",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "decimals",
             "type": "uint256"
           }
         ],

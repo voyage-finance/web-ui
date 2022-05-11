@@ -8,18 +8,13 @@ import { Card, Title } from '@components/base';
 import PoolDetailCard from '@components/organisms/PoolDetailCard';
 import TrancheCard from '@components/organisms/TrancheCard';
 import { PoolData, TrancheType } from 'types';
-import { VOYAGE_LM_IMPL_ADDRESS } from 'abi/addresses';
+import { rayToPercent, shiftDecimals } from 'utils/bn';
 import {
-  fromBigNumber,
-  rayToPercent,
-  shiftDecimals,
-  toHexString,
-} from 'utils/bn';
-import { useEffect, useState } from 'react';
-import BigNumber from 'bignumber.js';
-import { MAX_UINT_AMOUNT } from 'consts';
-import { showNotification } from '@mantine/notifications';
-import { useAllowanceApproved, useGetPoolData } from 'hooks';
+  useAllowanceApproved,
+  useGetPoolData,
+  useGetUserPoolData,
+} from 'hooks';
+import { useEffect } from 'react';
 
 const ChartCards: React.FC = () => (
   <Grid>
@@ -42,10 +37,18 @@ const ChartCards: React.FC = () => (
 );
 
 const PoolDetailPage: NextPage<{ symbol: string }> = ({ symbol }) => {
-  const { data, isSuccess, isLoading, refetch } = useGetPoolData(symbol);
-  const poolData = isSuccess ? resultToPoolData(data) : undefined;
+  const {
+    data: poolData,
+    isLoading,
+    refetch: refetchPoolData,
+  } = useGetPoolData(symbol);
 
   const [isApproved, isApproving, onApprove] = useAllowanceApproved(symbol);
+
+  const { data: userPoolData, refetch: refetchUserPoolData } =
+    useGetUserPoolData(symbol);
+
+  const onDeposited = () => (refetchPoolData(), refetchUserPoolData());
 
   return (
     <div>
@@ -72,8 +75,11 @@ const PoolDetailPage: NextPage<{ symbol: string }> = ({ symbol }) => {
                   <TrancheCard
                     type={TrancheType.Senior}
                     poolData={poolData}
-                    withdrawable={0}
-                    onDeposited={refetch}
+                    withdrawable={
+                      userPoolData?.withdrawableSeniorTrancheBalance
+                    }
+                    balance={userPoolData?.seniorTrancheBalance}
+                    onDeposited={onDeposited}
                     isApproved={isApproved}
                     isApproving={isApproving}
                     onApprove={onApprove}
@@ -84,8 +90,11 @@ const PoolDetailPage: NextPage<{ symbol: string }> = ({ symbol }) => {
                   <TrancheCard
                     type={TrancheType.Junior}
                     poolData={poolData}
-                    withdrawable={0}
-                    onDeposited={refetch}
+                    withdrawable={
+                      userPoolData?.withdrawableJuniorTrancheBalance
+                    }
+                    balance={userPoolData?.juniorTrancheBalance}
+                    onDeposited={onDeposited}
                     isApproved={isApproved}
                     isApproving={isApproving}
                     onApprove={onApprove}
@@ -100,18 +109,6 @@ const PoolDetailPage: NextPage<{ symbol: string }> = ({ symbol }) => {
     </div>
   );
 };
-
-const resultToPoolData = (res: any): PoolData => ({
-  totalLiquidity: shiftDecimals(res[0], res[8].toNumber()),
-  juniorLiquidity: shiftDecimals(res[1], res[8].toNumber()),
-  seniorLiquidity: shiftDecimals(res[2], res[8].toNumber()),
-  juniorLiquidityRate: rayToPercent(res[3]),
-  seniorLiquidityRate: rayToPercent(res[4]),
-  totalDebt: shiftDecimals(res[5], res[8].toNumber()),
-  borrowRate: rayToPercent(res[6]),
-  trancheRatio: rayToPercent(res[7]),
-  decimals: res[8].toNumber(),
-});
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   return {

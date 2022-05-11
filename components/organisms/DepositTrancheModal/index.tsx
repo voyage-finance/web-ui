@@ -9,6 +9,7 @@ import BigNumber from 'bignumber.js';
 type IProps = ModalProps & {
   type: TrancheType;
   poolData?: PoolData;
+  balance?: BigNumber;
   onDeposited: () => void;
   symbol: string;
 };
@@ -25,6 +26,7 @@ const DepositTrancheModal: React.FC<IProps> = ({
   poolData,
   onDeposited: _onDeposited,
   symbol,
+  balance,
   ...props
 }) => {
   const [step, setStep] = useState(STEP.Deposit);
@@ -70,7 +72,7 @@ const DepositTrancheModal: React.FC<IProps> = ({
       onClose={onClose}
       {...props}
     >
-      {step === STEP.Deposit && poolData && (
+      {step === STEP.Deposit && poolData && balance && (
         <EnterAmountStep
           type={type}
           onDeposited={onDeposited}
@@ -81,6 +83,7 @@ const DepositTrancheModal: React.FC<IProps> = ({
               ? poolData.seniorLiquidity
               : poolData.juniorLiquidity
           }
+          balance={balance}
           APY={
             type == TrancheType.Senior
               ? poolData.seniorLiquidityRate
@@ -93,6 +96,7 @@ const DepositTrancheModal: React.FC<IProps> = ({
         <DepositStatusStep
           type={type}
           amount={depositedAmount}
+          newTotal={balance!.plus(new BigNumber(depositedAmount))}
           error={errorMessage}
           onClose={onClose}
           symbol={symbol}

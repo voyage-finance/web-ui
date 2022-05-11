@@ -22,4 +22,11 @@ export type PoolData = {
   decimals: number;
 };
 
+export type UserPoolData = {
+  juniorTrancheBalance: BigNumber;
+  withdrawableJuniorTrancheBalance: BigNumber;
+  seniorTrancheBalance: BigNumber;
+  withdrawableSeniorTrancheBalance: BigNumber;
+};
+
 export type VoyagePoolTokenMap = Record<string, string>;
