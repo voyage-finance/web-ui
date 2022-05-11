@@ -6,6 +6,7 @@ import { providers } from 'ethers';
 import { ApolloProvider } from '@apollo/client';
 import ApolloClient from 'graphql/apollo-client';
 import { NotificationsProvider } from '@mantine/notifications';
+import { VoyageProvider } from '@components/base/VoyageProvider';
 
 const connectors = () => {
   return [
@@ -21,7 +22,10 @@ const client = createClient({
   connectors,
   provider: ({ chainId }) => {
     return chainId === chain.hardhat.id
-      ? new providers.JsonRpcProvider('http://localhost:8545')
+      ? new providers.JsonRpcProvider('http://localhost:8545', {
+          chainId,
+          name: 'hardhat',
+        })
       : providers.getDefaultProvider();
   },
 });
@@ -31,11 +35,13 @@ function MyApp(props: AppProps) {
   return (
     <Provider client={client}>
       <ApolloProvider client={ApolloClient}>
-        <NotificationsProvider position="top-right">
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </NotificationsProvider>
+        <VoyageProvider>
+          <NotificationsProvider position="top-right">
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </NotificationsProvider>
+        </VoyageProvider>
       </ApolloProvider>
     </Provider>
   );

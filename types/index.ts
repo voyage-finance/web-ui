@@ -21,3 +21,5 @@ export type PoolData = {
   trancheRatio: BigNumber;
   decimals: number;
 };
+
+export type VoyagePoolTokenMap = Record<string, string>;
