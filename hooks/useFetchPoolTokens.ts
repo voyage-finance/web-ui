@@ -14,7 +14,7 @@ export const useFetchPoolTokens = () => {
     'getPoolTokens'
   );
 
-  return tokens as VoyagePoolTokenMap;
+  return Object.fromEntries(tokens || []) as VoyagePoolTokenMap;
 };
 
 export const useSupportedTokens = () => {

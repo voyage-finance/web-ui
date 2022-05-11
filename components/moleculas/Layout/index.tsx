@@ -104,10 +104,4 @@ const Layout: React.FC = (props) => {
   );
 };
 
-// const LayoutWrapped: React.FC = (props) => {
-//   const { isConnected } = useConnect();
-//
-//   return isConnected ? <Layout {...props} /> : <ConnectingOverlay />;
-// };
-//
 export default Layout;
