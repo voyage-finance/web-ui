@@ -179,7 +179,7 @@ const PageWrapper: NextPage<{ symbol: string }> = ({ symbol }) => {
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   return {
     props: {
-      symbol: params?.id,
+      symbol: params?.symbol,
     },
   };
 };
