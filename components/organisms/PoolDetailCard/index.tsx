@@ -3,13 +3,27 @@ import { Group, LoadingOverlay } from '@mantine/core';
 import Image from 'next/image';
 import { BrandDiscord, BrandTelegram, BrandTwitter } from 'tabler-icons-react';
 import { PoolData } from 'types';
+import { useAssetPrice } from '../../../hooks/useAssetPrice';
+import { ReserveAssets } from '../../../consts';
+import { usdValue } from '../../../utils/price';
+import { Zero } from '../../../utils/bn';
 
 type IProps = {
   poolData?: PoolData;
   loading: boolean;
 };
 
+const LOADING_COPY = 'Loading...';
+
 const PoolDetailCard: React.FC<IProps> = ({ poolData, loading }) => {
+  const [priceData, priceDataLoading] = useAssetPrice(ReserveAssets.TUS);
+  console.log('priceDataLoading: ', priceDataLoading);
+  console.log('priceData: ', priceData);
+  const isLoadingData = loading || priceDataLoading;
+  const availableLiquidity = poolData
+    ? poolData.totalLiquidity.minus(poolData.totalDebt)
+    : Zero;
+
   return (
     <Card style={{ height: '100%' }} px={27}>
       <LoadingOverlay visible={loading} />
@@ -44,30 +58,36 @@ const PoolDetailCard: React.FC<IProps> = ({ poolData, loading }) => {
                 TUS
               </Text>
             </Title>
-            <Text size="sm">$00,000.00</Text>
+            <Text size="sm">
+              {isLoadingData
+                ? 'Loading...'
+                : `~${usdValue(
+                    poolData?.totalLiquidity ?? Zero,
+                    priceData.latestPrice
+                  )}`}
+            </Text>
           </Group>
           <Group spacing={0} direction="column">
             <Text type="secondary">Net Asset Value</Text>
             <Title order={4}>
-              0,000{' '}
+              {loading ? LOADING_COPY : Zero.toFixed()}{' '}
               <Text component="span" inherit type="accent">
                 TUS
               </Text>
             </Title>
-            <Text size="sm">$00,000.00</Text>
+            <Text size="sm">{usdValue(Zero, priceData.latestPrice)}</Text>
           </Group>
           <Group spacing={0} direction="column">
             <Text type="secondary">Available Liquidity</Text>
             <Title order={4}>
-              {poolData &&
-                poolData.totalLiquidity
-                  .minus(poolData.totalDebt)
-                  .toString()}{' '}
+              {availableLiquidity.toFixed()}{' '}
               <Text component="span" inherit type="accent">
                 TUS
               </Text>
             </Title>
-            <Text size="sm">$0,000.00</Text>
+            <Text size="sm">
+              {`~${usdValue(availableLiquidity, priceData.latestPrice)}`}
+            </Text>
           </Group>
           <Group spacing={0} direction="column">
             <Text type="secondary">Active Vaults</Text>

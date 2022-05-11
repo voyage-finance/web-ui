@@ -29,3 +29,5 @@ export const rayToPercent = (num: any) => {
   BigNumber.config({ DECIMAL_PLACES: 3 });
   return new BigNumber(num.toString()).dividedBy(new BigNumber(10).pow(25));
 };
+
+export const Zero = new BigNumber(0);
