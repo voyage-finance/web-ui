@@ -4,13 +4,14 @@ import { Group } from '@mantine/core';
 import Image from 'next/image';
 import { useAccount, useContractWrite, useSigner } from 'wagmi';
 import VoyagerAbi from 'abi/Voyager.json';
-import { VOYAGER_ADDRESS, TUS_ADDRESS } from 'abi/addresses';
-import { addDecimals, toHexString } from 'utils/bn';
+import { VOYAGER_ADDRESS } from 'abi/addresses';
+import { addDecimals, toHexString, Zero } from 'utils/bn';
 import BigNumber from 'bignumber.js';
 import { useForm } from '@mantine/form';
 import { TrancheTextMap, TrancheType } from 'types';
-import { useRouter } from 'next/router';
-import { getTokenSymbol } from 'utils/hooks';
+import { useAssetPrice, useSupportedTokens } from 'hooks';
+import { ReserveAssets } from 'consts';
+import { usdValue } from 'utils/price';
 
 type IProps1 = {
   type: TrancheType;
@@ -18,6 +19,7 @@ type IProps1 = {
   onError: (message: string) => void;
   decimals: number;
   totalDeposit: BigNumber;
+  balance: BigNumber;
   APY?: BigNumber;
   symbol: string;
 };
@@ -29,11 +31,13 @@ export const EnterAmountStep: React.FC<IProps1> = ({
   decimals,
   totalDeposit,
   APY,
+  balance,
   symbol,
 }) => {
-  const router = useRouter();
   const { data: accountData } = useAccount();
   const { data: signer } = useSigner();
+  const [tokens] = useSupportedTokens();
+  const [priceData] = useAssetPrice(ReserveAssets.TUS);
 
   const {
     isLoading,
@@ -61,7 +65,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
   const onDeposit = async () => {
     await deposit({
       args: [
-        TUS_ADDRESS,
+        tokens[symbol],
         type == TrancheType.Senior ? '1' : '0',
         toHexString(addDecimals(form.values.amount, decimals)),
         accountData?.address,
@@ -90,7 +94,10 @@ export const EnterAmountStep: React.FC<IProps1> = ({
               {symbol}
             </Text>
           </Title>
-          <Text size="sm">$-</Text>
+          <Text size="sm">{`~${usdValue(
+            totalDeposit || Zero,
+            priceData.latestPrice
+          )}`}</Text>
         </Group>
         <Group spacing={0} direction="column" align={'end'}>
           <Text type="secondary">{TrancheTextMap[type]} APY</Text>
@@ -102,12 +109,15 @@ export const EnterAmountStep: React.FC<IProps1> = ({
         <Text type="secondary">Your Current Total Deposit</Text>
         <Group direction="column" spacing={0} align="end">
           <Title order={5}>
-            {totalDeposit?.toString()}{' '}
+            {balance?.toFixed()}{' '}
             <Text weight={400} component="span">
               {symbol}
             </Text>
           </Title>
-          <Text type="secondary">$-</Text>
+          <Text type="secondary">{`~${usdValue(
+            balance || Zero,
+            priceData.latestPrice
+          )}`}</Text>
         </Group>
       </Group>
       <Group position="apart" mt={16}>
@@ -142,6 +152,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
 type IProps2 = {
   type: TrancheType;
   amount: string;
+  newTotal: BigNumber;
   error: string;
   onClose: () => void;
   symbol: string;
@@ -150,10 +161,12 @@ type IProps2 = {
 export const DepositStatusStep: React.FC<IProps2> = ({
   type,
   amount,
+  newTotal,
   onClose,
   error,
   symbol,
 }) => {
+  const [priceData, priceDataLoading] = useAssetPrice(ReserveAssets.TUS);
   return (
     <>
       <Title order={3} align="center" mt={-32}>
@@ -188,12 +201,15 @@ export const DepositStatusStep: React.FC<IProps2> = ({
             <Text type="secondary">Your Deposit Made</Text>
             <Group direction="column" spacing={0} align="end">
               <Title order={5}>
-                +{amount}{' '}
+                + {amount}{' '}
                 <Text weight={400} component="span">
                   {symbol}
                 </Text>
               </Title>
-              <Text type="secondary">${amount}</Text>
+              <Text type="secondary">{`~${usdValue(
+                new BigNumber(amount),
+                priceData.latestPrice
+              )}`}</Text>
             </Group>
           </Group>
           <Group position="apart" mt={16}>
@@ -201,10 +217,13 @@ export const DepositStatusStep: React.FC<IProps2> = ({
             <Group direction="column" spacing={0} align="end">
               <Title order={5}>
                 <Text inherit type="gradient" component="span">
-                  +{amount} {symbol}
+                  {newTotal.toFixed()} {symbol}
                 </Text>
               </Title>
-              <Text type="secondary">${amount}</Text>
+              <Text type="secondary">{`~${usdValue(
+                newTotal,
+                priceData.latestPrice
+              )}`}</Text>
             </Group>
           </Group>
         </>
