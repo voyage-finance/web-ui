@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { BigNumber as EthersBN } from 'ethers';
+import { MAX_UINT_AMOUNT } from '../consts';
 
 export const shiftDecimals = (bn: BigNumber, decimals: number) => {
   BigNumber.config({ DECIMAL_PLACES: decimals });
@@ -39,3 +40,5 @@ export const rayToPercent = (num: any) => {
 export const Ray = new BigNumber(10).pow(27);
 
 export const Zero = new BigNumber(0);
+
+export const MaxUint256 = new BigNumber(MAX_UINT_AMOUNT);

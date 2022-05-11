@@ -7,30 +7,40 @@ import styles from 'styles/Home.module.scss';
 import { Card, Title } from '@components/base';
 import PoolDetailCard from '@components/organisms/PoolDetailCard';
 import TrancheCard from '@components/organisms/TrancheCard';
-import { PoolData, TrancheType } from 'types';
-import { rayToPercent, shiftDecimals } from 'utils/bn';
+import { TrancheType } from 'types';
 import {
   useAllowanceApproved,
   useGetPoolData,
   useGetUserPoolData,
 } from 'hooks';
-import { useEffect } from 'react';
+import LineChart, { generateTimeSeries } from '@components/base/LineChart';
 
 const ChartCards: React.FC = () => (
   <Grid>
     <Grid.Col span={4}>
       <Card style={{ height: 256, padding: '20px 24px' }}>
         <Title order={3}>TVL</Title>
+        <LineChart
+          data={generateTimeSeries(30, [0, 500_000_000], 10000, 0.01)}
+        />
       </Card>
     </Grid.Col>
     <Grid.Col span={4}>
       <Card style={{ height: 256, padding: '20px 24px' }}>
         <Title order={3}>Utilization rate</Title>
+        <LineChart
+          name="Utilization Rate"
+          data={generateTimeSeries(30, [0, 1], 0.05, 0.01)}
+        />
       </Card>
     </Grid.Col>
     <Grid.Col span={4}>
       <Card style={{ height: 256, padding: '20px 24px' }}>
         <Title order={3}>Average Deposit APY</Title>
+        <LineChart
+          name="APY"
+          data={generateTimeSeries(30, [0, 0.3], 0.05, 0.01)}
+        />
       </Card>
     </Grid.Col>
   </Grid>
@@ -48,7 +58,10 @@ const PoolDetailPage: NextPage<{ symbol: string }> = ({ symbol }) => {
   const { data: userPoolData, refetch: refetchUserPoolData } =
     useGetUserPoolData(symbol);
 
-  const onDeposited = () => (refetchPoolData(), refetchUserPoolData());
+  const onDeposited = () => {
+    refetchPoolData();
+    refetchUserPoolData();
+  };
 
   return (
     <div>
