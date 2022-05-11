@@ -19,12 +19,7 @@ import { useEffect, useState } from 'react';
 import BigNumber from 'bignumber.js';
 import { MAX_UINT_AMOUNT } from 'consts';
 import { showNotification } from '@mantine/notifications';
-import {
-  useGetAllowance,
-  useGetPoolData,
-  useIncreaseAllowance,
-  useSupportedTokens,
-} from 'hooks';
+import { useAllowanceApproved, useGetPoolData } from 'hooks';
 
 const ChartCards: React.FC = () => (
   <Grid>
@@ -49,51 +44,8 @@ const ChartCards: React.FC = () => (
 const PoolDetailPage: NextPage<{ symbol: string }> = ({ symbol }) => {
   const { data, isSuccess, isLoading, refetch } = useGetPoolData(symbol);
   const poolData = isSuccess ? resultToPoolData(data) : undefined;
-  const { data: allowanceAmount } = useGetAllowance(symbol);
-  const {
-    isLoading: isApproving,
-    error: errorApprove,
-    writeAsync: approveTx,
-  } = useIncreaseAllowance(symbol);
-  const supportedTokens = useSupportedTokens();
 
-  const [isApproved, setIsApproved] = useState(
-    allowanceAmount &&
-      fromBigNumber(allowanceAmount).isEqualTo(new BigNumber(MAX_UINT_AMOUNT))
-  );
-
-  useEffect(() => {
-    if (allowanceAmount) {
-      setIsApproved(
-        fromBigNumber(allowanceAmount).isEqualTo(new BigNumber(MAX_UINT_AMOUNT))
-      );
-    }
-  }, [allowanceAmount]);
-
-  const onApprove = async () => {
-    const amountNeeded = new BigNumber(MAX_UINT_AMOUNT).minus(
-      fromBigNumber(allowanceAmount)
-    );
-
-    await approveTx({
-      args: [VOYAGE_LM_IMPL_ADDRESS, toHexString(amountNeeded)],
-    });
-
-    if (errorApprove)
-      showNotification({
-        title: 'Transaction error',
-        message: errorApprove.message,
-        color: 'red',
-      });
-    else {
-      showNotification({
-        title: 'Allowance increased',
-        message: 'You can now start depositing',
-        color: 'green',
-      });
-      setIsApproved(true);
-    }
-  };
+  const [isApproved, isApproving, onApprove] = useAllowanceApproved(symbol);
 
   return (
     <div>
