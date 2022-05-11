@@ -1,14 +1,12 @@
 // noinspection HtmlUnknownTarget
 
-import type { NextPage } from 'next';
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import { Grid } from '@mantine/core';
 import styles from 'styles/Home.module.scss';
 import { Card, Title } from '@components/base';
 import PoolDetailCard from '@components/organisms/PoolDetailCard';
 import TrancheCard from '@components/organisms/TrancheCard';
-import { useConnect } from 'wagmi';
 import { PoolData, TrancheType } from 'types';
 import { VOYAGE_LM_IMPL_ADDRESS } from 'abi/addresses';
 import {
@@ -17,7 +15,6 @@ import {
   shiftDecimals,
   toHexString,
 } from 'utils/bn';
-import ConnectingOverlay from '@components/moleculas/ConnectingOverlay';
 import { useEffect, useState } from 'react';
 import BigNumber from 'bignumber.js';
 import { MAX_UINT_AMOUNT } from 'consts';
@@ -26,8 +23,8 @@ import {
   useGetAllowance,
   useGetPoolData,
   useIncreaseAllowance,
-} from 'utils/hooks';
-import { useSupportedTokens } from '../../hooks/useFetchPoolTokens';
+  useSupportedTokens,
+} from 'hooks';
 
 const ChartCards: React.FC = () => (
   <Grid>
@@ -49,7 +46,7 @@ const ChartCards: React.FC = () => (
   </Grid>
 );
 
-const PoolDetailPage: React.FC<{ symbol: string }> = ({ symbol }) => {
+const PoolDetailPage: NextPage<{ symbol: string }> = ({ symbol }) => {
   const { data, isSuccess, isLoading, refetch } = useGetPoolData(symbol);
   const poolData = isSuccess ? resultToPoolData(data) : undefined;
   const { data: allowanceAmount } = useGetAllowance(symbol);
@@ -59,7 +56,6 @@ const PoolDetailPage: React.FC<{ symbol: string }> = ({ symbol }) => {
     writeAsync: approveTx,
   } = useIncreaseAllowance(symbol);
   const supportedTokens = useSupportedTokens();
-  console.log('supported tokens: ', supportedTokens);
 
   const [isApproved, setIsApproved] = useState(
     allowanceAmount &&
@@ -67,7 +63,6 @@ const PoolDetailPage: React.FC<{ symbol: string }> = ({ symbol }) => {
   );
 
   useEffect(() => {
-    console.log('allowanceAmount', allowanceAmount);
     if (allowanceAmount) {
       setIsApproved(
         fromBigNumber(allowanceAmount).isEqualTo(new BigNumber(MAX_UINT_AMOUNT))
@@ -166,16 +161,6 @@ const resultToPoolData = (res: any): PoolData => ({
   decimals: res[8].toNumber(),
 });
 
-const PageWrapper: NextPage<{ symbol: string }> = ({ symbol }) => {
-  const { isConnected } = useConnect();
-
-  return isConnected ? (
-    <PoolDetailPage symbol={symbol} />
-  ) : (
-    <ConnectingOverlay />
-  );
-};
-
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   return {
     props: {
@@ -184,4 +169,4 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   };
 };
 
-export default PageWrapper;
+export default PoolDetailPage;
