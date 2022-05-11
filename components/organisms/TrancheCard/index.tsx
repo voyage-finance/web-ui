@@ -8,11 +8,13 @@ import { useAssetPrice } from '../../../hooks/useAssetPrice';
 import { ReserveAssets } from '../../../consts';
 import { Zero } from '../../../utils/bn';
 import { usdValue } from '../../../utils/price';
+import BigNumber from 'bignumber.js';
 
 type IProps = {
   type: TrancheType;
   poolData?: PoolData;
-  withdrawable: number;
+  withdrawable?: BigNumber;
+  balance?: BigNumber;
   onDeposited: () => void;
   isApproved?: boolean;
   isApproving?: boolean;
@@ -37,6 +39,7 @@ const TrancheCard: React.FC<IProps> = ({
   type,
   poolData,
   withdrawable,
+  balance,
   onDeposited,
   isApproved,
   isApproving,
@@ -89,7 +92,7 @@ const TrancheCard: React.FC<IProps> = ({
         <Text type="secondary">Your Total Deposit</Text>
         <Group direction="column" spacing={0} align="end">
           <Title order={5}>
-            {liquidity.toFixed()}{' '}
+            {balance?.toFixed()}{' '}
             <Text weight={400} component="span">
               {symbol}
             </Text>
@@ -104,18 +107,21 @@ const TrancheCard: React.FC<IProps> = ({
         <Text type="secondary">Your Withdrawable</Text>
         <Group direction="column" spacing={0} align="end" mt={16}>
           <Title order={5}>
-            {withdrawable}{' '}
+            {withdrawable?.toFixed()}{' '}
             <Text weight={400} component="span">
               {symbol}
             </Text>
           </Title>
-          <Text type="secondary">$-</Text>
+          <Text type="secondary">{`~${usdValue(
+            withdrawable || Zero,
+            priceData.latestPrice
+          )}`}</Text>
         </Group>
       </Group>
       {isApproved ? (
         <Group grow mt={16}>
           <Button onClick={() => setDepositModalOpened(true)}>Deposit</Button>
-          <Button kind="secondary" disabled={withdrawable === 0}>
+          <Button kind="secondary" disabled={withdrawable?.isZero()}>
             Withdraw
           </Button>
         </Group>
@@ -131,6 +137,7 @@ const TrancheCard: React.FC<IProps> = ({
         poolData={poolData}
         onDeposited={onDeposited}
         symbol={symbol}
+        balance={balance}
       />
     </Card>
   );
