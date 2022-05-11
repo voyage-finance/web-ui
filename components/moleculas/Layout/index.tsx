@@ -1,8 +1,10 @@
 import { AppShell, MantineProvider } from '@mantine/core';
 import React from 'react';
 import Navigation from './Navigation';
+
 const Layout: React.FC = (props) => {
   const { children } = props;
+
   return (
     <MantineProvider
       withGlobalStyles
@@ -102,4 +104,10 @@ const Layout: React.FC = (props) => {
   );
 };
 
+// const LayoutWrapped: React.FC = (props) => {
+//   const { isConnected } = useConnect();
+//
+//   return isConnected ? <Layout {...props} /> : <ConnectingOverlay />;
+// };
+//
 export default Layout;
