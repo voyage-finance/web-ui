@@ -7,6 +7,7 @@ import { useAssetPrice } from '../../../hooks/useAssetPrice';
 import { ReserveAssets } from '../../../consts';
 import { usdValue } from '../../../utils/price';
 import { Zero } from '../../../utils/bn';
+import BigNumber from 'bignumber.js';
 
 type IProps = {
   poolData?: PoolData;
@@ -22,7 +23,6 @@ const PoolDetailCard: React.FC<IProps> = ({ poolData, loading, symbol }) => {
   const availableLiquidity = poolData
     ? poolData.totalLiquidity.minus(poolData.totalDebt)
     : Zero;
-  console.log('pool data: ', poolData);
 
   return (
     <Card style={{ height: '100%' }} px={27}>
@@ -53,7 +53,8 @@ const PoolDetailCard: React.FC<IProps> = ({ poolData, loading, symbol }) => {
           <Group spacing={0} direction="column">
             <Text type="secondary">Reserve Size</Text>
             <Title order={4}>
-              {poolData && poolData.totalLiquidity.toString()}{' '}
+              {poolData &&
+                poolData.totalLiquidity.toFixed(3, BigNumber.ROUND_UP)}{' '}
               <Text component="span" inherit type="accent">
                 {symbol}
               </Text>
@@ -80,7 +81,7 @@ const PoolDetailCard: React.FC<IProps> = ({ poolData, loading, symbol }) => {
           <Group spacing={0} direction="column">
             <Text type="secondary">Available Liquidity</Text>
             <Title order={4}>
-              {availableLiquidity.toFixed()}{' '}
+              {availableLiquidity.toFixed(3, BigNumber.ROUND_UP)}{' '}
               <Text component="span" inherit type="accent">
                 {symbol}
               </Text>
