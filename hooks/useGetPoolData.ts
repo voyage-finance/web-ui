@@ -17,6 +17,8 @@ export const useGetPoolData = (tokenSmb: string) => {
       args: tokens[tokenSmb],
     }
   );
+  console.log('jr rate: ', data?.[3].toString());
+  console.log('sr rate: ', data?.[4].toString());
   return { data: isSuccess ? resultToPoolData(data) : undefined, ...rest };
 };
 
