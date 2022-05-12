@@ -5,6 +5,7 @@ import { DepositStatusStep, EnterAmountStep } from './Steps';
 import { PoolData, TrancheTextMap, TrancheType } from 'types';
 import { showNotification } from '@mantine/notifications';
 import BigNumber from 'bignumber.js';
+import { useGetUserErc20Balance } from '../../../hooks';
 
 type IProps = ModalProps & {
   type: TrancheType;
@@ -61,6 +62,8 @@ const DepositTrancheModal: React.FC<IProps> = ({
     });
   };
 
+  const userAssetHolding = useGetUserErc20Balance(symbol);
+
   return (
     <Modal
       title={
@@ -89,6 +92,7 @@ const DepositTrancheModal: React.FC<IProps> = ({
               ? poolData.seniorLiquidityRate
               : poolData.juniorLiquidityRate
           }
+          userHoldings={userAssetHolding}
           symbol={symbol}
         />
       )}
