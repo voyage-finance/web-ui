@@ -18,12 +18,11 @@ const LOADING_COPY = 'Loading...';
 
 const PoolDetailCard: React.FC<IProps> = ({ poolData, loading, symbol }) => {
   const [priceData, priceDataLoading] = useAssetPrice(ReserveAssets.TUS);
-  console.log('priceDataLoading: ', priceDataLoading);
-  console.log('priceData: ', priceData);
   const isLoadingData = loading || priceDataLoading;
   const availableLiquidity = poolData
     ? poolData.totalLiquidity.minus(poolData.totalDebt)
     : Zero;
+  console.log('pool data: ', poolData);
 
   return (
     <Card style={{ height: '100%' }} px={27}>

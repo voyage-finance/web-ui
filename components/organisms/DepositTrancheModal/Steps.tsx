@@ -22,6 +22,7 @@ type IProps1 = {
   balance: BigNumber;
   APY?: BigNumber;
   symbol: string;
+  userHoldings?: BigNumber;
 };
 
 export const EnterAmountStep: React.FC<IProps1> = ({
@@ -33,6 +34,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
   APY,
   balance,
   symbol,
+  userHoldings,
 }) => {
   const { data: accountData } = useAccount();
   const { data: signer } = useSigner();
@@ -89,7 +91,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
         <Group spacing={0} direction="column">
           <Text type="secondary">{TrancheTextMap[type]} Tranche Liquidity</Text>
           <Title order={4}>
-            {totalDeposit?.toString()}{' '}
+            {totalDeposit?.toFixed(3, BigNumber.ROUND_UP)}{' '}
             <Text component="span" inherit type="accent">
               {symbol}
             </Text>
@@ -109,7 +111,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
         <Text type="secondary">Your Current Total Deposit</Text>
         <Group direction="column" spacing={0} align="end">
           <Title order={5}>
-            {balance?.toFixed()}{' '}
+            {balance?.toFixed(3, BigNumber.ROUND_UP)}{' '}
             <Text weight={400} component="span">
               {symbol}
             </Text>
@@ -123,7 +125,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
       <Group position="apart" mt={16}>
         <Text type="secondary">Add Deposit</Text>
         <Text type="secondary" size="xs">
-          Balance{' '}
+          {'Balance: '}
           <Text
             underline
             component="span"
@@ -131,7 +133,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
             size="xs"
             weight={700}
           >
-            - {symbol}
+            {`${userHoldings?.toFixed(3, BigNumber.ROUND_UP)} ${symbol}`}
           </Text>{' '}
         </Text>
       </Group>

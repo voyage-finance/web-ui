@@ -1,12 +1,19 @@
-// import numeral from 'numeral';
 import BigNumber from 'bignumber.js';
-// export const formatBn = (bn: BN, fractionsInlcuded?: boolean) => numeral(bn.toNumber()).format(fractionsInlcuded ? '0,0.0' : '0,0');
+import { BigNumber as EthersBN } from 'ethers';
 
 export const shiftDecimals = (bn: BigNumber, decimals: number) => {
   BigNumber.config({ DECIMAL_PLACES: decimals });
   return new BigNumber(bn.toString()).dividedBy(
     new BigNumber(10).pow(decimals)
   );
+};
+
+export const formatEthersBN = (
+  bn: EthersBN | BigNumber,
+  decimals: number = 0
+) => {
+  const n = EthersBN.isBigNumber(bn) ? new BigNumber(bn.toString()) : bn;
+  return n.shiftedBy(decimals * -1);
 };
 
 export const formatDecimals = (bn: BigNumber, decimals: number) => {
