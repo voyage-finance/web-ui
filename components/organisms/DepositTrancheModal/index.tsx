@@ -100,7 +100,7 @@ const DepositTrancheModal: React.FC<IProps> = ({
         <DepositStatusStep
           type={type}
           amount={depositedAmount}
-          newTotal={balance!.plus(new BigNumber(depositedAmount))}
+          newTotal={balance!}
           error={errorMessage}
           onClose={onClose}
           symbol={symbol}
