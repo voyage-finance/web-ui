@@ -33,8 +33,9 @@ export const addDecimals = (num: any, decimals: number) => {
 
 // RAY = 10**27 units [0-1], multiply by 100 for % representation
 export const rayToPercent = (num: any) => {
-  BigNumber.config({ DECIMAL_PLACES: 3 });
-  return new BigNumber(num.toString()).dividedBy(new BigNumber(10).pow(25));
+  return new BigNumber(num.toString()).dividedBy(Ray).multipliedBy(100);
 };
+
+export const Ray = new BigNumber(10).pow(27);
 
 export const Zero = new BigNumber(0);
