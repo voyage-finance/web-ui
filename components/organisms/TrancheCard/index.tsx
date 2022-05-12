@@ -72,7 +72,7 @@ const TrancheCard: React.FC<IProps> = ({
         <Group spacing={0} direction="column">
           <Text type="secondary">{TrancheTextMap[type]} Tranche Liquidity</Text>
           <Title order={4}>
-            {liquidity.toFixed()}{' '}
+            {liquidity.toFixed(3, BigNumber.ROUND_UP)}{' '}
             <Text component="span" inherit type="accent">
               {symbol}
             </Text>
@@ -92,7 +92,7 @@ const TrancheCard: React.FC<IProps> = ({
         <Text type="secondary">Your Total Deposit</Text>
         <Group direction="column" spacing={0} align="end">
           <Title order={5}>
-            {balance?.toFixed()}{' '}
+            {balance?.toFixed(3, BigNumber.ROUND_UP)}{' '}
             <Text weight={400} component="span">
               {symbol}
             </Text>
@@ -107,7 +107,7 @@ const TrancheCard: React.FC<IProps> = ({
         <Text type="secondary">Your Withdrawable</Text>
         <Group direction="column" spacing={0} align="end" mt={16}>
           <Title order={5}>
-            {withdrawable?.toFixed()}{' '}
+            {withdrawable?.toFixed(3, BigNumber.ROUND_UP)}{' '}
             <Text weight={400} component="span">
               {symbol}
             </Text>
