@@ -33,10 +33,14 @@ COPY --from=builder /app/.yarnrc.yml ./.yarnrc.yml
 COPY --from=builder /app/.pnp.cjs ./.pnp.cjs
 COPY --from=builder /app/package.json ./package.json
 
+RUN chown -R nextjs:nodejs /app/.next
+
 USER nextjs
 
 EXPOSE 3000
 
 ENV PORT 3000
 
-CMD ["node", "server.js"]
+ENV NEXT_TELEMETRY_DISABLED 1
+
+CMD ["yarn", "start"]
