@@ -28,8 +28,7 @@ export const toHexString = (bn: BigNumber) => {
 export const fromBigNumber = (bn: any) => new BigNumber(bn.toString());
 
 export const addDecimals = (num: any, decimals: number) => {
-  BigNumber.config({ DECIMAL_PLACES: decimals, EXPONENTIAL_AT: 1e9 });
-  return new BigNumber(num).multipliedBy(new BigNumber(10).pow(decimals));
+  return new BigNumber(num).shiftedBy(decimals);
 };
 
 // RAY = 10**27 units [0-1], multiply by 100 for % representation
