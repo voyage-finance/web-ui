@@ -3,7 +3,7 @@ import {
   useMantineTheme,
   ButtonProps,
 } from '@mantine/core';
-import React from 'react';
+import React, { CSSProperties } from 'react';
 
 type BaseProps = Pick<
   ButtonProps<'button'>,
@@ -13,9 +13,10 @@ type BaseProps = Pick<
 interface IProps extends BaseProps {
   size?: 'regular' | 's' | 'xl' | 'l';
   kind?: 'primary' | 'secondary' | 'cancel';
+  style?: CSSProperties;
 }
 
-const Button: React.FC<IProps> = ({ kind, children, size, ...rest }) => {
+const Button: React.FC<IProps> = ({ kind, children, size, style, ...rest }) => {
   const { other } = useMantineTheme();
 
   const variant = kind === 'primary' ? 'gradient' : 'outline';
@@ -61,6 +62,7 @@ const Button: React.FC<IProps> = ({ kind, children, size, ...rest }) => {
         borderColor: kind === 'cancel' ? '#444546' : undefined,
         borderRadius: size === 'regular' ? '10px' : '4px',
         background: rest.disabled ? '#444546' : undefined,
+        ...style,
       }}
       sx={{
         // remove dark overlayer for loading state

@@ -57,10 +57,23 @@ export const EnterAmountStep: React.FC<IProps1> = ({
   const form = useForm({
     initialValues: { amount: '' },
     validate: {
-      amount: (value) =>
-        value && new BigNumber(value).gt(0)
-          ? null
-          : 'Amount should be a positive number',
+      amount: (value) => {
+        if (!value) {
+          return 'Please input a number.';
+        }
+
+        const num = new BigNumber(value);
+
+        if (num.lte(0)) {
+          return 'Amount should be a positive number';
+        }
+
+        if (!userHoldings || num > userHoldings) {
+          return 'Insufficient balance!';
+        }
+
+        return null;
+      },
     },
   });
 
@@ -168,7 +181,7 @@ export const DepositStatusStep: React.FC<IProps2> = ({
   error,
   symbol,
 }) => {
-  const [priceData, priceDataLoading] = useAssetPrice(ReserveAssets.TUS);
+  const [priceData] = useAssetPrice(ReserveAssets.TUS);
   return (
     <>
       <Title order={3} align="center" mt={-32}>
