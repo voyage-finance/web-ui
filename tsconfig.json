@@ -18,6 +18,7 @@
     "paths": {
       "@assets/*": ["assets/*"],
       "@components/*": ["components/*"],
+      "@graph/*": ["graphql/*"]
     }
   },
   "include": ["next-env.d.ts", "typings/*.d.ts", "**/*.ts", "**/*.tsx"],

@@ -1,16 +1,15 @@
 // noinspection HtmlUnknownTarget
-import { Group, Table, Loader, ThemeIcon } from '@mantine/core';
+import { Group, Loader, Table } from '@mantine/core';
 import styles from './index.module.scss';
 import Image from 'next/image';
 import { useQuery } from '@apollo/client';
-import { GET_POOLS } from 'graphql/queries/pools';
+import { GET_POOLS } from '@graph/queries/pools';
 import { useEffect, useState } from 'react';
-import { Card, Text, Title, CTAButton } from '@components/base';
+import { Card, CTAButton, Text, Title } from '@components/base';
 import Link from 'next/link';
 import BigNumber from 'bignumber.js';
 
 const PoolRow: React.FC<any> = ({
-  id,
   name,
   symbol,
   totalLuquidity,
