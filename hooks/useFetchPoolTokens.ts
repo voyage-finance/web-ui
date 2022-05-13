@@ -1,15 +1,18 @@
 import { useContractRead } from 'wagmi';
-import { VOYAGE_DATA_PROVIDER_ADDRESS } from '../abi/addresses';
-import VoyageProtocolDataProviderAbi from '../abi/VoyageProtocolDataProvider.json';
 import { VoyagePoolTokenMap } from '../types';
 import * as React from 'react';
 import { VoyageCtx } from '@components/base/VoyageProvider';
+import { VoyageContracts } from '../consts/addresses';
+import { useGetDeployment } from './useGetDeployment';
 
 export const useFetchPoolTokens = () => {
+  const { address, abi } = useGetDeployment(
+    VoyageContracts.VoyageProtocolDataProvider
+  );
   const { data: tokens } = useContractRead(
     {
-      addressOrName: VOYAGE_DATA_PROVIDER_ADDRESS,
-      contractInterface: VoyageProtocolDataProviderAbi,
+      addressOrName: address,
+      contractInterface: abi,
     },
     'getPoolTokens'
   );

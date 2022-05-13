@@ -1,10 +1,8 @@
-import { Divider, Button, Text, Title } from '@components/base';
+import { Button, Divider, Text, Title } from '@components/base';
 import AmountInput from '@components/moleculas/AmountInput';
 import { Group } from '@mantine/core';
 import Image from 'next/image';
 import { useAccount, useContractWrite, useSigner } from 'wagmi';
-import VoyagerAbi from 'abi/Voyager.json';
-import { VOYAGER_ADDRESS } from 'abi/addresses';
 import { addDecimals, toHexString, Zero } from 'utils/bn';
 import BigNumber from 'bignumber.js';
 import { useForm } from '@mantine/form';
@@ -12,6 +10,8 @@ import { TrancheTextMap, TrancheType } from 'types';
 import { useAssetPrice, useSupportedTokens } from 'hooks';
 import { ReserveAssets } from 'consts';
 import { usdValue } from 'utils/price';
+import { VoyageContracts } from '../../../consts/addresses';
+import { useGetDeployment } from '../../../hooks/useGetDeployment';
 
 type IProps1 = {
   type: TrancheType;
@@ -40,6 +40,9 @@ export const EnterAmountStep: React.FC<IProps1> = ({
   const { data: signer } = useSigner();
   const [tokens] = useSupportedTokens();
   const [priceData] = useAssetPrice(ReserveAssets.TUS);
+  const { address: voyagerAddress, abi: voyagerAbi } = useGetDeployment(
+    VoyageContracts.Voyager
+  );
 
   const {
     isLoading,
@@ -47,8 +50,8 @@ export const EnterAmountStep: React.FC<IProps1> = ({
     writeAsync: deposit,
   } = useContractWrite(
     {
-      addressOrName: VOYAGER_ADDRESS,
-      contractInterface: VoyagerAbi,
+      addressOrName: voyagerAddress,
+      contractInterface: voyagerAbi,
       signerOrProvider: signer,
     },
     'deposit'

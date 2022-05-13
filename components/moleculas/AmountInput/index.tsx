@@ -24,7 +24,7 @@ const AmountInput: React.FC<IProps> = ({
     <TextInput
       radius={10}
       rightSection={
-        <Group direction="row" spacing={8}>
+        <Group direction="row" spacing={6}>
           <Button
             onClick={onClickMax}
             style={{
@@ -56,6 +56,7 @@ const AmountInput: React.FC<IProps> = ({
         },
         rightSection: {
           right: 12.5,
+          width: 72,
         },
         ...props.styles,
       })}
