@@ -4,7 +4,7 @@ import { chain, createClient, defaultChains, Provider } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { providers } from 'ethers';
 import { ApolloProvider } from '@apollo/client';
-import ApolloClient from 'graphql/apollo-client';
+import apolloClient from '@graph/client';
 import { NotificationsProvider } from '@mantine/notifications';
 import { VoyageProvider } from '@components/base/VoyageProvider';
 
@@ -17,7 +17,7 @@ const connectors = () => {
   ];
 };
 
-const client = createClient({
+const web3Client = createClient({
   autoConnect: true,
   connectors,
   provider: ({ chainId }) => {
@@ -33,8 +33,8 @@ const client = createClient({
 function MyApp(props: AppProps) {
   const { Component, pageProps } = props;
   return (
-    <Provider client={client}>
-      <ApolloProvider client={ApolloClient}>
+    <Provider client={web3Client}>
+      <ApolloProvider client={apolloClient}>
         <VoyageProvider>
           <NotificationsProvider position="top-right">
             <Layout>
