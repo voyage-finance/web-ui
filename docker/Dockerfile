@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 RUN yarn install --immutable
-RUN yarn build
+RUN yarn rebuild && yarn build
 
 # If using npm comment out above and use below instead
 # RUN npm run build
@@ -18,8 +18,6 @@ FROM node:16-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
-# Uncomment the following line in case you want to disable telemetry during runtime.
-# ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
@@ -33,13 +31,13 @@ COPY --from=builder /app/.yarnrc.yml ./.yarnrc.yml
 COPY --from=builder /app/.pnp.cjs ./.pnp.cjs
 COPY --from=builder /app/package.json ./package.json
 
+RUN rm -rf /app/.yarn/unplugged && yarn rebuild
 RUN chown -R nextjs:nodejs /app/.next
 
 USER nextjs
 
-EXPOSE 3000
-
 ENV PORT 3000
+EXPOSE 3000
 
 ENV NEXT_TELEMETRY_DISABLED 1
 
