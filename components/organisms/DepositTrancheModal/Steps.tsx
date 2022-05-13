@@ -12,6 +12,7 @@ import { ReserveAssets } from 'consts';
 import { usdValue } from 'utils/price';
 import { VoyageContracts } from '../../../consts/addresses';
 import { useGetDeployment } from '../../../hooks/useGetDeployment';
+import { useState } from 'react';
 
 type IProps1 = {
   type: TrancheType;
@@ -44,11 +45,8 @@ export const EnterAmountStep: React.FC<IProps1> = ({
     VoyageContracts.Voyager
   );
 
-  const {
-    isLoading,
-    error,
-    writeAsync: deposit,
-  } = useContractWrite(
+  const [isConfirming, setIsConfirming] = useState(false);
+  const { isLoading, writeAsync: deposit } = useContractWrite(
     {
       addressOrName: voyagerAddress,
       contractInterface: voyagerAbi,
@@ -81,16 +79,24 @@ export const EnterAmountStep: React.FC<IProps1> = ({
   });
 
   const onDeposit = async () => {
-    await deposit({
-      args: [
-        tokens[symbol],
-        type == TrancheType.Senior ? '1' : '0',
-        toHexString(addDecimals(form.values.amount, decimals)),
-        accountData?.address,
-      ],
-    });
-    if (error) onError(error.message);
-    else onDeposited(form.values.amount);
+    try {
+      setIsConfirming(true);
+      const tx = await deposit({
+        args: [
+          tokens[symbol],
+          type == TrancheType.Senior ? '1' : '0',
+          toHexString(addDecimals(form.values.amount, decimals)),
+          accountData?.address,
+        ],
+      });
+      const txReceipt = await tx.wait();
+      console.log('deposit tx confirmed: ', txReceipt);
+      onDeposited(form.values.amount);
+    } catch (err) {
+      onError((err as Error).toString());
+    } finally {
+      setIsConfirming(false);
+    }
   };
 
   return (
@@ -157,7 +163,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
       <Button
         fullWidth
         mt={16}
-        loading={isLoading}
+        loading={isLoading || isConfirming}
         type="submit"
         disabled={!form.values.amount}
       >
