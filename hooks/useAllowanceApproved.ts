@@ -1,5 +1,4 @@
 import { showNotification } from '@mantine/notifications';
-import { VOYAGE_LM_IMPL_ADDRESS } from 'abi/addresses';
 import BigNumber from 'bignumber.js';
 import { MAX_UINT_AMOUNT } from 'consts';
 import { useEffect, useState } from 'react';
@@ -7,11 +6,14 @@ import { fromBigNumber, toHexString } from 'utils/bn';
 import { useContractWrite } from 'wagmi';
 import { useSupportedTokens } from './useFetchPoolTokens';
 import { useGetAllowance } from './useGetAllowance';
-import TusAbi from 'abi/Token.json';
+import TusAbi from 'abi/ERC20.json';
+import { VoyageContracts } from '../consts/addresses';
+import { useGetContractAddress } from './useGetContractAddress';
 
 export const useAllowanceApproved = (symbol: string) => {
   const { data: allowanceAmount } = useGetAllowance(symbol);
   const [tokens] = useSupportedTokens();
+  const lmAddress = useGetContractAddress(VoyageContracts.LiquidityManager);
   const {
     isLoading: isApproving,
     error: errorApprove,
@@ -42,7 +44,7 @@ export const useAllowanceApproved = (symbol: string) => {
     );
 
     await approveTx({
-      args: [VOYAGE_LM_IMPL_ADDRESS, toHexString(amountNeeded)],
+      args: [lmAddress, toHexString(amountNeeded)],
     });
 
     if (errorApprove)

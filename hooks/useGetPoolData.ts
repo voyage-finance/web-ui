@@ -1,16 +1,19 @@
-import { VOYAGE_DATA_PROVIDER_ADDRESS } from 'abi/addresses';
 import { useContractRead } from 'wagmi';
 import { useSupportedTokens } from './useFetchPoolTokens';
-import VoyageProtocolDataProviderAbi from 'abi/VoyageProtocolDataProvider.json';
 import { PoolData } from 'types';
 import { rayToPercent, shiftDecimals } from 'utils/bn';
+import { VoyageContracts } from '../consts/addresses';
+import { useGetDeployment } from './useGetDeployment';
 
 export const useGetPoolData = (tokenSmb: string) => {
   const [tokens] = useSupportedTokens();
+  const { address, abi } = useGetDeployment(
+    VoyageContracts.VoyageProtocolDataProvider
+  );
   const { data, isSuccess, ...rest } = useContractRead(
     {
-      addressOrName: VOYAGE_DATA_PROVIDER_ADDRESS,
-      contractInterface: VoyageProtocolDataProviderAbi,
+      addressOrName: address,
+      contractInterface: abi,
     },
     'getPoolData',
     {

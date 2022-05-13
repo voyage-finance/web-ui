@@ -1,19 +1,21 @@
 import { useAccount, useContractRead } from 'wagmi';
 import { useSupportedTokens } from './useFetchPoolTokens';
-import TusAbi from 'abi/Token.json';
-import { VOYAGE_LM_IMPL_ADDRESS } from 'abi/addresses';
+import ERC20 from 'abi/ERC20.json';
+import { VoyageContracts } from '../consts/addresses';
+import { useGetContractAddress } from './useGetContractAddress';
 
 export const useGetAllowance = (tokenSmb: string) => {
+  const lmAddress = useGetContractAddress(VoyageContracts.LiquidityManager);
   const account = useAccount();
   const [tokens] = useSupportedTokens();
   return useContractRead(
     {
       addressOrName: tokens[tokenSmb],
-      contractInterface: TusAbi,
+      contractInterface: ERC20,
     },
     'allowance',
     {
-      args: [account.data?.address, VOYAGE_LM_IMPL_ADDRESS],
+      args: [account.data?.address, lmAddress],
     }
   );
 };

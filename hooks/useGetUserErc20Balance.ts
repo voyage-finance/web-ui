@@ -1,6 +1,6 @@
 import { useAccount, useContractRead } from 'wagmi';
 import { useSupportedTokens } from './useFetchPoolTokens';
-import ERC20ABI from 'abi/Token.json';
+import ERC20ABI from 'abi/ERC20.json';
 import { formatEthersBN, Zero } from '../utils/bn';
 import { BigNumber } from 'ethers';
 
