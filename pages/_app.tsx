@@ -8,6 +8,7 @@ import apolloClient from '@graph/client';
 import { NotificationsProvider } from '@mantine/notifications';
 import { VoyageProvider } from '@components/base/VoyageProvider';
 import { getProviderConfiguration, voyageChains } from '../utils/env';
+import '../styles/global.scss';
 
 const connectors = () => {
   return [
