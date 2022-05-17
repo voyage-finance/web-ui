@@ -1,4 +1,4 @@
-import { Card as MantineCard, CardProps, useMantineTheme } from '@mantine/core';
+import { Card as MantineCard, CardProps } from '@mantine/core';
 import React from 'react';
 
 const Card: React.FC<CardProps<'div'>> = ({ style, ...props }) => {

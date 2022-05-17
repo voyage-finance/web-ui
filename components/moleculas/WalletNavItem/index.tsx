@@ -33,7 +33,7 @@ const ConnectWallet: React.FC = () => {
       <Menu
         control={
           <Group
-            sx={(theme) => ({
+            sx={() => ({
               '&:hover': {
                 cursor: 'pointer',
               },

@@ -35,8 +35,8 @@ interface Props {
 export const generateTimeSeries = (
   days: number,
   yDomain: [number, number],
-  step: number = 5000,
-  variance: number = 0.05
+  step = 5000,
+  variance = 0.05
 ) => {
   const [dataMin, dataMax] = yDomain;
   const now = new Date();
