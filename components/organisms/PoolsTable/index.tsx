@@ -1,105 +1,14 @@
 // noinspection HtmlUnknownTarget
-import { Group, Loader, Table } from '@mantine/core';
+import { Loader, Table } from '@mantine/core';
 import styles from './index.module.scss';
-import Image from 'next/image';
 import { useQuery } from '@apollo/client';
 import { GET_POOLS } from '@graph/queries/pools';
 import { useEffect, useState } from 'react';
-import { Card, CTAButton, Text, Title } from '@components/base';
-import Link from 'next/link';
-import BigNumber from 'bignumber.js';
-
-const PoolRow: React.FC<any> = ({
-  name,
-  symbol,
-  totalLuquidity,
-  totalLuquidityUSD,
-  seniorLuquidity,
-  seniorLuquidityUSD,
-  seniorAPY,
-  seniorDeposit,
-  juniorLuquidity,
-  juniorLuquidityUSD,
-  juniorAPY,
-  juniorDeposit,
-}) => {
-  const BalanceTD = ({ amount: _amount, amountUSD: _amountUSD }: any) => {
-    // imitating that we are receiving BN from server, but for now we receive int number from mock api
-    const amount = new BigNumber(_amount);
-    const amountUSD = new BigNumber(_amountUSD);
-
-    return (
-      <Group direction="column" spacing={0} align="end">
-        <Title order={5}>
-          {amount.toString()}{' '}
-          <Text weight={400} component="span">
-            {symbol}
-          </Text>
-        </Title>
-        <Text type="secondary">{amountUSD.toString()}</Text>
-      </Group>
-    );
-  };
-  return (
-    <tr>
-      <td style={{ paddingLeft: 0 }}>
-        <Group>
-          <Image
-            src="/crabada-cover.png"
-            alt="crabada"
-            width={130}
-            height={39}
-          />
-          <Group direction="column" spacing={0}>
-            <Title order={5}>
-              <Text inherit transform="uppercase">
-                {name}
-              </Text>
-            </Title>
-            <Text type="accent" weight="bold">
-              {symbol}
-            </Text>
-          </Group>
-        </Group>
-      </td>
-      <td>
-        <BalanceTD amount={totalLuquidity} amountUSD={totalLuquidityUSD} />
-      </td>
-      <td>
-        <BalanceTD amount={seniorLuquidity} amountUSD={seniorLuquidityUSD} />
-      </td>
-      <td>
-        <Title order={6} align="right">
-          {seniorAPY}%
-        </Title>
-      </td>
-      <td>
-        <BalanceTD amount={seniorDeposit} amountUSD={seniorDeposit} />
-      </td>
-      <td>
-        <BalanceTD amount={juniorLuquidity} amountUSD={juniorLuquidityUSD} />
-      </td>
-      <td align="right">
-        <Title order={6}>{juniorAPY}%</Title>
-      </td>
-      <td>
-        <BalanceTD amount={juniorDeposit} amountUSD={juniorDeposit} />
-      </td>
-      <td>
-        <Group style={{ justifyContent: 'end' }}>
-          <CTAButton>Deposit</CTAButton>
-          <CTAButton>Withdraw</CTAButton>
-          <CTAButton>
-            <Link href={`/pools/TUS`}>{'More >'}</Link>
-          </CTAButton>
-        </Group>
-      </td>
-    </tr>
-  );
-};
+import { Card, Text, Title } from '@components/base';
+import PoolRow, { PoolRowProps } from './PoolRow';
 
 const PoolsTable: React.FC = () => {
-  const { loading, error, data } = useQuery(GET_POOLS);
+  const { loading, data } = useQuery(GET_POOLS);
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
@@ -150,7 +59,9 @@ const PoolsTable: React.FC = () => {
                 <Loader />
               </td>
             ) : (
-              data.pools.map((pool: any) => <PoolRow key={pool.id} {...pool} />)
+              data.pools.map((pool: PoolRowProps) => (
+                <PoolRow key={pool.id} {...pool} />
+              ))
             ))}
         </tbody>
       </Table>

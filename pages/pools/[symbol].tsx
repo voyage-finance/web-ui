@@ -75,7 +75,7 @@ const PoolDetailPage: NextPage<{ symbol: string }> = ({ symbol }) => {
         <Grid align="stretch">
           <Grid.Col md={12} lg={3}>
             <PoolDetailCard
-              loading={isLoading!}
+              loading={isLoading}
               poolData={poolData}
               symbol={symbol}
             />

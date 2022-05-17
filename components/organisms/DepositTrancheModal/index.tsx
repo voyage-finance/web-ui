@@ -100,6 +100,7 @@ const DepositTrancheModal: React.FC<IProps> = ({
         <DepositStatusStep
           type={type}
           amount={depositedAmount}
+          // eslint-disable-next-line
           newTotal={balance!}
           error={errorMessage}
           onClose={onClose}

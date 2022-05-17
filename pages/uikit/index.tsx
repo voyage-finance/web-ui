@@ -2,14 +2,14 @@
 
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { Grid, Group, Title, useMantineTheme } from '@mantine/core';
+import { Group, Title, useMantineTheme } from '@mantine/core';
 import styles from './index.module.scss';
 import Button from '@components/base/Button';
 import CTAButton from '@components/base/CTAButton';
 import { ArrowUpRight } from 'tabler-icons-react';
 
 const Home: NextPage = () => {
-  const { other, colors } = useMantineTheme();
+  const { colors } = useMantineTheme();
 
   return (
     <div className={styles.container}>

@@ -3,7 +3,7 @@ import { Group, InputProps, TextInput } from '@mantine/core';
 import { useGetUserErc20Balance } from '../../../hooks';
 import { GetInputProps } from '@mantine/form/lib/types';
 
-type IProps = InputProps<any> &
+type IProps<C = 'input'> = InputProps<C> &
   GetInputProps<'input'> & {
     symbol?: string;
     decimals?: number;

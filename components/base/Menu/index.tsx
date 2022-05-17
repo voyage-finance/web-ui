@@ -1,7 +1,7 @@
 import { Menu as MantineMenu, MenuItemProps, MenuProps } from '@mantine/core';
 import React from 'react';
 
-interface IProps extends MenuProps {}
+type IProps = MenuProps;
 
 const Menu: React.FC<IProps> = (props) => {
   return (

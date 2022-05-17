@@ -1,7 +1,7 @@
 import { Text as MantineText, TextProps, useMantineTheme } from '@mantine/core';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
-type IProps = TextProps<any> & {
+type IProps<C> = TextProps<C> & {
   type?:
     | 'primary'
     | 'secondary'
@@ -12,7 +12,7 @@ type IProps = TextProps<any> & {
     | 'gradient';
 };
 
-const Text: React.FC<IProps> = ({ type, sx, ...props }) => {
+function Text<C = 'div'>({ type, sx, ...props }: PropsWithChildren<IProps<C>>) {
   const { colors, other } = useMantineTheme();
 
   const color = (function () {
@@ -39,7 +39,7 @@ const Text: React.FC<IProps> = ({ type, sx, ...props }) => {
       {...props}
     />
   );
-};
+}
 
 Text.defaultProps = {
   type: 'primary',

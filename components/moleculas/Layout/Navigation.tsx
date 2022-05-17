@@ -1,19 +1,12 @@
-import Link from 'next/link';
 import Image from 'next/image';
-import {
-  Box,
-  createStyles,
-  Group,
-  Header,
-  UnstyledButton,
-} from '@mantine/core';
+import { Box, createStyles, Group, Header } from '@mantine/core';
 import WalletNavItem from '@components/moleculas/WalletNavItem';
 import Divider from '@components/base/Divider';
 import { NavLink } from '@components/base';
 
 const HEADER_HEIGHT = 48;
 
-const useStyles = createStyles((theme, _, getRef) => ({
+const useStyles = createStyles(() => ({
   logo: {
     display: 'flex',
     alignItems: 'center',
