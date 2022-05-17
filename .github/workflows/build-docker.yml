@@ -30,8 +30,10 @@ jobs:
         run: |
           export SHORT_SHA=${GITHUB_SHA::7}
           echo "SHORT_SHA=${SHORT_SHA}" >> $GITHUB_ENV
-          echo "IMAGE_TAG=${GITHUB_REF_NAME//\//_}-${SHORT_SHA}-${{ github.run_number }}" >> $GITHUB_ENV
-          echo IMAGE_TAG="${GITHUB_REF_NAME//\//_}-${SHORT_SHA}-${{ github.run_number }}"
+          export REF_NAME="$(echo ${GITHUB_REF_NAME} | sed 's/[^a-zA-Z0-9]/-/g')"
+          echo "REF_NAME=${REF_NAME}" >> $GITHUB_ENV
+          echo "IMAGE_TAG=${REF_NAME//\//_}-${SHORT_SHA}-${{ github.run_number }}" >> $GITHUB_ENV
+          echo IMAGE_TAG="${REF_NAME//\//_}-${SHORT_SHA}-${{ github.run_number }}"
       - name: Build, tag, and push image to ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -39,8 +41,13 @@ jobs:
         run: |
           docker pull $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker buildx build --push \
+            --cache-from=type=gha --cache-to=type=gha \
             -t $ECR_REGISTRY/$ECR_REPOSITORY:$SHORT_SHA \
             -t $ECR_REGISTRY/$ECR_REPOSITORY:"$IMAGE_TAG" \
-            -t $ECR_REGISTRY/$ECR_REPOSITORY:latest \
+            -t $ECR_REGISTRY/$ECR_REPOSITORY:$REF_NAME \
             --platform linux/amd64,linux/arm64 \
             -f ./docker/Dockerfile .
+          if [ "$GITHUB_REF_TYPE" == "tag" ]; then
+            docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$SHORT_SHA $ECR_REGISTRY/$ECR_REPOSITORY:latest
+            docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          fi
