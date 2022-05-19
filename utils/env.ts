@@ -35,6 +35,7 @@ export const voyageEnvironment = (): VoyageEnvironment => {
 interface ProviderConfig {
   chainId: number;
   endpoint: string;
+  explorer: string;
   name: Network;
 }
 
@@ -42,21 +43,25 @@ const ProviderConfigurationMap: Record<VoyageEnvironment, ProviderConfig> = {
   [VoyageEnvironment.Development]: {
     chainId: 31337,
     endpoint: 'http://localhost:8545',
+    explorer: 'https://vethtet-explorer.staging.voyage.finance/',
     name: Network.Hardhat,
   },
   [VoyageEnvironment.Staging]: {
     chainId: 666,
     endpoint: 'https://vethtest.staging.voyage.finance/',
+    explorer: 'https://vethtet-explorer.staging.voyage.finance/',
     name: Network.Voyage,
   },
   [VoyageEnvironment.Testnet]: {
     chainId: 43313,
     endpoint: 'https://fuji-c.staging.voyage.finance/rpc',
+    explorer: 'https://testnet.snowtrace.io/',
     name: Network.Fuji,
   },
   [VoyageEnvironment.Mainnet]: {
     chainId: 43314,
     endpoint: 'https://avax-c.staging.voyage.finance/rpc',
+    explorer: 'https://snowtrace.io/',
     name: Network.Avalanche,
   },
 };
@@ -71,4 +76,9 @@ export const voyageChains = Object.values(ProviderConfigurationMap).map(
 
 export const getProviderConfiguration = () => {
   return ProviderConfigurationMap[voyageEnvironment()];
+};
+
+export const getTxExpolerLink = (hash: string) => {
+  const { explorer: explorerUrl } = getProviderConfiguration();
+  return `${explorerUrl}tx/${hash}`;
 };
