@@ -13,6 +13,9 @@ import { usdValue } from 'utils/price';
 import { VoyageContracts } from '../../../consts/addresses';
 import { useGetDeployment } from '../../../hooks/useGetDeployment';
 import { useState } from 'react';
+import { showNotification } from '@mantine/notifications';
+import { getTxExpolerLink } from 'utils/env';
+import { shortenHash } from 'utils/hash';
 
 type IProps1 = {
   type: TrancheType;
@@ -88,6 +91,16 @@ export const EnterAmountStep: React.FC<IProps1> = ({
           toHexString(addDecimals(form.values.amount, decimals)),
           accountData?.address,
         ],
+      });
+      showNotification({
+        title: 'Deposit sent',
+        message: (
+          <div>
+            Transaction block is initialized{' '}
+            <a href={getTxExpolerLink(tx.hash)}>{shortenHash(tx.hash)}</a>
+          </div>
+        ),
+        color: 'green',
       });
       const txReceipt = await tx.wait();
       console.log('deposit tx confirmed: ', txReceipt);
