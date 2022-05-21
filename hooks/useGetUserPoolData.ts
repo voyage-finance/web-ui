@@ -1,9 +1,10 @@
-import { useAccount, useContractRead } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { useSupportedTokens } from './useFetchPoolTokens';
 import { UserPoolData } from 'types';
 import { shiftDecimals } from 'utils/bn';
 import { VoyageContracts } from '../consts/addresses';
 import { useGetDeployment } from './useGetDeployment';
+import { useContractRead } from 'hooks';
 
 export const useGetUserPoolData = (tokenSmb: string) => {
   const [tokens] = useSupportedTokens();
