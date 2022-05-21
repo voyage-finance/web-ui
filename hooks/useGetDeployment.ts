@@ -1,5 +1,5 @@
 import { Deployment, Deployments, VoyageContracts } from '../consts/addresses';
-import { ChainID, Network } from '../utils/env';
+import { ChainID, getProviderConfiguration, Network } from '../utils/env';
 import { useNetwork } from 'wagmi';
 
 const EMPTY_DEPLOYMENT: Deployment = {
@@ -10,13 +10,12 @@ const EMPTY_DEPLOYMENT: Deployment = {
 
 export const useGetDeployment = (contract: VoyageContracts): Deployment => {
   const { activeChain } = useNetwork();
-  if (!activeChain) {
-    return EMPTY_DEPLOYMENT;
-  }
 
-  const chainId = activeChain.id as ChainID;
+  const chainId = activeChain
+    ? activeChain.id
+    : getProviderConfiguration().chainId;
 
-  const deploymentMap = Deployments[chainId];
+  const deploymentMap = Deployments[chainId as ChainID];
 
   if (!deploymentMap) {
     return EMPTY_DEPLOYMENT;
