@@ -1,9 +1,10 @@
-import { useContractRead } from 'wagmi';
+import { useContractRead } from 'hooks';
 import { useSupportedTokens } from './useFetchPoolTokens';
 import { PoolData } from 'types';
 import { rayToPercent, shiftDecimals } from 'utils/bn';
 import { VoyageContracts } from '../consts/addresses';
 import { useGetDeployment } from './useGetDeployment';
+import { getProviderConfiguration } from 'utils/env';
 
 export const useGetPoolData = (tokenSmb: string) => {
   const [tokens] = useSupportedTokens();
@@ -18,6 +19,7 @@ export const useGetPoolData = (tokenSmb: string) => {
     'getPoolData',
     {
       args: tokens[tokenSmb],
+      chainId: getProviderConfiguration().chainId,
     }
   );
   return { data: isSuccess ? resultToPoolData(data) : undefined, ...rest };

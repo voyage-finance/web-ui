@@ -1,4 +1,4 @@
-import { useContractRead } from 'wagmi';
+import { useContractRead } from 'hooks';
 import { VoyagePoolTokenMap } from '../types';
 import * as React from 'react';
 import { VoyageCtx } from '@components/base/VoyageProvider';
