@@ -15,8 +15,8 @@ export enum Network {
 export enum ChainID {
   Hardhat = 31337,
   Staging = 666,
-  Fuji = 43313,
-  Avalanche = 43314,
+  Fuji = 43113,
+  Avalanche = 43114,
 }
 
 export const voyageEnvironment = (): VoyageEnvironment => {
@@ -27,8 +27,6 @@ export const voyageEnvironment = (): VoyageEnvironment => {
     case VoyageEnvironment.Testnet:
     case VoyageEnvironment.Mainnet:
       return env;
-    default:
-      return VoyageEnvironment.Development;
   }
 };
 
@@ -41,25 +39,25 @@ interface ProviderConfig {
 
 const ProviderConfigurationMap: Record<VoyageEnvironment, ProviderConfig> = {
   [VoyageEnvironment.Development]: {
-    chainId: 31337,
+    chainId: ChainID.Hardhat,
     endpoint: 'http://localhost:8545',
     explorer: 'https://vethtet-explorer.staging.voyage.finance/',
     name: Network.Hardhat,
   },
   [VoyageEnvironment.Staging]: {
-    chainId: 666,
+    chainId: ChainID.Staging,
     endpoint: 'https://vethtest.staging.voyage.finance/',
     explorer: 'https://vethtet-explorer.staging.voyage.finance/',
     name: Network.Voyage,
   },
   [VoyageEnvironment.Testnet]: {
-    chainId: 43313,
+    chainId: ChainID.Fuji,
     endpoint: 'https://fuji-c.staging.voyage.finance/rpc',
     explorer: 'https://testnet.snowtrace.io/',
     name: Network.Fuji,
   },
   [VoyageEnvironment.Mainnet]: {
-    chainId: 43314,
+    chainId: ChainID.Avalanche,
     endpoint: 'https://avax-c.staging.voyage.finance/rpc',
     explorer: 'https://snowtrace.io/',
     name: Network.Avalanche,
