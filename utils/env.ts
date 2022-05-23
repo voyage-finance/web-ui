@@ -1,3 +1,5 @@
+import { Chain } from '@wagmi/core';
+
 export enum VoyageEnvironment {
   Development = 'development',
   Staging = 'staging',
@@ -8,7 +10,7 @@ export enum VoyageEnvironment {
 export enum Network {
   Hardhat = 'hardhat',
   Voyage = 'voyage',
-  Fuji = 'fuji',
+  Fuji = ' Avalanche FUJI C-Chain',
   Avalanche = 'avalanche',
 }
 
@@ -35,6 +37,13 @@ interface ProviderConfig {
   endpoint: string;
   explorer: string;
   name: Network;
+  currency: Currency;
+}
+
+interface Currency {
+  name: string;
+  symbol: string;
+  decimals: number;
 }
 
 const ProviderConfigurationMap: Record<VoyageEnvironment, ProviderConfig> = {
@@ -43,34 +52,59 @@ const ProviderConfigurationMap: Record<VoyageEnvironment, ProviderConfig> = {
     endpoint: 'http://localhost:8545',
     explorer: 'https://vethtet-explorer.staging.voyage.finance/',
     name: Network.Hardhat,
+    currency: {
+      name: 'Voyage',
+      symbol: 'VYG',
+      decimals: 18,
+    },
   },
   [VoyageEnvironment.Staging]: {
     chainId: ChainID.Staging,
     endpoint: 'https://vethtest.staging.voyage.finance/',
     explorer: 'https://vethtet-explorer.staging.voyage.finance/',
     name: Network.Voyage,
+    currency: {
+      name: 'Voyage',
+      symbol: 'VYG',
+      decimals: 18,
+    },
   },
   [VoyageEnvironment.Testnet]: {
     chainId: ChainID.Fuji,
     endpoint: 'https://fuji-c.staging.voyage.finance/rpc',
     explorer: 'https://testnet.snowtrace.io/',
     name: Network.Fuji,
+    currency: {
+      name: 'Avalanche',
+      symbol: 'AVAX',
+      decimals: 18,
+    },
   },
   [VoyageEnvironment.Mainnet]: {
     chainId: ChainID.Avalanche,
     endpoint: 'https://avax-c.staging.voyage.finance/rpc',
     explorer: 'https://snowtrace.io/',
     name: Network.Avalanche,
+    currency: {
+      name: 'Avalanche',
+      symbol: 'AVAX',
+      decimals: 18,
+    },
   },
 };
 
-export const voyageChains = Object.values(ProviderConfigurationMap).map(
-  ({ chainId, endpoint, name }) => ({
-    id: chainId,
-    name,
-    rpcUrls: { default: endpoint },
-  })
-);
+export const voyageChains: Chain[] = Object.values(
+  ProviderConfigurationMap
+).map(({ chainId, endpoint, name, explorer, currency }) => ({
+  id: chainId,
+  name,
+  nativeCurrency: currency,
+  blockExplorers: {
+    etherscan: { name: 'default', url: explorer },
+    default: { name: 'default', url: explorer },
+  },
+  rpcUrls: { default: endpoint },
+}));
 
 export const getProviderConfiguration = () => {
   return ProviderConfigurationMap[voyageEnvironment()];
