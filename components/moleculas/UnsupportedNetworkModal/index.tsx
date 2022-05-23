@@ -3,6 +3,8 @@ import { Group } from '@mantine/core';
 import { getProviderConfiguration } from 'utils/env';
 import { useAccount, useNetwork } from 'wagmi';
 
+const noop = () => undefined;
+
 const UnsupportedNetworkModal: React.FC = () => {
   const { activeChain, switchNetwork } = useNetwork();
   const { data: accountData } = useAccount();
@@ -10,7 +12,7 @@ const UnsupportedNetworkModal: React.FC = () => {
   return (
     <Modal
       opened={accountData !== null && activeChain?.id !== currentConf.chainId}
-      onClose={() => {}}
+      onClose={noop}
       withCloseButton={false}
     >
       <Group direction="column" align="center">
