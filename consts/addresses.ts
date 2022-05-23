@@ -35,34 +35,34 @@ export const Deployments: Record<
     [VoyageContracts.Voyager]: {
       network: Network.Voyage,
       abi: Voyager,
-      address: '0x4231030727A637eD5fBe180D1e4fa23EE2DA6400',
+      address: '0x13F1B8d31d9AA211CDC0ee0f848eac1e2Be8aED2',
     },
     [VoyageContracts.LiquidityManager]: {
       network: Network.Voyage,
       abi: LiquidityManager,
-      address: '0xf69F09e7138fdA58fcb3F9A95e67A8c9B0a8C025',
+      address: '0x7b802645d6Dc23ffaB50001B9487da16466c52c4',
     },
     [VoyageContracts.VoyageProtocolDataProvider]: {
       network: Network.Voyage,
       abi: VoyageProtocolDataProvider,
-      address: '0x89e3CFB42df3B932C8e07884EEA1Ca1D1CEf67c6',
+      address: '0x9A1F956D4A8a993784B2F67315a5d8613e4165e8',
     },
   },
   [ChainID.Fuji]: {
     [VoyageContracts.Voyager]: {
       network: Network.Fuji,
       abi: Voyager,
-      address: '0xc884c877599A8857819e2e56Cde9feC86abbD5Cb',
+      address: '0xFa075Bc7A07F2F817bFff8AA81425b39572b1cC8',
     },
     [VoyageContracts.LiquidityManager]: {
       network: Network.Fuji,
       abi: LiquidityManager,
-      address: '0x86898a89e50bae21c0dF62b1420e9103a4D6D29b',
+      address: '0xae8b7B6bc3451Cd8f5e4C05d9Db693FFFFd26CD9',
     },
     [VoyageContracts.VoyageProtocolDataProvider]: {
       network: Network.Fuji,
       abi: VoyageProtocolDataProvider,
-      address: '0xb866fce6d08c8D80a73a228D39C9ebb2d8a56FE6',
+      address: '0x6b46273033293BFd550312DdfD263A683a2975De',
     },
   },
   // TODO: after mainnet deployment
