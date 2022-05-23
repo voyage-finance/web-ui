@@ -72,7 +72,7 @@ export const EnterAmountStep: React.FC<IProps1> = ({
           return 'Amount should be a positive number';
         }
 
-        if (!userHoldings || num > userHoldings) {
+        if (!userHoldings || num.gt(userHoldings)) {
           return 'Insufficient balance!';
         }
 
