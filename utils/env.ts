@@ -8,10 +8,10 @@ export enum VoyageEnvironment {
 }
 
 export enum Network {
-  Hardhat = 'hardhat',
-  Voyage = 'voyage',
+  Hardhat = 'Hardhat',
+  Voyage = 'Voyage POA',
   Fuji = ' Avalanche FUJI C-Chain',
-  Avalanche = 'avalanche',
+  Avalanche = 'Avalanche C-Chain',
 }
 
 export enum ChainID {
