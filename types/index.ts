@@ -11,15 +11,20 @@ export const TrancheTextMap = {
 };
 
 export type PoolData = {
-  totalLiquidity: BigNumber;
-  juniorLiquidity: BigNumber;
-  seniorLiquidity: BigNumber;
-  juniorLiquidityRate: BigNumber;
-  seniorLiquidityRate: BigNumber;
-  totalDebt: BigNumber;
-  borrowRate: BigNumber;
-  trancheRatio: BigNumber;
+  id: string;
+  isActive: boolean;
+  underlyingAsset: string;
+  collateralAsset: string;
+  symbol: string;
   decimals: number;
+  juniorTrancheTotalLiquidity: BigNumber;
+  juniorTrancheLiquidityRate: BigNumber;
+  seniorTrancheTotalLiquidity: BigNumber;
+  seniorTrancheAvailableLiquidity: BigNumber;
+  seniorTrancheLiquidityRate: BigNumber;
+  totalLiquidity: BigNumber;
+  totalBorrow: BigNumber;
+  trancheRatio: BigNumber;
 };
 
 export type UserPoolData = {

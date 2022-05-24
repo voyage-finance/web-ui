@@ -8,11 +8,7 @@ import { Card, Title } from '@components/base';
 import PoolDetailCard from '@components/organisms/PoolDetailCard';
 import TrancheCard from '@components/organisms/TrancheCard';
 import { TrancheType } from 'types';
-import {
-  useAllowanceApproved,
-  useGetPoolData,
-  useGetUserPoolData,
-} from 'hooks';
+import { useAllowanceApproved, useGetPool, useGetUserPoolData } from 'hooks';
 import LineChart, { generateTimeSeries } from '@components/base/LineChart';
 
 const ChartCards: React.FC = () => (
@@ -47,11 +43,7 @@ const ChartCards: React.FC = () => (
 );
 
 const PoolDetailPage: NextPage<{ symbol: string }> = ({ symbol }) => {
-  const {
-    data: poolData,
-    isLoading,
-    refetch: refetchPoolData,
-  } = useGetPoolData(symbol);
+  const { data: poolData, loading } = useGetPool(symbol);
 
   const [isApproved, isApproving, onApprove] = useAllowanceApproved(symbol);
 
@@ -59,7 +51,7 @@ const PoolDetailPage: NextPage<{ symbol: string }> = ({ symbol }) => {
     useGetUserPoolData(symbol);
 
   const onDeposited = () => {
-    refetchPoolData();
+    // TODO refetchPoolData();
     refetchUserPoolData();
   };
 
@@ -75,7 +67,7 @@ const PoolDetailPage: NextPage<{ symbol: string }> = ({ symbol }) => {
         <Grid align="stretch">
           <Grid.Col md={12} lg={3}>
             <PoolDetailCard
-              loading={isLoading}
+              loading={loading}
               poolData={poolData}
               symbol={symbol}
             />

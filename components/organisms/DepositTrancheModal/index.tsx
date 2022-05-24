@@ -83,14 +83,14 @@ const DepositTrancheModal: React.FC<IProps> = ({
           decimals={poolData.decimals}
           totalDeposit={
             type == TrancheType.Senior
-              ? poolData.seniorLiquidity
-              : poolData.juniorLiquidity
+              ? poolData.seniorTrancheTotalLiquidity
+              : poolData.juniorTrancheTotalLiquidity
           }
           balance={balance}
           APY={
             type == TrancheType.Senior
-              ? poolData.seniorLiquidityRate
-              : poolData.juniorLiquidityRate
+              ? poolData.seniorTrancheLiquidityRate
+              : poolData.juniorTrancheLiquidityRate
           }
           userHoldings={userAssetHolding}
           symbol={symbol}

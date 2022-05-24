@@ -23,7 +23,7 @@ export const Deployments: Record<
     [VoyageContracts.LiquidityManager]: {
       network: Network.Hardhat,
       abi: LiquidityManager,
-      address: '0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e',
+      address: '0x9A676e781A523b5d0C0e43731313A708CB607508',
     },
     [VoyageContracts.VoyageProtocolDataProvider]: {
       network: Network.Hardhat,

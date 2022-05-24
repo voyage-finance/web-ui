@@ -1,18 +1,22 @@
 // noinspection HtmlUnknownTarget
 import { Loader, Table } from '@mantine/core';
 import styles from './index.module.scss';
-import { useQuery } from '@apollo/client';
-import { GET_POOLS } from '@graph/queries/pools';
 import { useEffect, useState } from 'react';
 import { Card, Text, Title } from '@components/base';
-import PoolRow, { PoolRowProps } from './PoolRow';
+import PoolRow from './PoolRow';
+import { PoolData } from 'types';
+import { useGetPools } from 'hooks';
 
 const PoolsTable: React.FC = () => {
-  const { loading, data } = useQuery(GET_POOLS);
+  const { loading, data } = useGetPools();
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    console.log('[GET_POOLS]', data);
+  }, [data]);
 
   const columns = [
     'Project',
@@ -59,9 +63,7 @@ const PoolsTable: React.FC = () => {
                 <Loader />
               </td>
             ) : (
-              data.pools.map((pool: PoolRowProps) => (
-                <PoolRow key={pool.id} {...pool} />
-              ))
+              data.map((pool: PoolData) => <PoolRow key={pool.id} {...pool} />)
             ))}
         </tbody>
       </Table>
