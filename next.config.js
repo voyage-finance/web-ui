@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -12,6 +13,14 @@ const nextConfig = {
       config.plugins.push(new ForkTsCheckerWebpackPlugin());
     }
     return config;
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/graphql',
+        destination: process.env.NEXT_PUBLIC_GQL_URL,
+      },
+    ];
   },
 };
 

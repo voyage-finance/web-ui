@@ -31,8 +31,8 @@ const getLiqiuidityByTranche = (
   }
 
   return tranche === TrancheType.Senior
-    ? poolData.seniorLiquidity
-    : poolData.juniorLiquidity;
+    ? poolData.seniorTrancheTotalLiquidity
+    : poolData.juniorTrancheTotalLiquidity;
 };
 
 const TrancheCard: React.FC<IProps> = ({
@@ -52,8 +52,8 @@ const TrancheCard: React.FC<IProps> = ({
   const liquidity = getLiqiuidityByTranche(poolData, type);
   const currentAPY =
     type === TrancheType.Senior
-      ? poolData?.seniorLiquidityRate
-      : poolData?.juniorLiquidityRate;
+      ? poolData?.seniorTrancheLiquidityRate
+      : poolData?.juniorTrancheLiquidityRate;
 
   return (
     <Card px={32} py={29}>

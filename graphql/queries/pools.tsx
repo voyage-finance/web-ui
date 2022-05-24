@@ -4,18 +4,40 @@ export const GET_POOLS = gql`
   {
     pools {
       id
-      name
+      isActive
+      underlyingAsset
       symbol
-      totalLuquidity
-      totalLuquidityUSD
-      seniorLuquidity
-      seniorLuquidityUSD
-      seniorAPY
-      seniorDeposit
-      juniorLuquidity
-      juniorLuquidityUSD
-      juniorAPY
-      juniorDeposit
+      decimals
+      collateralAsset
+      juniorTrancheTotalLiquidity
+      juniorTrancheLiquidityRate
+      seniorTrancheTotalLiquidity
+      seniorTrancheAvailableLiquidity
+      seniorTrancheLiquidityRate
+      totalLiquidity
+      totalBorrow
+      trancheRatio
+    }
+  }
+`;
+
+export const GET_POOL = gql`
+  query Pool($asset: Bytes) {
+    pool(underlyingAsset: $asset) {
+      id
+      isActive
+      underlyingAsset
+      symbol
+      decimals
+      collateralAsset
+      juniorTrancheTotalLiquidity
+      juniorTrancheLiquidityRate
+      seniorTrancheTotalLiquidity
+      seniorTrancheAvailableLiquidity
+      seniorTrancheLiquidityRate
+      totalLiquidity
+      totalBorrow
+      trancheRatio
     }
   }
 `;

@@ -1,38 +1,63 @@
-import { useContractRead } from 'hooks';
 import { useSupportedTokens } from './useFetchPoolTokens';
 import { PoolData } from 'types';
-import { rayToPercent, shiftDecimals } from 'utils/bn';
-import { VoyageContracts } from '../consts/addresses';
-import { useGetDeployment } from './useGetDeployment';
-import { getProviderConfiguration } from 'utils/env';
+import { useQuery } from '@apollo/client';
+import { GET_POOL, GET_POOLS } from '@graph/queries/pools';
+import { shiftDecimals } from 'utils/bn';
 
-export const useGetPoolData = (tokenSmb: string) => {
+export const useGetPool = (tokenSmb: string) => {
   const [tokens] = useSupportedTokens();
-  const { address, abi } = useGetDeployment(
-    VoyageContracts.VoyageProtocolDataProvider
-  );
-  const { data, isSuccess, ...rest } = useContractRead(
-    {
-      addressOrName: address,
-      contractInterface: abi,
+  const { loading, data, error } = useQuery(GET_POOL, {
+    variables: {
+      asset: tokens[tokenSmb],
     },
-    'getPoolData',
-    {
-      args: tokens[tokenSmb],
-      chainId: getProviderConfiguration().chainId,
-    }
-  );
-  return { data: isSuccess ? resultToPoolData(data) : undefined, ...rest };
+  });
+  return {
+    data: data ? resultToPoolData(data.pool) : undefined,
+    loading,
+    error,
+  };
+};
+
+export const useGetPools = () => {
+  const { loading, data, error } = useQuery(GET_POOLS);
+  const pools: PoolData[] = data
+    ? data.pools.map((pool: any) => resultToPoolData(pool))
+    : [];
+  return {
+    data: pools,
+    loading,
+    error,
+  };
 };
 
 const resultToPoolData = (res: any): PoolData => ({
-  totalLiquidity: shiftDecimals(res[0], res[8].toNumber()),
-  juniorLiquidity: shiftDecimals(res[1], res[8].toNumber()),
-  seniorLiquidity: shiftDecimals(res[2], res[8].toNumber()),
-  juniorLiquidityRate: rayToPercent(res[3]),
-  seniorLiquidityRate: rayToPercent(res[4]),
-  totalDebt: shiftDecimals(res[5], res[8].toNumber()),
-  borrowRate: rayToPercent(res[6]),
-  trancheRatio: rayToPercent(res[7]),
-  decimals: res[8].toNumber(),
+  id: res.id,
+  isActive: res.inActive,
+  underlyingAsset: res.underlyingAsset,
+  symbol: res.symbol,
+  decimals: Number(res.decimals),
+  collateralAsset: res.collateralAsset,
+  juniorTrancheTotalLiquidity: shiftDecimals(
+    res.juniorTrancheTotalLiquidity,
+    Number(res.decimals)
+  ),
+  juniorTrancheLiquidityRate: shiftDecimals(
+    res.juniorTrancheLiquidityRate,
+    Number(res.decimals)
+  ),
+  seniorTrancheTotalLiquidity: shiftDecimals(
+    res.seniorTrancheTotalLiquidity,
+    Number(res.decimals)
+  ),
+  seniorTrancheAvailableLiquidity: shiftDecimals(
+    res.seniorTrancheAvailableLiquidity,
+    Number(res.decimals)
+  ),
+  seniorTrancheLiquidityRate: shiftDecimals(
+    res.seniorTrancheLiquidityRate,
+    Number(res.decimals)
+  ),
+  totalLiquidity: shiftDecimals(res.totalLiquidity, Number(res.decimals)),
+  totalBorrow: shiftDecimals(res.totalBorrow, Number(res.decimals)),
+  trancheRatio: res.trancheRatio,
 });

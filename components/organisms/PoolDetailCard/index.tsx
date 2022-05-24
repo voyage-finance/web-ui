@@ -21,7 +21,7 @@ const PoolDetailCard: React.FC<IProps> = ({ poolData, loading, symbol }) => {
   const [priceData, priceDataLoading] = useAssetPrice(ReserveAssets.TUS);
   const isLoadingData = loading || priceDataLoading;
   const availableLiquidity = poolData
-    ? poolData.totalLiquidity.minus(poolData.totalDebt)
+    ? poolData.totalLiquidity.minus(poolData.totalBorrow)
     : Zero;
 
   return (
@@ -99,13 +99,13 @@ const PoolDetailCard: React.FC<IProps> = ({ poolData, loading, symbol }) => {
         <Group spacing={0} direction="column">
           <Text type="secondary">Senior APY</Text>
           <Title order={4}>
-            {poolData && poolData.seniorLiquidityRate.toString()}%
+            {poolData && poolData.seniorTrancheLiquidityRate.toString()}%
           </Title>
         </Group>
         <Group spacing={0} direction="column">
           <Text type="secondary">Junior APY</Text>
           <Title order={4}>
-            {poolData && poolData.juniorLiquidityRate.toString()}%
+            {poolData && poolData.juniorTrancheLiquidityRate.toString()}%
           </Title>
         </Group>
       </Group>
