@@ -2,7 +2,7 @@ import { useSupportedTokens } from './useFetchPoolTokens';
 import { PoolData } from 'types';
 import { useQuery } from '@apollo/client';
 import { GET_POOL, GET_POOLS } from '@graph/queries/pools';
-import { shiftDecimals } from 'utils/bn';
+import { rayToPercent, shiftDecimals } from 'utils/bn';
 
 export const useGetPool = (tokenSmb: string) => {
   const [tokens] = useSupportedTokens();
@@ -41,10 +41,7 @@ const resultToPoolData = (res: any): PoolData => ({
     res.juniorTrancheTotalLiquidity,
     Number(res.decimals)
   ),
-  juniorTrancheLiquidityRate: shiftDecimals(
-    res.juniorTrancheLiquidityRate,
-    Number(res.decimals)
-  ),
+  juniorTrancheLiquidityRate: rayToPercent(res.juniorTrancheLiquidityRate),
   seniorTrancheTotalLiquidity: shiftDecimals(
     res.seniorTrancheTotalLiquidity,
     Number(res.decimals)
@@ -53,11 +50,8 @@ const resultToPoolData = (res: any): PoolData => ({
     res.seniorTrancheAvailableLiquidity,
     Number(res.decimals)
   ),
-  seniorTrancheLiquidityRate: shiftDecimals(
-    res.seniorTrancheLiquidityRate,
-    Number(res.decimals)
-  ),
+  seniorTrancheLiquidityRate: rayToPercent(res.seniorTrancheLiquidityRate),
   totalLiquidity: shiftDecimals(res.totalLiquidity, Number(res.decimals)),
   totalBorrow: shiftDecimals(res.totalBorrow, Number(res.decimals)),
-  trancheRatio: res.trancheRatio,
+  trancheRatio: rayToPercent(res.trancheRatio),
 });
