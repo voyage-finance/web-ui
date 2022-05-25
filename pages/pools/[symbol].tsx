@@ -10,6 +10,7 @@ import TrancheCard from '@components/organisms/TrancheCard';
 import { TrancheType } from 'types';
 import { useAllowanceApproved, useGetPool, useGetUserPoolData } from 'hooks';
 import LineChart, { generateTimeSeries } from '@components/base/LineChart';
+import TrancheDeposits from '@components/organisms/TrancheDeposits';
 
 const ChartCards: React.FC = () => (
   <Grid>
@@ -45,14 +46,8 @@ const ChartCards: React.FC = () => (
 const PoolDetailPage: NextPage<{ symbol: string }> = ({ symbol }) => {
   const { data: poolData, loading } = useGetPool(symbol);
 
-  const [isApproved, isApproving, onApprove] = useAllowanceApproved(symbol);
-
-  const { data: userPoolData, refetch: refetchUserPoolData } =
-    useGetUserPoolData(symbol);
-
   const onDeposited = () => {
     // TODO refetchPoolData();
-    refetchUserPoolData();
   };
 
   return (
@@ -74,40 +69,16 @@ const PoolDetailPage: NextPage<{ symbol: string }> = ({ symbol }) => {
           </Grid.Col>
           <Grid.Col md={12} lg={9}>
             <ChartCards />
-            <Card style={{ overflow: 'visible' }} mt={16}>
-              <Grid>
-                <Grid.Col span={6}>
-                  <TrancheCard
-                    type={TrancheType.Senior}
-                    poolData={poolData}
-                    withdrawable={
-                      userPoolData?.withdrawableSeniorTrancheBalance
-                    }
-                    balance={userPoolData?.seniorTrancheBalance}
-                    onDeposited={onDeposited}
-                    isApproved={isApproved}
-                    isApproving={isApproving}
-                    onApprove={onApprove}
-                    symbol={symbol}
-                  />
-                </Grid.Col>
-                <Grid.Col span={6}>
-                  <TrancheCard
-                    type={TrancheType.Junior}
-                    poolData={poolData}
-                    withdrawable={
-                      userPoolData?.withdrawableJuniorTrancheBalance
-                    }
-                    balance={userPoolData?.juniorTrancheBalance}
-                    onDeposited={onDeposited}
-                    isApproved={isApproved}
-                    isApproving={isApproving}
-                    onApprove={onApprove}
-                    symbol={symbol}
-                  />
-                </Grid.Col>
-              </Grid>
-            </Card>
+            <Grid>
+              <Grid.Col md={12} lg={8}>
+                <TrancheDeposits
+                  poolData={poolData}
+                  onDeposited={onDeposited}
+                  symbol={symbol}
+                />
+              </Grid.Col>
+              <Grid.Col md={12} lg={4}></Grid.Col>
+            </Grid>
           </Grid.Col>
         </Grid>
       </main>
