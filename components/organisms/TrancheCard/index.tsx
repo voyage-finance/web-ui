@@ -1,24 +1,23 @@
 import { Button, Card, Divider, Text, Title } from '@components/base';
-import { Group } from '@mantine/core';
-import Image from 'next/image';
-import React, { useState } from 'react';
-import { PoolData, TrancheTextMap, TrancheType } from 'types';
-import DepositTrancheModal from '../DepositTrancheModal';
-import { useAssetPrice } from '../../../hooks/useAssetPrice';
-import { ReserveAssets } from '../../../consts';
-import { Zero } from '../../../utils/bn';
-import { usdValue } from '../../../utils/price';
+import { Box, Group } from '@mantine/core';
+import React from 'react';
+import { PoolData, TrancheType } from 'types';
 import BigNumber from 'bignumber.js';
-
+import CoinsImg from 'assets/two_coins.png';
+import Image from 'next/image';
+import { useAssetPrice } from 'hooks';
+import { ReserveAssets } from '../../../consts';
+import { Zero } from 'utils/bn';
+import { usdValue } from 'utils/price';
 type IProps = {
   type: TrancheType;
   poolData?: PoolData;
   withdrawable?: BigNumber;
   balance?: BigNumber;
-  onDeposited: () => void;
+  onDepositClick: () => void;
   isApproved?: boolean;
   isApproving?: boolean;
-  onApprove: () => void;
+  onApproveClick: () => void;
   symbol: string;
 };
 
@@ -40,14 +39,14 @@ const TrancheCard: React.FC<IProps> = ({
   poolData,
   withdrawable,
   balance,
-  onDeposited,
+  onDepositClick,
   isApproved,
   isApproving,
-  onApprove,
+  onApproveClick,
   symbol,
 }) => {
-  const [depositModalOpen, setDepositModalOpened] = useState(false);
   const [priceData] = useAssetPrice(ReserveAssets.TUS);
+
   // TODO: this should be the user's deposits, not pool deposits
   const liquidity = getLiqiuidityByTranche(poolData, type);
   const currentAPY =
@@ -56,21 +55,44 @@ const TrancheCard: React.FC<IProps> = ({
       : poolData?.juniorTrancheLiquidityRate;
 
   return (
-    <Card px={32} py={29}>
-      <Text type="gradient" weight={700} mb={16}>
-        {TrancheTextMap[type]} Tranche
-      </Text>
-      <Image
-        src="/crabada-cover.png"
-        alt="crabada"
-        layout="responsive"
-        width={425}
-        height={108}
-        objectFit="cover"
-      />
+    <Card
+      px={32}
+      py={29}
+      sx={{
+        borderTopRightRadius: 0,
+        borderTopLeftRadius: 0,
+        borderTopWidth: 0,
+      }}
+    >
+      <Box
+        px={30}
+        py={20}
+        sx={{
+          background: 'rgba(255, 255, 255, 0.1)',
+          borderRadius: 10,
+        }}
+      >
+        <Group noWrap>
+          <Image
+            src={CoinsImg.src}
+            height={60}
+            width={90}
+            objectFit="contain"
+            alt="coins"
+          />
+          <Text>
+            Deposits made into the Senior Tranche are used solely for lending to
+            borrowers. To learn more on the lender risks involved, read here.
+          </Text>
+        </Group>
+      </Box>
       <Group position="apart" mt={16} align="start">
         <Group spacing={0} direction="column">
-          <Text type="secondary">{TrancheTextMap[type]} Tranche Liquidity</Text>
+          <Text type="secondary">Senior APY</Text>
+          <Title order={4}>{currentAPY?.toString()}%</Title>
+        </Group>
+        <Group spacing={0} direction="column" align={'end'}>
+          <Text type="secondary">Senior Tranche Liquidity</Text>
           <Title order={4}>
             {liquidity.toFixed(3, BigNumber.ROUND_UP)}{' '}
             <Text component="span" inherit type="accent">
@@ -82,14 +104,10 @@ const TrancheCard: React.FC<IProps> = ({
             priceData.latestPrice
           )}`}</Text>
         </Group>
-        <Group spacing={0} direction="column" align={'end'}>
-          <Text type="secondary">{TrancheTextMap[type]} APY</Text>
-          <Title order={4}>{currentAPY?.toString()}%</Title>
-        </Group>
       </Group>
       <Divider my={16} orientation="horizontal" />
       <Group position="apart">
-        <Text type="secondary">Your Total Deposit</Text>
+        <Text type="secondary">Current Balance</Text>
         <Group direction="column" spacing={0} align="end">
           <Title order={5}>
             {balance?.toFixed(3, BigNumber.ROUND_UP)}{' '}
@@ -98,14 +116,26 @@ const TrancheCard: React.FC<IProps> = ({
             </Text>
           </Title>
           <Text type="secondary">{`~${usdValue(
-            liquidity,
+            balance || Zero,
             priceData.latestPrice
           )}`}</Text>
         </Group>
       </Group>
-      <Group position="apart">
-        <Text type="secondary">Your Withdrawable</Text>
-        <Group direction="column" spacing={0} align="end" mt={16}>
+      <Group position="apart" mt={11}>
+        <Text type="secondary">Tranche Share</Text>
+        {/* TODO */}
+        <Title order={5}>0 %</Title>
+      </Group>
+      <Group position="apart" mt={7}>
+        <Text type="secondary">Lifetime PnL</Text>
+        {/* TODO */}
+        <Title order={5} style={{ color: '#0CCDAA' }}>
+          +0 TUS
+        </Title>
+      </Group>
+      <Group position="apart" mt={7}>
+        <Text type="secondary">Amount Unbonding</Text>
+        <Group direction="column" spacing={0} align="end">
           <Title order={5}>
             {withdrawable?.toFixed(3, BigNumber.ROUND_UP)}{' '}
             <Text weight={400} component="span">
@@ -119,26 +149,30 @@ const TrancheCard: React.FC<IProps> = ({
         </Group>
       </Group>
       {isApproved ? (
-        <Group grow mt={16}>
-          <Button onClick={() => setDepositModalOpened(true)}>Deposit</Button>
-          <Button kind="secondary" disabled={withdrawable?.isZero()}>
+        <Group position="right" mt={16}>
+          <Button onClick={() => onDepositClick()} style={{ width: 205 }}>
+            Deposit
+          </Button>
+          <Button
+            kind="secondary"
+            disabled={withdrawable?.isZero()}
+            style={{ width: 205 }}
+          >
             Withdraw
           </Button>
         </Group>
       ) : (
-        <Button onClick={onApprove} loading={isApproving} mt={16} fullWidth>
-          Approve
-        </Button>
+        <Group position="right">
+          <Button
+            onClick={onApproveClick}
+            loading={isApproving}
+            mt={16}
+            style={{ width: 205, marginLeft: 'auto' }}
+          >
+            Approve
+          </Button>
+        </Group>
       )}
-      <DepositTrancheModal
-        type={type}
-        opened={depositModalOpen}
-        onClose={() => setDepositModalOpened(false)}
-        poolData={poolData}
-        onDeposited={onDeposited}
-        symbol={symbol}
-        balance={balance}
-      />
     </Card>
   );
 };
