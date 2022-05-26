@@ -61,13 +61,10 @@ const PoolRow: React.FC<PoolData> = ({
         </Group>
       </td>
       <td>
-        <BalanceTD amount={totalLiquidity} amountUSD={totalLiquidity} />
+        <BalanceTD amount={totalLiquidity} />
       </td>
       <td>
-        <BalanceTD
-          amount={seniorTrancheTotalLiquidity}
-          amountUSD={seniorTrancheTotalLiquidity}
-        />
+        <BalanceTD amount={seniorTrancheTotalLiquidity} />
       </td>
       <td>
         <Title order={6} align="right">
@@ -75,13 +72,10 @@ const PoolRow: React.FC<PoolData> = ({
         </Title>
       </td>
       <td>
-        <BalanceTD amount={Zero} amountUSD={Zero} />
+        <BalanceTD amount={Zero} />
       </td>
       <td>
-        <BalanceTD
-          amount={juniorTrancheTotalLiquidity}
-          amountUSD={juniorTrancheTotalLiquidity}
-        />
+        <BalanceTD amount={juniorTrancheTotalLiquidity} />
       </td>
       <td align="right">
         <Title order={6}>
@@ -89,7 +83,7 @@ const PoolRow: React.FC<PoolData> = ({
         </Title>
       </td>
       <td>
-        <BalanceTD amount={Zero} amountUSD={Zero} />
+        <BalanceTD amount={Zero} />
       </td>
       <td>
         <Group style={{ justifyContent: 'end' }}>

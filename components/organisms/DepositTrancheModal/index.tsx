@@ -96,13 +96,18 @@ const DepositTrancheModal: React.FC<IProps> = ({
           symbol={symbol}
         />
       )}
-      {(step === STEP.Success || step === STEP.Error) && (
+      {(step === STEP.Success || step === STEP.Error) && poolData && (
         <DepositStatusStep
           type={type}
           amount={depositedAmount}
           // eslint-disable-next-line
           newTotal={balance!}
           error={errorMessage}
+          totalLiquidity={
+            type == TrancheType.Senior
+              ? poolData.seniorTrancheTotalLiquidity
+              : poolData.juniorTrancheTotalLiquidity
+          }
           onClose={onClose}
           symbol={symbol}
         />

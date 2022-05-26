@@ -1,14 +1,16 @@
 import { Button, Card, Divider, Text, Title } from '@components/base';
 import { Box, Group } from '@mantine/core';
 import React from 'react';
-import { PoolData, TrancheType } from 'types';
+import { PoolData, TrancheTextMap, TrancheType } from 'types';
 import BigNumber from 'bignumber.js';
 import CoinsImg from 'assets/two_coins.png';
+import CoinStackImg from 'assets/coin_stack.png';
 import Image from 'next/image';
 import { useAssetPrice } from 'hooks';
 import { ReserveAssets } from '../../../consts';
 import { Zero } from 'utils/bn';
 import { usdValue } from 'utils/price';
+
 type IProps = {
   type: TrancheType;
   poolData?: PoolData;
@@ -54,6 +56,9 @@ const TrancheCard: React.FC<IProps> = ({
       ? poolData?.seniorTrancheLiquidityRate
       : poolData?.juniorTrancheLiquidityRate;
 
+  const trancheShare =
+    poolData && balance ? balance.div(liquidity).multipliedBy(100) : Zero;
+
   return (
     <Card
       px={32}
@@ -74,25 +79,26 @@ const TrancheCard: React.FC<IProps> = ({
       >
         <Group noWrap>
           <Image
-            src={CoinsImg.src}
+            src={type === TrancheType.Senior ? CoinsImg.src : CoinStackImg.src}
             height={60}
             width={90}
             objectFit="contain"
             alt="coins"
           />
           <Text>
-            Deposits made into the Senior Tranche are used solely for lending to
-            borrowers. To learn more on the lender risks involved, read here.
+            {type === TrancheType.Senior
+              ? 'Deposits made into the Senior Tranche are used solely for lending to borrowers. To learn more on the lender risks involved, read here.'
+              : 'Deposits made into the Junior Tranche are used to insure volatility risk at default. To learn more on the lender risks involved, read here.'}
           </Text>
         </Group>
       </Box>
       <Group position="apart" mt={16} align="start">
         <Group spacing={0} direction="column">
-          <Text type="secondary">Senior APY</Text>
+          <Text type="secondary">{TrancheTextMap[type]} APY</Text>
           <Title order={4}>{currentAPY?.toString()}%</Title>
         </Group>
         <Group spacing={0} direction="column" align={'end'}>
-          <Text type="secondary">Senior Tranche Liquidity</Text>
+          <Text type="secondary">{TrancheTextMap[type]} Tranche Liquidity</Text>
           <Title order={4}>
             {liquidity.toFixed(3, BigNumber.ROUND_UP)}{' '}
             <Text component="span" inherit type="accent">
@@ -124,7 +130,7 @@ const TrancheCard: React.FC<IProps> = ({
       <Group position="apart" mt={11}>
         <Text type="secondary">Tranche Share</Text>
         {/* TODO */}
-        <Title order={5}>0 %</Title>
+        <Title order={5}>{trancheShare.toFixed(3)} %</Title>
       </Group>
       <Group position="apart" mt={7}>
         <Text type="secondary">Lifetime PnL</Text>
