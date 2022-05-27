@@ -1,5 +1,4 @@
-import { Card, Text } from '@components/base';
-import { Box, Group } from '@mantine/core';
+import { Group } from '@mantine/core';
 import React, { useState } from 'react';
 import { PoolData, TrancheType } from 'types';
 import { useAllowanceApproved, useGetUserPoolData } from 'hooks';

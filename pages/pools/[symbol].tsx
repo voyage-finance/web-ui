@@ -6,9 +6,7 @@ import { Grid } from '@mantine/core';
 import styles from 'styles/Home.module.scss';
 import { Card, Title } from '@components/base';
 import PoolDetailCard from '@components/organisms/PoolDetailCard';
-import TrancheCard from '@components/organisms/TrancheCard';
-import { TrancheType } from 'types';
-import { useAllowanceApproved, useGetPool, useGetUserPoolData } from 'hooks';
+import { useGetPool } from 'hooks';
 import LineChart, { generateTimeSeries } from '@components/base/LineChart';
 import TrancheDeposits from '@components/organisms/TrancheDeposits';
 
