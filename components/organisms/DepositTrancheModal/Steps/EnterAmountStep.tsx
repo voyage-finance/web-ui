@@ -106,7 +106,6 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onDeposited, onError }) => {
             tokens[symbol],
             type == TrancheType.Senior ? '1' : '0',
             toHexString(addDecimals(form.values.amount, poolData.decimals)),
-            accountData?.address,
           ],
         });
         showNotification({

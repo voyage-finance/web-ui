@@ -22,8 +22,8 @@ const DepositTrancheModal: React.FC<IProps> = ({
   onClose: _onClose,
   ...props
 }) => {
-  const [, isPoolDataLoading] = usePoolDataCtx();
-  const [, isUserDataLoading] = useUserDataCtx();
+  const [, isPoolDataLoading, refetchPool] = usePoolDataCtx();
+  const [, isUserDataLoading, refetchData] = useUserDataCtx();
   const [step, setStep] = useState(STEP.Deposit);
   const [depositedAmount, setDepositedAmount] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -37,7 +37,8 @@ const DepositTrancheModal: React.FC<IProps> = ({
       message: `Your deposit of amount ${amount} was successfull`,
       color: 'green',
     });
-    // TODO: update to status step with new data
+    refetchPool();
+    refetchData();
   };
 
   const onError = (error: string) => {

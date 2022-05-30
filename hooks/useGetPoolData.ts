@@ -6,7 +6,7 @@ import { useSupportedTokensCtx } from './context/useSupportedTokensCtx';
 
 export const useGetPool = (tokenSmb: string) => {
   const [tokens] = useSupportedTokensCtx();
-  const { loading, data, error } = useQuery(GET_POOL, {
+  const { loading, data, error, refetch } = useQuery(GET_POOL, {
     variables: {
       asset: tokens[tokenSmb],
     },
@@ -15,11 +15,12 @@ export const useGetPool = (tokenSmb: string) => {
     data: data ? resultToPoolData(data.pool) : undefined,
     loading,
     error,
+    refetch,
   };
 };
 
 export const useGetPools = () => {
-  const { loading, data, error } = useQuery(GET_POOLS);
+  const { loading, data, error, refetch } = useQuery(GET_POOLS);
   const pools: PoolData[] = data
     ? data.pools.map((pool: any) => resultToPoolData(pool))
     : [];
@@ -27,6 +28,7 @@ export const useGetPools = () => {
     data: pools,
     loading,
     error,
+    refetch,
   };
 };
 
