@@ -36,6 +36,14 @@ export const rayToPercent = (num: any) => {
   return new BigNumber(num.toString()).dividedBy(Ray).multipliedBy(100);
 };
 
+export const formatAmount = (value?: BigNumber) => {
+  return (value ? value : Zero).toFixed(3, BigNumber.ROUND_UP);
+};
+
+export const formatPercent = (value?: BigNumber) => {
+  return `${(value ? value : Zero).toFixed(3, BigNumber.ROUND_UP)} %`;
+};
+
 export const Ray = new BigNumber(10).pow(27);
 
 export const Zero = new BigNumber(0);

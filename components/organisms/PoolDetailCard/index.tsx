@@ -5,8 +5,7 @@ import { BrandDiscord, BrandTelegram, BrandTwitter } from 'tabler-icons-react';
 import { useAssetPrice } from '../../../hooks/useAssetPrice';
 import { ReserveAssets } from '../../../consts';
 import { usdValue } from '../../../utils/price';
-import { Zero } from '../../../utils/bn';
-import BigNumber from 'bignumber.js';
+import { formatAmount, formatPercent, Zero } from '../../../utils/bn';
 import { usePoolDataCtx, useSymbolCtx } from 'hooks/context/usePoolDataCtx';
 
 const LOADING_COPY = 'Loading...';
@@ -49,8 +48,7 @@ const PoolDetailCard: React.FC = () => {
           <Group spacing={0} direction="column">
             <Text type="secondary">Reserve Size</Text>
             <Title order={4}>
-              {poolData &&
-                poolData.totalLiquidity.toFixed(3, BigNumber.ROUND_UP)}{' '}
+              {formatAmount(poolData?.totalLiquidity)}{' '}
               <Text component="span" inherit type="accent">
                 {symbol}
               </Text>
@@ -77,7 +75,7 @@ const PoolDetailCard: React.FC = () => {
           <Group spacing={0} direction="column">
             <Text type="secondary">Available Liquidity</Text>
             <Title order={4}>
-              {availableLiquidity.toFixed(3, BigNumber.ROUND_UP)}{' '}
+              {formatAmount(availableLiquidity)}{' '}
               <Text component="span" inherit type="accent">
                 {symbol}
               </Text>
@@ -95,13 +93,13 @@ const PoolDetailCard: React.FC = () => {
         <Group spacing={0} direction="column">
           <Text type="secondary">Senior APY</Text>
           <Title order={4}>
-            {poolData && poolData.seniorTrancheLiquidityRate.toString()}%
+            {formatPercent(poolData?.seniorTrancheLiquidityRate)}
           </Title>
         </Group>
         <Group spacing={0} direction="column">
           <Text type="secondary">Junior APY</Text>
           <Title order={4}>
-            {poolData && poolData.juniorTrancheLiquidityRate.toString()}%
+            {formatPercent(poolData?.juniorTrancheLiquidityRate)}
           </Title>
         </Group>
       </Group>
