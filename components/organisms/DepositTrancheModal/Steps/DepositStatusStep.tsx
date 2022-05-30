@@ -1,7 +1,7 @@
 import { Button, Divider, Text, Title } from '@components/base';
 import { Group } from '@mantine/core';
 import Image from 'next/image';
-import { Zero } from 'utils/bn';
+import { formatAmount, formatPercent, Zero } from 'utils/bn';
 import BigNumber from 'bignumber.js';
 import { TrancheTextMap, TrancheType } from 'types';
 import { useAssetPrice } from 'hooks';
@@ -96,7 +96,7 @@ const DepositStatusStep: React.FC<IProps2> = ({
             <Group direction="column" spacing={0} align="end">
               <Title order={5}>
                 <Text inherit type="gradient" component="span">
-                  {balance.toFixed(3, BigNumber.ROUND_UP)} {symbol}
+                  {formatAmount(balance)} {symbol}
                 </Text>
               </Title>
               <Text size="sm" type="secondary">{`~${usdValue(
@@ -107,7 +107,7 @@ const DepositStatusStep: React.FC<IProps2> = ({
           </Group>
           <Group position="apart" align="start" mt={16}>
             <Text type="secondary">Your New Tranche Share</Text>
-            <Title order={5}>{totalShare.toFixed(3)} %</Title>
+            <Title order={5}>{formatPercent(totalShare)}</Title>
           </Group>
         </>
       )}

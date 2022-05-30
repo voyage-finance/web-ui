@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import { Group } from '@mantine/core';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Zero } from 'utils/bn';
+import { formatAmount, formatPercent, Zero } from 'utils/bn';
 import { PoolData } from 'types';
 import { useAssetPrice } from 'hooks';
 import { ReserveAssets } from 'consts';
@@ -28,7 +28,7 @@ const PoolRow: React.FC<PoolData> = ({
     return (
       <Group direction="column" spacing={0} align="end">
         <Title order={5}>
-          {amount.toFixed(3, BigNumber.ROUND_UP)}{' '}
+          {formatAmount(amount)}{' '}
           <Text weight={400} component="span">
             {symbol}
           </Text>
@@ -68,7 +68,7 @@ const PoolRow: React.FC<PoolData> = ({
       </td>
       <td>
         <Title order={6} align="right">
-          {seniorTrancheLiquidityRate.toFixed(3, BigNumber.ROUND_UP)}%
+          {formatPercent(seniorTrancheLiquidityRate)}
         </Title>
       </td>
       <td>
@@ -78,9 +78,7 @@ const PoolRow: React.FC<PoolData> = ({
         <BalanceTD amount={juniorTrancheTotalLiquidity} />
       </td>
       <td align="right">
-        <Title order={6}>
-          {juniorTrancheLiquidityRate.toFixed(3, BigNumber.ROUND_UP)}%
-        </Title>
+        <Title order={6}>{formatPercent(juniorTrancheLiquidityRate)}</Title>
       </td>
       <td>
         <BalanceTD amount={Zero} />

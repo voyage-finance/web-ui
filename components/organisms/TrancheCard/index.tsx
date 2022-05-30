@@ -8,7 +8,7 @@ import CoinStackImg from 'assets/coin_stack.png';
 import Image from 'next/image';
 import { useAssetPrice } from 'hooks';
 import { ReserveAssets } from '../../../consts';
-import { Zero } from 'utils/bn';
+import { formatAmount, formatPercent, Zero } from 'utils/bn';
 import { usdValue } from 'utils/price';
 import { useSymbolCtx } from 'hooks/context/usePoolDataCtx';
 
@@ -94,12 +94,12 @@ const TrancheCard: React.FC<IProps> = ({
       <Group position="apart" mt={16} align="start">
         <Group spacing={0} direction="column">
           <Text type="secondary">{TrancheTextMap[type]} APY</Text>
-          <Title order={4}>{currentAPY?.toString()}%</Title>
+          <Title order={4}>{formatPercent(currentAPY)}</Title>
         </Group>
         <Group spacing={0} direction="column" align={'end'}>
           <Text type="secondary">{TrancheTextMap[type]} Tranche Liquidity</Text>
           <Title order={4}>
-            {liquidity.toFixed(3, BigNumber.ROUND_UP)}{' '}
+            {formatAmount(liquidity)}{' '}
             <Text component="span" inherit type="accent">
               {symbol}
             </Text>
@@ -115,7 +115,7 @@ const TrancheCard: React.FC<IProps> = ({
         <Text type="secondary">Current Balance</Text>
         <Group direction="column" spacing={0} align="end">
           <Title order={5}>
-            {balance?.toFixed(3, BigNumber.ROUND_UP)}{' '}
+            {formatAmount(balance)}{' '}
             <Text weight={400} component="span">
               {symbol}
             </Text>
@@ -129,7 +129,7 @@ const TrancheCard: React.FC<IProps> = ({
       <Group position="apart" mt={11}>
         <Text type="secondary">Tranche Share</Text>
         {/* TODO */}
-        <Title order={5}>{trancheShare.toFixed(3)} %</Title>
+        <Title order={5}>{formatPercent(trancheShare)}</Title>
       </Group>
       <Group position="apart" mt={7}>
         <Text type="secondary">Lifetime PnL</Text>
@@ -142,7 +142,7 @@ const TrancheCard: React.FC<IProps> = ({
         <Text type="secondary">Amount Unbonding</Text>
         <Group direction="column" spacing={0} align="end">
           <Title order={5}>
-            {withdrawable?.toFixed(3, BigNumber.ROUND_UP)}{' '}
+            {formatAmount(withdrawable)}{' '}
             <Text weight={400} component="span">
               {symbol}
             </Text>

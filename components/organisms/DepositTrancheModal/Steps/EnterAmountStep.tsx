@@ -3,7 +3,13 @@ import AmountInput from '@components/moleculas/AmountInput';
 import { Box, Group } from '@mantine/core';
 import Image from 'next/image';
 import { useAccount, useContractWrite, useSigner } from 'wagmi';
-import { addDecimals, toHexString, Zero } from 'utils/bn';
+import {
+  addDecimals,
+  formatAmount,
+  formatPercent,
+  toHexString,
+  Zero,
+} from 'utils/bn';
 import BigNumber from 'bignumber.js';
 import { useForm } from '@mantine/form';
 import { TrancheTextMap, TrancheType } from 'types';
@@ -162,14 +168,14 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onDeposited, onError }) => {
           <Text type="secondary">
             <strong>{TrancheTextMap[type]}</strong> APY
           </Text>
-          <Title order={4}>{APY?.toFixed(3, BigNumber.ROUND_UP)}%</Title>
+          <Title order={4}>{formatPercent(APY)}</Title>
         </Group>
         <Group spacing={0} direction="column" align={'end'}>
           <Text type="secondary">
             <strong>{TrancheTextMap[type]}</strong> Tranche Liquidity
           </Text>
           <Title order={4}>
-            {totalDeposit?.toFixed(3, BigNumber.ROUND_UP)}{' '}
+            {formatAmount(totalDeposit)}{' '}
             <Text component="span" inherit type="accent">
               {symbol}
             </Text>
@@ -185,7 +191,7 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onDeposited, onError }) => {
         <Text type="secondary">Your Current Total Deposit</Text>
         <Group direction="column" spacing={0} align="end">
           <Title order={5}>
-            {balance?.toFixed(3, BigNumber.ROUND_UP)}{' '}
+            {formatAmount(balance)}{' '}
             <Text weight={400} component="span">
               {symbol}
             </Text>
@@ -207,7 +213,7 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onDeposited, onError }) => {
             size="xs"
             weight={700}
           >
-            {`${userHoldings?.toFixed(3, BigNumber.ROUND_UP)} ${symbol}`}
+            {`${formatAmount(userHoldings)} ${symbol}`}
           </Text>{' '}
         </Text>
       </Group>
