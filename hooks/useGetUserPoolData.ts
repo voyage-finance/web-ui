@@ -1,38 +1,42 @@
-import { useAccount } from 'wagmi';
+import { useQuery } from '@apollo/client';
+import { GET_USER_DATA } from '@graph/queries/user';
 import { UserPoolData } from 'types';
-import { shiftDecimals } from 'utils/bn';
-import { VoyageContracts } from '../consts/addresses';
-import { useGetDeployment } from './useGetDeployment';
-import { useContractRead } from 'hooks';
+import { shiftDecimals, Zero } from 'utils/bn';
+import { useAccount } from 'wagmi';
 import { useSupportedTokensCtx } from './context/useSupportedTokensCtx';
 
 export const useGetUserPoolData = (tokenSmb: string) => {
   const [tokens] = useSupportedTokensCtx();
   const account = useAccount();
-  const { address, abi } = useGetDeployment(
-    VoyageContracts.VoyageProtocolDataProvider
-  );
-  const { data, ...rest } = useContractRead(
-    {
-      addressOrName: address,
-      contractInterface: abi,
-    },
-    'getUserPoolData',
-    {
-      args: [tokens[tokenSmb], account.data?.address],
-    }
-  );
-  const userPoolData = rest.isSuccess ? resultToUserPoolData(data) : undefined;
 
-  return { data: userPoolData, ...rest };
+  const { loading, data, error, refetch } = useQuery(GET_USER_DATA, {
+    variables: {
+      underlyingAsset: tokens[tokenSmb],
+      address: account.data?.address,
+    },
+  });
+  return {
+    data: data ? resultToUserPoolData(data) : undefined,
+    loading,
+    error,
+    refetch,
+  };
 };
 
 const resultToUserPoolData = (res: any): UserPoolData => {
-  const decimals = res[4].toNumber();
+  const poolData = res.user.poolData[0];
+  const decimals = Number(poolData.decimals);
   return {
-    juniorTrancheBalance: shiftDecimals(res[0], decimals),
-    withdrawableJuniorTrancheBalance: shiftDecimals(res[1], decimals),
-    seniorTrancheBalance: shiftDecimals(res[2], decimals),
-    withdrawableSeniorTrancheBalance: shiftDecimals(res[3], decimals),
+    juniorTrancheBalance: shiftDecimals(
+      poolData.juniorTrancheBalance,
+      decimals
+    ),
+    seniorTrancheBalance: shiftDecimals(
+      poolData.seniorTrancheBalance,
+      decimals
+    ),
+    // TODO: update when indexer will return this fields
+    withdrawableJuniorTrancheBalance: Zero,
+    withdrawableSeniorTrancheBalance: Zero,
   };
 };

@@ -56,7 +56,9 @@ const TrancheCard: React.FC<IProps> = ({
       : poolData?.juniorTrancheLiquidityRate;
 
   const trancheShare =
-    poolData && balance ? balance.div(liquidity).multipliedBy(100) : Zero;
+    poolData && balance && !liquidity.isZero()
+      ? balance.div(liquidity).multipliedBy(100)
+      : Zero;
 
   return (
     <Card

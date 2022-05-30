@@ -28,7 +28,7 @@ export const Deployments: Record<
     [VoyageContracts.VoyageProtocolDataProvider]: {
       network: Network.Hardhat,
       abi: VoyageProtocolDataProvider,
-      address: '0x99bbA657f2BbC93c02D617f8bA121cB8Fc104Acf',
+      address: '0x0E801D84Fa97b50751Dbf25036d067dCf18858bF',
     },
   },
   [ChainID.Staging]: {

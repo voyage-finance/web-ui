@@ -9,6 +9,8 @@ interface PoolPageContextInterface {
   userData?: UserPoolData;
   isUserDataLoading: boolean;
   symbol: string;
+  refetchPool: () => void;
+  refetchUser: () => void;
 }
 
 export const PoolPageCtx = React.createContext<PoolPageContextInterface>({
@@ -17,12 +19,23 @@ export const PoolPageCtx = React.createContext<PoolPageContextInterface>({
   isPoolDataLoading: false,
   isUserDataLoading: false,
   symbol: '',
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  refetchPool: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  refetchUser: () => {},
 });
 
 const Provider: React.FC<{ symbol: string }> = ({ symbol, children }) => {
-  const { data: poolData, loading: isPoolDataLoading } = useGetPool(symbol);
-  const { data: userData, isLoading: isUserDataLoading } =
-    useGetUserPoolData(symbol);
+  const {
+    data: poolData,
+    loading: isPoolDataLoading,
+    refetch: refetchPool,
+  } = useGetPool(symbol);
+  const {
+    data: userData,
+    loading: isUserDataLoading,
+    refetch: refetchUser,
+  } = useGetUserPoolData(symbol);
   return (
     <PoolPageCtx.Provider
       value={{
@@ -31,6 +44,8 @@ const Provider: React.FC<{ symbol: string }> = ({ symbol, children }) => {
         isPoolDataLoading,
         isUserDataLoading,
         symbol,
+        refetchPool,
+        refetchUser,
       }}
     >
       {children}
