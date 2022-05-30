@@ -10,6 +10,7 @@ import { useAssetPrice } from 'hooks';
 import { ReserveAssets } from '../../../consts';
 import { Zero } from 'utils/bn';
 import { usdValue } from 'utils/price';
+import { useSymbolCtx } from 'hooks/context/usePoolDataCtx';
 
 type IProps = {
   type: TrancheType;
@@ -20,7 +21,6 @@ type IProps = {
   isApproved?: boolean;
   isApproving?: boolean;
   onApproveClick: () => void;
-  symbol: string;
 };
 
 const getLiqiuidityByTranche = (
@@ -45,10 +45,9 @@ const TrancheCard: React.FC<IProps> = ({
   isApproved,
   isApproving,
   onApproveClick,
-  symbol,
 }) => {
   const [priceData] = useAssetPrice(ReserveAssets.TUS);
-
+  const [symbol] = useSymbolCtx();
   // TODO: this should be the user's deposits, not pool deposits
   const liquidity = getLiqiuidityByTranche(poolData, type);
   const currentAPY =

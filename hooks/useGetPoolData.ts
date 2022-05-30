@@ -1,11 +1,11 @@
-import { useSupportedTokens } from './useFetchPoolTokens';
 import { PoolData } from 'types';
 import { useQuery } from '@apollo/client';
 import { GET_POOL, GET_POOLS } from '@graph/queries/pools';
 import { rayToPercent, shiftDecimals } from 'utils/bn';
+import { useSupportedTokensCtx } from './context/useSupportedTokensCtx';
 
 export const useGetPool = (tokenSmb: string) => {
-  const [tokens] = useSupportedTokens();
+  const [tokens] = useSupportedTokensCtx();
   const { loading, data, error } = useQuery(GET_POOL, {
     variables: {
       asset: tokens[tokenSmb],

@@ -1,18 +1,13 @@
 import { Modal } from '@components/base';
-import { ModalProps } from '@mantine/core';
+import { LoadingOverlay, ModalProps } from '@mantine/core';
 import { useState } from 'react';
 import { DepositStatusStep, EnterAmountStep } from './Steps';
-import { PoolData, TrancheTextMap, TrancheType } from 'types';
+import { TrancheTextMap, TrancheType } from 'types';
 import { showNotification } from '@mantine/notifications';
-import BigNumber from 'bignumber.js';
-import { useGetUserErc20Balance } from '../../../hooks';
+import { usePoolDataCtx, useUserDataCtx } from 'hooks/context/usePoolDataCtx';
 
 type IProps = ModalProps & {
   type: TrancheType;
-  poolData?: PoolData;
-  balance?: BigNumber;
-  onDeposited: () => void;
-  symbol: string;
 };
 
 enum STEP {
@@ -24,21 +19,13 @@ enum STEP {
 const DepositTrancheModal: React.FC<IProps> = ({
   type,
   onClose: _onClose,
-  poolData,
-  onDeposited: _onDeposited,
-  symbol,
-  balance,
   ...props
 }) => {
+  const [, isPoolDataLoading] = usePoolDataCtx();
+  const [, isUserDataLoading] = useUserDataCtx();
   const [step, setStep] = useState(STEP.Deposit);
   const [depositedAmount, setDepositedAmount] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const onClose = () => {
-    setStep(STEP.Deposit);
-    setDepositedAmount('');
-    setErrorMessage('');
-    _onClose();
-  };
 
   const onDeposited = (amount: string) => {
     setStep(STEP.Success);
@@ -49,7 +36,7 @@ const DepositTrancheModal: React.FC<IProps> = ({
       message: `Your deposit of amount ${amount} was successfull`,
       color: 'green',
     });
-    _onDeposited();
+    // TODO: update to status step with new data
   };
 
   const onError = (error: string) => {
@@ -62,7 +49,12 @@ const DepositTrancheModal: React.FC<IProps> = ({
     });
   };
 
-  const userAssetHolding = useGetUserErc20Balance(symbol);
+  const onClose = () => {
+    setStep(STEP.Deposit);
+    setDepositedAmount('');
+    setErrorMessage('');
+    _onClose();
+  };
 
   return (
     <Modal
@@ -75,41 +67,20 @@ const DepositTrancheModal: React.FC<IProps> = ({
       onClose={onClose}
       {...props}
     >
-      {step === STEP.Deposit && poolData && balance && (
+      <LoadingOverlay visible={isUserDataLoading || isPoolDataLoading} />
+      {step === STEP.Deposit && (
         <EnterAmountStep
           type={type}
           onDeposited={onDeposited}
           onError={onError}
-          decimals={poolData.decimals}
-          totalDeposit={
-            type == TrancheType.Senior
-              ? poolData.seniorTrancheTotalLiquidity
-              : poolData.juniorTrancheTotalLiquidity
-          }
-          balance={balance}
-          APY={
-            type == TrancheType.Senior
-              ? poolData.seniorTrancheLiquidityRate
-              : poolData.juniorTrancheLiquidityRate
-          }
-          userHoldings={userAssetHolding}
-          symbol={symbol}
         />
       )}
-      {(step === STEP.Success || step === STEP.Error) && poolData && (
+      {(step === STEP.Success || step === STEP.Error) && (
         <DepositStatusStep
           type={type}
           amount={depositedAmount}
-          // eslint-disable-next-line
-          newTotal={balance!}
           error={errorMessage}
-          totalLiquidity={
-            type == TrancheType.Senior
-              ? poolData.seniorTrancheTotalLiquidity
-              : poolData.juniorTrancheTotalLiquidity
-          }
           onClose={onClose}
-          symbol={symbol}
         />
       )}
     </Modal>

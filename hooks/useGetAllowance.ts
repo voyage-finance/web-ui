@@ -1,14 +1,14 @@
 import { useAccount } from 'wagmi';
-import { useSupportedTokens } from './useFetchPoolTokens';
 import ERC20 from 'abi/ERC20.json';
 import { VoyageContracts } from '../consts/addresses';
 import { useGetContractAddress } from './useGetContractAddress';
 import { useContractRead } from 'hooks';
+import { useSupportedTokensCtx } from './context/useSupportedTokensCtx';
 
 export const useGetAllowance = (tokenSmb: string) => {
   const lmAddress = useGetContractAddress(VoyageContracts.LiquidityManager);
   const account = useAccount();
-  const [tokens] = useSupportedTokens();
+  const [tokens] = useSupportedTokensCtx();
   return useContractRead(
     {
       addressOrName: tokens[tokenSmb],
