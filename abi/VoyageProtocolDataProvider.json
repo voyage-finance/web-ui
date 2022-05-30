@@ -141,6 +141,11 @@
           },
           {
             "internalType": "uint256",
+            "name": "utilizationRate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
             "name": "trancheRatio",
             "type": "uint256"
           },

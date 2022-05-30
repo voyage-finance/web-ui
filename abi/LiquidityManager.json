@@ -114,18 +114,6 @@
       },
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "_juniorIncomeAllocation",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "_seniorIncomeAllocation",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
         "internalType": "address",
         "name": "_stableDebtAddress",
         "type": "address"
@@ -141,6 +129,12 @@
         "internalType": "address",
         "name": "_healthStrategyAddress",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_optimalIncomeRatio",
+        "type": "uint256"
       }
     ],
     "name": "ReserveInitialized",
@@ -215,11 +209,6 @@
       {
         "internalType": "address",
         "name": "_user",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_onBehalfOf",
         "type": "address"
       }
     ],
@@ -731,6 +720,25 @@
     "name": "unPause",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_reserve",
+        "type": "address"
+      }
+    ],
+    "name": "utilizationRate",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
