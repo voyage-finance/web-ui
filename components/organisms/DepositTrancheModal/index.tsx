@@ -1,7 +1,8 @@
 import { Modal } from '@components/base';
 import { LoadingOverlay, ModalProps } from '@mantine/core';
 import { useState } from 'react';
-import { DepositStatusStep, EnterAmountStep } from './Steps';
+import DepositStatusStep from './Steps/DepositStatusStep';
+import EnterAmountStep from './Steps/EnterAmountStep';
 import { TrancheTextMap, TrancheType } from 'types';
 import { showNotification } from '@mantine/notifications';
 import { usePoolDataCtx, useUserDataCtx } from 'hooks/context/usePoolDataCtx';
