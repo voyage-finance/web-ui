@@ -1,5 +1,5 @@
 export { useAssetPrice } from './useAssetPrice';
-export { useFetchPoolTokens, useSupportedTokens } from './useFetchPoolTokens';
+export { useFetchPoolTokens } from './useFetchPoolTokens';
 export { useGetAllowance } from './useGetAllowance';
 export { useGetPool, useGetPools } from './useGetPoolData';
 export { useGetUserPoolData } from './useGetUserPoolData';

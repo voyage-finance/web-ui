@@ -2,22 +2,18 @@ import { Card, Divider, Text, Title } from '@components/base';
 import { Group, LoadingOverlay } from '@mantine/core';
 import Image from 'next/image';
 import { BrandDiscord, BrandTelegram, BrandTwitter } from 'tabler-icons-react';
-import { PoolData } from 'types';
 import { useAssetPrice } from '../../../hooks/useAssetPrice';
 import { ReserveAssets } from '../../../consts';
 import { usdValue } from '../../../utils/price';
 import { Zero } from '../../../utils/bn';
 import BigNumber from 'bignumber.js';
-
-type IProps = {
-  poolData?: PoolData;
-  loading: boolean;
-  symbol: string;
-};
+import { usePoolDataCtx, useSymbolCtx } from 'hooks/context/usePoolDataCtx';
 
 const LOADING_COPY = 'Loading...';
 
-const PoolDetailCard: React.FC<IProps> = ({ poolData, loading, symbol }) => {
+const PoolDetailCard: React.FC = () => {
+  const [poolData, loading] = usePoolDataCtx();
+  const [symbol] = useSymbolCtx();
   const [priceData, priceDataLoading] = useAssetPrice(ReserveAssets.TUS);
   const isLoadingData = loading || priceDataLoading;
   const availableLiquidity = poolData

@@ -1,13 +1,13 @@
 import { useAccount } from 'wagmi';
-import { useSupportedTokens } from './useFetchPoolTokens';
 import { UserPoolData } from 'types';
 import { shiftDecimals } from 'utils/bn';
 import { VoyageContracts } from '../consts/addresses';
 import { useGetDeployment } from './useGetDeployment';
 import { useContractRead } from 'hooks';
+import { useSupportedTokensCtx } from './context/useSupportedTokensCtx';
 
 export const useGetUserPoolData = (tokenSmb: string) => {
-  const [tokens] = useSupportedTokens();
+  const [tokens] = useSupportedTokensCtx();
   const account = useAccount();
   const { address, abi } = useGetDeployment(
     VoyageContracts.VoyageProtocolDataProvider

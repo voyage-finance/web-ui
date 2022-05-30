@@ -7,7 +7,7 @@ import { addDecimals, toHexString, Zero } from 'utils/bn';
 import BigNumber from 'bignumber.js';
 import { useForm } from '@mantine/form';
 import { TrancheTextMap, TrancheType } from 'types';
-import { useAssetPrice, useSupportedTokens } from 'hooks';
+import { useAssetPrice, useGetUserErc20Balance } from 'hooks';
 import { ReserveAssets } from 'consts';
 import { usdValue } from 'utils/price';
 import { VoyageContracts } from '../../../consts/addresses';
@@ -17,34 +17,47 @@ import { showNotification } from '@mantine/notifications';
 import { getTxExpolerLink } from 'utils/env';
 import { shortenHash } from 'utils/hash';
 import DangerImg from 'assets/danger.png';
+import { useSupportedTokensCtx } from 'hooks/context/useSupportedTokensCtx';
+import {
+  usePoolDataCtx,
+  useSymbolCtx,
+  useUserDataCtx,
+} from 'hooks/context/usePoolDataCtx';
 
 type IProps1 = {
   type: TrancheType;
   onDeposited: (amount: string) => void;
   onError: (message: string) => void;
-  decimals: number;
-  totalDeposit: BigNumber;
-  balance: BigNumber;
-  APY?: BigNumber;
-  symbol: string;
-  userHoldings?: BigNumber;
 };
 
 export const EnterAmountStep: React.FC<IProps1> = ({
   type,
   onDeposited,
   onError,
-  decimals,
-  totalDeposit,
-  APY,
-  balance,
-  symbol,
-  userHoldings,
 }) => {
+  const [symbol] = useSymbolCtx();
   const { data: accountData } = useAccount();
   const { data: signer } = useSigner();
-  const [tokens] = useSupportedTokens();
+  const [tokens] = useSupportedTokensCtx();
+  const [poolData] = usePoolDataCtx();
+  const [userData] = useUserDataCtx();
   const [priceData] = useAssetPrice(ReserveAssets.TUS);
+  const userHoldings = useGetUserErc20Balance(symbol);
+  const APY = poolData
+    ? type == TrancheType.Senior
+      ? poolData.seniorTrancheLiquidityRate
+      : poolData.juniorTrancheLiquidityRate
+    : Zero;
+  const totalDeposit = poolData
+    ? type == TrancheType.Senior
+      ? poolData.seniorTrancheTotalLiquidity
+      : poolData.juniorTrancheTotalLiquidity
+    : Zero;
+  const balance = userData
+    ? type === TrancheType.Junior
+      ? userData.juniorTrancheBalance
+      : userData.seniorTrancheBalance
+    : Zero;
   const { address: voyagerAddress, abi: voyagerAbi } = useGetDeployment(
     VoyageContracts.Voyager
   );
@@ -83,33 +96,41 @@ export const EnterAmountStep: React.FC<IProps1> = ({
   });
 
   const onDeposit = async () => {
-    try {
-      setIsConfirming(true);
-      const tx = await deposit({
-        args: [
-          tokens[symbol],
-          type == TrancheType.Senior ? '1' : '0',
-          toHexString(addDecimals(form.values.amount, decimals)),
-          accountData?.address,
-        ],
-      });
+    if (poolData && userData)
+      try {
+        setIsConfirming(true);
+        const tx = await deposit({
+          args: [
+            tokens[symbol],
+            type == TrancheType.Senior ? '1' : '0',
+            toHexString(addDecimals(form.values.amount, poolData.decimals)),
+            accountData?.address,
+          ],
+        });
+        showNotification({
+          title: 'Deposit sent',
+          message: (
+            <div>
+              Transaction block is initialized{' '}
+              <a href={getTxExpolerLink(tx.hash)}>{shortenHash(tx.hash)}</a>
+            </div>
+          ),
+          color: 'green',
+        });
+        const txReceipt = await tx.wait();
+        console.log('deposit tx confirmed: ', txReceipt);
+        onDeposited(form.values.amount);
+      } catch (err) {
+        onError((err as Error).toString());
+      } finally {
+        setIsConfirming(false);
+      }
+    else {
       showNotification({
-        title: 'Deposit sent',
-        message: (
-          <div>
-            Transaction block is initialized{' '}
-            <a href={getTxExpolerLink(tx.hash)}>{shortenHash(tx.hash)}</a>
-          </div>
-        ),
-        color: 'green',
+        title: 'Error',
+        message: "Pool and user data aren't fetched",
+        color: 'red',
       });
-      const txReceipt = await tx.wait();
-      console.log('deposit tx confirmed: ', txReceipt);
-      onDeposited(form.values.amount);
-    } catch (err) {
-      onError((err as Error).toString());
-    } finally {
-      setIsConfirming(false);
     }
   };
 
@@ -211,24 +232,32 @@ export const EnterAmountStep: React.FC<IProps1> = ({
 type IProps2 = {
   type: TrancheType;
   amount: string;
-  newTotal: BigNumber;
-  totalLiquidity: BigNumber;
   error: string;
   onClose: () => void;
-  symbol: string;
 };
 
 export const DepositStatusStep: React.FC<IProps2> = ({
   type,
   amount,
-  newTotal,
   onClose,
   error,
-  symbol,
-  totalLiquidity,
 }) => {
+  const [symbol] = useSymbolCtx();
+  const [poolData] = usePoolDataCtx();
+  const [userData] = useUserDataCtx();
   const [priceData] = useAssetPrice(ReserveAssets.TUS);
-  const totalShare = newTotal.div(totalLiquidity).multipliedBy(100);
+  const totalLiquidity = poolData
+    ? type == TrancheType.Senior
+      ? poolData.seniorTrancheTotalLiquidity
+      : poolData.juniorTrancheTotalLiquidity
+    : Zero;
+  const balance = userData
+    ? type === TrancheType.Junior
+      ? userData.juniorTrancheBalance
+      : userData.seniorTrancheBalance
+    : Zero;
+  const totalShare = balance.div(totalLiquidity).multipliedBy(100);
+
   return (
     <>
       <Title order={3} align="center" mt={-32}>
@@ -283,11 +312,11 @@ export const DepositStatusStep: React.FC<IProps2> = ({
             <Group direction="column" spacing={0} align="end">
               <Title order={5}>
                 <Text inherit type="gradient" component="span">
-                  {newTotal.toFixed(3, BigNumber.ROUND_UP)} {symbol}
+                  {balance.toFixed(3, BigNumber.ROUND_UP)} {symbol}
                 </Text>
               </Title>
               <Text size="sm" type="secondary">{`~${usdValue(
-                newTotal,
+                balance,
                 priceData.latestPrice
               )}`}</Text>
             </Group>

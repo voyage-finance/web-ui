@@ -4,15 +4,15 @@ import { MAX_UINT_AMOUNT } from 'consts';
 import { useEffect, useState } from 'react';
 import { fromBigNumber, toHexString } from 'utils/bn';
 import { useContractWrite } from 'wagmi';
-import { useSupportedTokens } from './useFetchPoolTokens';
 import { useGetAllowance } from './useGetAllowance';
 import TusAbi from 'abi/ERC20.json';
 import { VoyageContracts } from '../consts/addresses';
 import { useGetContractAddress } from './useGetContractAddress';
+import { useSupportedTokensCtx } from './context/useSupportedTokensCtx';
 
 export const useAllowanceApproved = (symbol: string) => {
   const { data: allowanceAmount } = useGetAllowance(symbol);
-  const [tokens] = useSupportedTokens();
+  const [tokens] = useSupportedTokensCtx();
   const lmAddress = useGetContractAddress(VoyageContracts.LiquidityManager);
   const {
     isLoading: isApproving,
