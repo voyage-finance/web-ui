@@ -10,6 +10,7 @@ export const useGetPool = (tokenSmb: string) => {
     variables: {
       asset: tokens[tokenSmb],
     },
+    notifyOnNetworkStatusChange: true,
   });
   return {
     data: data ? resultToPoolData(data.pool) : undefined,
@@ -20,7 +21,9 @@ export const useGetPool = (tokenSmb: string) => {
 };
 
 export const useGetPools = () => {
-  const { loading, data, error, refetch } = useQuery(GET_POOLS);
+  const { loading, data, error, refetch } = useQuery(GET_POOLS, {
+    notifyOnNetworkStatusChange: true,
+  });
   const pools: PoolData[] = data
     ? data.pools.map((pool: any) => resultToPoolData(pool))
     : [];

@@ -14,6 +14,7 @@ export const useGetUserPoolData = (tokenSmb: string) => {
       underlyingAsset: tokens[tokenSmb],
       address: account.data?.address,
     },
+    notifyOnNetworkStatusChange: true,
   });
   return {
     data: data ? resultToUserPoolData(data) : undefined,
