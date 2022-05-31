@@ -30,17 +30,17 @@ const DepositStatusStep: React.FC<IProps2> = ({
   const [poolData] = usePoolDataCtx();
   const [userData] = useUserDataCtx();
   const [priceData] = useAssetPrice(ReserveAssets.TUS);
-  const totalLiquidity = poolData
-    ? type == TrancheType.Senior
-      ? poolData.seniorTrancheTotalLiquidity
-      : poolData.juniorTrancheTotalLiquidity
+  const totalLiquidity =
+    (type == TrancheType.Senior
+      ? poolData?.seniorTrancheTotalLiquidity
+      : poolData?.juniorTrancheTotalLiquidity) || Zero;
+  const balance =
+    (type === TrancheType.Junior
+      ? userData?.juniorTrancheBalance
+      : userData?.seniorTrancheBalance) || Zero;
+  const totalShare = !totalLiquidity.isZero()
+    ? balance.div(totalLiquidity).multipliedBy(100)
     : Zero;
-  const balance = userData
-    ? type === TrancheType.Junior
-      ? userData.juniorTrancheBalance
-      : userData.seniorTrancheBalance
-    : Zero;
-  const totalShare = balance.div(totalLiquidity).multipliedBy(100);
 
   return (
     <>

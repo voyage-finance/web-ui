@@ -2,7 +2,7 @@ import { Button, Divider, Text, Title } from '@components/base';
 import AmountInput from '@components/moleculas/AmountInput';
 import { Box, Group } from '@mantine/core';
 import Image from 'next/image';
-import { useAccount, useContractWrite, useSigner } from 'wagmi';
+import { useContractWrite, useSigner } from 'wagmi';
 import {
   addDecimals,
   formatAmount,
@@ -38,7 +38,6 @@ type IProps = {
 
 const EnterAmountStep: React.FC<IProps> = ({ type, onDeposited, onError }) => {
   const [symbol] = useSymbolCtx();
-  const { data: accountData } = useAccount();
   const { data: signer } = useSigner();
   const [tokens] = useSupportedTokensCtx();
   const [poolData] = usePoolDataCtx();

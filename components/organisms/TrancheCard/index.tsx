@@ -1,8 +1,7 @@
 import { Button, Card, Divider, Text, Title } from '@components/base';
-import { Box, Group } from '@mantine/core';
+import { Box, Group, LoadingOverlay } from '@mantine/core';
 import React from 'react';
 import { PoolData, TrancheTextMap, TrancheType } from 'types';
-import BigNumber from 'bignumber.js';
 import CoinsImg from 'assets/two_coins.png';
 import CoinStackImg from 'assets/coin_stack.png';
 import Image from 'next/image';
@@ -10,13 +9,14 @@ import { useAssetPrice } from 'hooks';
 import { ReserveAssets } from '../../../consts';
 import { formatAmount, formatPercent, Zero } from 'utils/bn';
 import { usdValue } from 'utils/price';
-import { useSymbolCtx } from 'hooks/context/usePoolDataCtx';
+import {
+  usePoolDataCtx,
+  useSymbolCtx,
+  useUserDataCtx,
+} from 'hooks/context/usePoolDataCtx';
 
 type IProps = {
   type: TrancheType;
-  poolData?: PoolData;
-  withdrawable?: BigNumber;
-  balance?: BigNumber;
   onDepositClick: () => void;
   isApproved?: boolean;
   isApproving?: boolean;
@@ -38,9 +38,6 @@ const getLiqiuidityByTranche = (
 
 const TrancheCard: React.FC<IProps> = ({
   type,
-  poolData,
-  withdrawable,
-  balance,
   onDepositClick,
   isApproved,
   isApproving,
@@ -48,18 +45,25 @@ const TrancheCard: React.FC<IProps> = ({
 }) => {
   const [priceData] = useAssetPrice(ReserveAssets.TUS);
   const [symbol] = useSymbolCtx();
+  const [poolData, isPoolLoading] = usePoolDataCtx();
+  const [userData, isUserLoading] = useUserDataCtx();
   // TODO: this should be the user's deposits, not pool deposits
   const liquidity = getLiqiuidityByTranche(poolData, type);
   const currentAPY =
-    type === TrancheType.Senior
+    (type === TrancheType.Senior
       ? poolData?.seniorTrancheLiquidityRate
-      : poolData?.juniorTrancheLiquidityRate;
-
-  const trancheShare =
-    poolData && balance && !liquidity.isZero()
-      ? balance.div(liquidity).multipliedBy(100)
-      : Zero;
-
+      : poolData?.juniorTrancheLiquidityRate) || Zero;
+  const balance =
+    (type === TrancheType.Junior
+      ? userData?.juniorTrancheBalance
+      : userData?.seniorTrancheBalance) || Zero;
+  const trancheShare = !liquidity.isZero()
+    ? balance.div(liquidity).multipliedBy(100)
+    : Zero;
+  const withdrawable =
+    (type === TrancheType.Junior
+      ? userData?.withdrawableJuniorTrancheBalance
+      : userData?.withdrawableSeniorTrancheBalance) || Zero;
   return (
     <Card
       px={32}
@@ -70,6 +74,7 @@ const TrancheCard: React.FC<IProps> = ({
         borderTopWidth: 0,
       }}
     >
+      <LoadingOverlay visible={isPoolLoading || isUserLoading} />
       <Box
         px={30}
         py={20}

@@ -5,16 +5,10 @@ import { useAllowanceApproved } from 'hooks';
 import DepositTrancheModal from '../DepositTrancheModal';
 import TrancheCard from '../TrancheCard';
 import TrancheTab from '@components/moleculas/TrancheTab';
-import {
-  usePoolDataCtx,
-  useSymbolCtx,
-  useUserDataCtx,
-} from 'hooks/context/usePoolDataCtx';
+import { useSymbolCtx } from 'hooks/context/usePoolDataCtx';
 
 const TrancheDeposits: React.FC = () => {
-  const [poolData] = usePoolDataCtx();
   const [symbol] = useSymbolCtx();
-  const [userPoolData] = useUserDataCtx();
   const [trancheType, setTrancheType] = useState(TrancheType.Senior);
   const [isApproved, isApproving, onApprove] = useAllowanceApproved(symbol);
   const [depositModalOpen, setDepositModalOpened] = useState(false);
@@ -35,17 +29,6 @@ const TrancheDeposits: React.FC = () => {
       </Group>
       <TrancheCard
         type={trancheType}
-        poolData={poolData}
-        withdrawable={
-          trancheType === TrancheType.Junior
-            ? userPoolData?.withdrawableJuniorTrancheBalance
-            : userPoolData?.withdrawableSeniorTrancheBalance
-        }
-        balance={
-          trancheType === TrancheType.Junior
-            ? userPoolData?.juniorTrancheBalance
-            : userPoolData?.seniorTrancheBalance
-        }
         onDepositClick={() => {
           setDepositModalOpened(true);
         }}
