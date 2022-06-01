@@ -1,6 +1,5 @@
 import { AppShell, MantineProvider } from '@mantine/core';
 import React from 'react';
-import UnsupportedNetworkModal from '../UnsupportedNetworkModal';
 import Navigation from './Navigation';
 
 const Layout: React.FC = (props) => {
@@ -100,7 +99,6 @@ const Layout: React.FC = (props) => {
         })}
       >
         {children}
-        <UnsupportedNetworkModal />
       </AppShell>
     </MantineProvider>
   );
