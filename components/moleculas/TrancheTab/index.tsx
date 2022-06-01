@@ -27,7 +27,7 @@ const TrancheTab: React.FC<IProps> = ({ trancheType, isActive, onClick }) => {
       onClick={onClick}
     >
       <Group position="apart">
-        <Text type="gradient" weight={700}>
+        <Text size="lg" type="gradient" weight={700}>
           {TrancheTextMap[trancheType]} Tranche
         </Text>
         <Box
