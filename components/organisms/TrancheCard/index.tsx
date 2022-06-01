@@ -14,6 +14,7 @@ import {
   useSymbolCtx,
   useUserDataCtx,
 } from 'hooks/context/usePoolDataCtx';
+import WalletConnectionFence from '@components/moleculas/WalletConnectionFence';
 
 type IProps = {
   type: TrancheType;
@@ -118,73 +119,75 @@ const TrancheCard: React.FC<IProps> = ({
         </Group>
       </Group>
       <Divider my={16} orientation="horizontal" />
-      <Group position="apart">
-        <Text type="secondary">Current Balance</Text>
-        <Group direction="column" spacing={0} align="end">
-          <Title order={5}>
-            {formatAmount(balance)}{' '}
-            <Text weight={400} component="span">
-              {symbol}
-            </Text>
+      <WalletConnectionFence my={40}>
+        <Group position="apart">
+          <Text type="secondary">Current Balance</Text>
+          <Group direction="column" spacing={0} align="end">
+            <Title order={5}>
+              {formatAmount(balance)}{' '}
+              <Text weight={400} component="span">
+                {symbol}
+              </Text>
+            </Title>
+            <Text type="secondary">{`~${usdValue(
+              balance || Zero,
+              priceData.latestPrice
+            )}`}</Text>
+          </Group>
+        </Group>
+        <Group position="apart" mt={11}>
+          <Text type="secondary">Tranche Share</Text>
+          {/* TODO */}
+          <Title order={5}>{formatPercent(trancheShare)}</Title>
+        </Group>
+        <Group position="apart" mt={7}>
+          <Text type="secondary">Lifetime PnL</Text>
+          {/* TODO */}
+          <Title order={5} style={{ color: '#0CCDAA' }}>
+            +0 TUS
           </Title>
-          <Text type="secondary">{`~${usdValue(
-            balance || Zero,
-            priceData.latestPrice
-          )}`}</Text>
         </Group>
-      </Group>
-      <Group position="apart" mt={11}>
-        <Text type="secondary">Tranche Share</Text>
-        {/* TODO */}
-        <Title order={5}>{formatPercent(trancheShare)}</Title>
-      </Group>
-      <Group position="apart" mt={7}>
-        <Text type="secondary">Lifetime PnL</Text>
-        {/* TODO */}
-        <Title order={5} style={{ color: '#0CCDAA' }}>
-          +0 TUS
-        </Title>
-      </Group>
-      <Group position="apart" mt={7}>
-        <Text type="secondary">Amount Unbonding</Text>
-        <Group direction="column" spacing={0} align="end">
-          <Title order={5}>
-            {formatAmount(withdrawable)}{' '}
-            <Text weight={400} component="span">
-              {symbol}
-            </Text>
-          </Title>
-          <Text type="secondary">{`~${usdValue(
-            withdrawable || Zero,
-            priceData.latestPrice
-          )}`}</Text>
+        <Group position="apart" mt={7}>
+          <Text type="secondary">Amount Unbonding</Text>
+          <Group direction="column" spacing={0} align="end">
+            <Title order={5}>
+              {formatAmount(withdrawable)}{' '}
+              <Text weight={400} component="span">
+                {symbol}
+              </Text>
+            </Title>
+            <Text type="secondary">{`~${usdValue(
+              withdrawable || Zero,
+              priceData.latestPrice
+            )}`}</Text>
+          </Group>
         </Group>
-      </Group>
-      {isApproved ? (
-        <Group position="right" mt={16}>
-          <Button onClick={() => onDepositClick()} style={{ width: 205 }}>
-            Deposit
-          </Button>
-          <Button
-            kind="secondary"
-            disabled={withdrawable?.isZero()}
-            style={{ width: 205 }}
-          >
-            Withdraw
-          </Button>
-        </Group>
-      ) : (
-        <Group position="right">
-          <Button
-            onClick={onApproveClick}
-            loading={isApproving}
-            mt={16}
-            style={{ width: 205, marginLeft: 'auto' }}
-          >
-            Approve
-          </Button>
-        </Group>
-      )}
+        {isApproved ? (
+          <Group position="right" mt={16}>
+            <Button onClick={() => onDepositClick()} style={{ width: 205 }}>
+              Deposit
+            </Button>
+            <Button
+              kind="secondary"
+              disabled={withdrawable?.isZero()}
+              style={{ width: 205 }}
+            >
+              Withdraw
+            </Button>
+          </Group>
+        ) : (
+          <Group position="right">
+            <Button
+              onClick={onApproveClick}
+              loading={isApproving}
+              mt={16}
+              style={{ width: 205, marginLeft: 'auto' }}
+            >
+              Approve
+            </Button>
+          </Group>
+        )}
+      </WalletConnectionFence>
     </Card>
   );
 };
