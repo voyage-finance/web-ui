@@ -8,6 +8,7 @@ import PoolDetailCard from '@components/organisms/PoolDetailCard';
 import LineChart, { generateTimeSeries } from '@components/base/LineChart';
 import TrancheDeposits from '@components/organisms/TrancheDeposits';
 import { PoolProvider } from '@components/base/PoolProvider';
+import UnbondingsCard from '@components/organisms/UnbondingsCard';
 
 const ChartCards: React.FC = () => (
   <Grid>
@@ -57,11 +58,13 @@ const PoolDetailPage: NextPage<{ symbol: string }> = ({ symbol }) => {
             </Grid.Col>
             <Grid.Col md={12} lg={9}>
               <ChartCards />
-              <Grid>
+              <Grid mt={13}>
                 <Grid.Col md={12} lg={8}>
                   <TrancheDeposits />
                 </Grid.Col>
-                <Grid.Col md={12} lg={4}></Grid.Col>
+                <Grid.Col md={12} lg={4}>
+                  <UnbondingsCard />
+                </Grid.Col>
               </Grid>
             </Grid.Col>
           </Grid>

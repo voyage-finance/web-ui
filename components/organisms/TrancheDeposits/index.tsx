@@ -14,7 +14,7 @@ const TrancheDeposits: React.FC = () => {
   const [depositModalOpen, setDepositModalOpened] = useState(false);
 
   return (
-    <Group direction="column" spacing={0} align="stretch" mt={13}>
+    <Group direction="column" spacing={0} align="stretch">
       <Group spacing={0}>
         <TrancheTab
           trancheType={TrancheType.Senior}
