@@ -1,37 +1,17 @@
-import { useConnect } from 'wagmi';
 import { useState } from 'react';
-import { Group } from '@mantine/core';
-import { Button, Modal } from '@components/base';
+import { Button } from '@components/base';
+import ConnectWalletModal from '../ConnectWalletModal';
 
 const ConnectBtn: React.FC = () => {
-  const { connectors, connect } = useConnect();
   const [showOptions, setShowOptions] = useState(false);
 
   return (
     <>
       <Button onClick={() => setShowOptions(true)}>Connect wallet</Button>
-      <Modal
+      <ConnectWalletModal
         opened={showOptions}
         onClose={() => setShowOptions(false)}
-        title="Choose wallet option"
-      >
-        <Group direction="column" align="center">
-          {connectors.map((connector) => (
-            <Button
-              disabled={!connector.ready}
-              key={connector.id}
-              onClick={() => {
-                connect(connector);
-                setShowOptions(false);
-              }}
-              style={{ margin: 'auto' }}
-            >
-              {connector.name}
-              {!connector.ready && ' (unsupported)'}
-            </Button>
-          ))}
-        </Group>
-      </Modal>
+      />
     </>
   );
 };
