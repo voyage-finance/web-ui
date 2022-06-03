@@ -2,11 +2,13 @@ import { Text } from '@components/base';
 import { Button, Center, Group, Header } from '@mantine/core';
 import { useIsWrongNetwork } from 'hooks';
 import { AlertTriangle } from 'tabler-icons-react';
+import { getProviderConfiguration } from 'utils/env';
 
 const HEADER_HEIGHT = 48;
 
 const WrongNetworkBanner: React.FC = () => {
   const [, switchNetwork] = useIsWrongNetwork();
+  const currentConf = getProviderConfiguration();
   return (
     <Header
       height={HEADER_HEIGHT}
@@ -22,7 +24,7 @@ const WrongNetworkBanner: React.FC = () => {
       <Center sx={{ height: '100%' }}>
         <Group>
           <AlertTriangle size={24} color="white" />
-          <Text size="lg">Please switch to Ethereum Mainnet</Text>
+          <Text size="lg">Please switch to {currentConf.name}</Text>
           <Button
             sx={(theme) => ({
               background: 'white',
