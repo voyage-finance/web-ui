@@ -19,6 +19,7 @@ import WalletConnectionFence from '@components/moleculas/WalletConnectionFence';
 type IProps = {
   type: TrancheType;
   onDepositClick: () => void;
+  onWithdrawClick: () => void;
   isApproved?: boolean;
   isApproving?: boolean;
   onApproveClick: () => void;
@@ -40,6 +41,7 @@ const getLiqiuidityByTranche = (
 const TrancheCard: React.FC<IProps> = ({
   type,
   onDepositClick,
+  onWithdrawClick,
   isApproved,
   isApproving,
   onApproveClick,
@@ -164,13 +166,14 @@ const TrancheCard: React.FC<IProps> = ({
         </Group>
         {isApproved ? (
           <Group position="right" mt={16}>
-            <Button onClick={() => onDepositClick()} style={{ width: 205 }}>
+            <Button onClick={onDepositClick} style={{ width: 205 }}>
               Deposit
             </Button>
             <Button
               kind="secondary"
-              disabled={withdrawable?.isZero()}
+              disabled={!withdrawable?.isZero()}
               style={{ width: 205 }}
+              onClick={onWithdrawClick}
             >
               Withdraw
             </Button>

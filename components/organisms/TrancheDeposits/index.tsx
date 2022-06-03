@@ -6,12 +6,14 @@ import DepositTrancheModal from '../DepositTrancheModal';
 import TrancheCard from '../TrancheCard';
 import TrancheTab from '@components/moleculas/TrancheTab';
 import { useSymbolCtx } from 'hooks/context/usePoolDataCtx';
+import WithdrawalModal from '../WithdrawalModal';
 
 const TrancheDeposits: React.FC = () => {
   const [symbol] = useSymbolCtx();
   const [trancheType, setTrancheType] = useState(TrancheType.Senior);
   const [isApproved, isApproving, onApprove] = useAllowanceApproved(symbol);
   const [depositModalOpen, setDepositModalOpened] = useState(false);
+  const [withdrawModalOpen, setWithdrawModalOpened] = useState(false);
 
   return (
     <Group direction="column" spacing={0} align="stretch">
@@ -32,15 +34,22 @@ const TrancheDeposits: React.FC = () => {
         onDepositClick={() => {
           setDepositModalOpened(true);
         }}
+        onWithdrawClick={() => {
+          setWithdrawModalOpened(true);
+        }}
         isApproved={isApproved}
         isApproving={isApproving}
         onApproveClick={onApprove}
       />
-
       <DepositTrancheModal
         type={trancheType}
         opened={depositModalOpen}
         onClose={() => setDepositModalOpened(false)}
+      />
+      <WithdrawalModal
+        type={trancheType}
+        opened={withdrawModalOpen}
+        onClose={() => setWithdrawModalOpened(false)}
       />
     </Group>
   );
