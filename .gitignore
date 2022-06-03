@@ -38,7 +38,6 @@ deployments/
 
 # yarn zero-install
 .yarn/*
-.yarn
 .vscode
 !.yarn/cache
 !.yarn/patches
