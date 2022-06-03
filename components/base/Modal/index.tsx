@@ -22,6 +22,7 @@ const Modal: React.FC<ModalProps> = ({ title: _title, ...props }) => {
         modal: {
           background: theme.fn.linearGradient(180, '#333c62', '#25283d'),
           borderRadius: 10,
+          width: 484,
         },
       })}
     />
