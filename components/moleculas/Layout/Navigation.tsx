@@ -5,6 +5,7 @@ import Divider from '@components/base/Divider';
 import { NavLink } from '@components/base';
 import { useIsWrongNetwork } from 'hooks';
 import WrongNetworkBanner from './WrongNetworkBanner';
+import { useIsMounted } from 'utils/hooks';
 
 const HEADER_HEIGHT = 48;
 
@@ -19,9 +20,10 @@ const useStyles = createStyles(() => ({
 const Navigation: React.FC = () => {
   const { classes } = useStyles();
   const [isWrongNetwork] = useIsWrongNetwork();
+  const isMounted = useIsMounted();
   return (
     <>
-      {isWrongNetwork && <WrongNetworkBanner />}
+      {isWrongNetwork && isMounted && <WrongNetworkBanner />}
       <Header
         height={HEADER_HEIGHT}
         sx={(theme) => ({
