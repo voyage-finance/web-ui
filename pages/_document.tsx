@@ -9,6 +9,9 @@ class Doc extends Document {
             href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;700&display=swap"
             rel="stylesheet"
           />
+          {/* import __ENV.js to avoid building environment-specific containers */}
+          {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+          <script src={'/__ENV.js'} />
         </Head>
         <body>
           <Main />

@@ -45,3 +45,6 @@ deployments/
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# dynamically generated environment variables
+public/__ENV.js
