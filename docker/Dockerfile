@@ -32,7 +32,7 @@ COPY --from=builder /app/.pnp.cjs ./.pnp.cjs
 COPY --from=builder /app/package.json ./package.json
 
 RUN rm -rf /app/.yarn/unplugged && yarn rebuild
-RUN chown -R nextjs:nodejs /app/.next
+RUN chown -R nextjs:nodejs /app/.next /app/public
 
 USER nextjs
 
