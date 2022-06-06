@@ -13,7 +13,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
         with:
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
       - name: Install buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
@@ -45,7 +45,7 @@ jobs:
             -t $ECR_REGISTRY/$ECR_REPOSITORY:$SHORT_SHA \
             -t $ECR_REGISTRY/$ECR_REPOSITORY:"$IMAGE_TAG" \
             -t $ECR_REGISTRY/$ECR_REPOSITORY:$REF_NAME \
-            --platform linux/amd64,linux/arm64 \
+            --platform linux/amd64 \
             -f ./docker/Dockerfile .
           if [ "$GITHUB_REF_TYPE" == "tag" ]; then
             docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$SHORT_SHA $ECR_REGISTRY/$ECR_REPOSITORY:latest
