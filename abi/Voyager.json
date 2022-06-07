@@ -208,44 +208,6 @@
         "internalType": "address",
         "name": "_user",
         "type": "address"
-      }
-    ],
-    "name": "getAggregateActualRepaymentRate",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
-      }
-    ],
-    "name": "getAggregateOptimalRepaymentRate",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
       },
       {
         "internalType": "address",
@@ -254,25 +216,6 @@
       }
     ],
     "name": "getAvailableCredit",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
-      }
-    ],
-    "name": "getCompoundedDebt",
     "outputs": [
       {
         "internalType": "uint256",
@@ -435,17 +378,17 @@
           },
           {
             "internalType": "address",
+            "name": "loanStrategyAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
             "name": "juniorDepositTokenAddress",
             "type": "address"
           },
           {
             "internalType": "address",
             "name": "seniorDepositTokenAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "debtTokenAddress",
             "type": "address"
           },
           {
@@ -741,11 +684,6 @@
       {
         "internalType": "uint256",
         "name": "_drawDownIdx",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_amount",
         "type": "uint256"
       },
       {

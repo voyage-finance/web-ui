@@ -2,43 +2,6 @@
   {
     "inputs": [
       {
-        "internalType": "contract IAddressResolver",
-        "name": "_addressResolver",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
-    "inputs": [],
-    "name": "addressResolver",
-    "outputs": [
-      {
-        "internalType": "contract IAddressResolver",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getAllVaults",
-    "outputs": [
-      {
-        "internalType": "address[]",
-        "name": "",
-        "type": "address[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
         "name": "_reserve",
         "type": "address"
@@ -103,71 +66,44 @@
     "name": "getPoolData",
     "outputs": [
       {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "totalLiquidity",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "juniorLiquidity",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "seniorLiquidity",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "juniorLiquidityRate",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "seniorLiquidityRate",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "totalDebt",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "borrowRate",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "utilizationRate",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "trancheRatio",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "decimals",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "symbol",
-            "type": "string"
-          },
-          {
-            "internalType": "bool",
-            "name": "isActive",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct DataTypes.PoolData",
-        "name": "",
-        "type": "tuple"
+        "internalType": "uint256",
+        "name": "totalLiquidity",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "juniorLiquidity",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "seniorLiquidity",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "juniorLiquidityRate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "seniorLiquidityRate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "totalDebt",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "borrowRate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "trancheRatio",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -202,66 +138,15 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_reserve",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_user",
+        "name": "user",
         "type": "address"
       }
     ],
-    "name": "getUserPoolData",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "juniorTrancheBalance",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "withdrawableJuniorTrancheBalance",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "seniorTrancheBalance",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "withdrawableSeniorTrancheBalance",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "decimals",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct DataTypes.UserPoolData",
-        "name": "",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
-      }
-    ],
-    "name": "getUserVault",
+    "name": "getUserVaults",
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "vaultAddress",
         "type": "address"
       }
     ],
@@ -272,83 +157,279 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_user",
+        "name": "vaultAddress",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "_reserve",
+        "name": "underlyingPool",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "_sponsor",
+        "name": "underlyingCollection",
+        "type": "address"
+      }
+    ],
+    "name": "getVaultCollateral",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "floorPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "gav",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "ids",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vaultAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "underlyingPool",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "underlyingCollection",
+        "type": "address"
+      }
+    ],
+    "name": "getVaultCollateralDetail",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "currentValue",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "purchasePrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "protocolFee",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "affiliateFee",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vaultAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "underlyingPool",
         "type": "address"
       }
     ],
     "name": "getVaultData",
     "outputs": [
       {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "borrowRate",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "totalDebt",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "totalSecurityDeposit",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "withdrawableSecurityDeposit",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "creditLimit",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "spendableBalance",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "gav",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "ltv",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "optimalAggregateRepaymentRate",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "actualAggregateRepaymentRate",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "healthFactor",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct DataTypes.VaultData",
-        "name": "",
-        "type": "tuple"
+        "internalType": "uint256",
+        "name": "borrowRate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "totalDebt",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "totalSecurityDeposit",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "withdrawableSecurityDeposit",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "creditLimit",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "spendableBalance",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "gav",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "ltv",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minRepaymentRate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "aggregateRepaymentRate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "healthFactor",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vaultAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "underlyingPool",
+        "type": "address"
+      }
+    ],
+    "name": "getVaultDebt",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "principal",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "balance",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountRepaid",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tenure",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minRepaymentRate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vaultAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "underlyingPool",
+        "type": "address"
+      }
+    ],
+    "name": "getVaultFungibleAssets",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "earningsBalance",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "creditBalance",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getVaults",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "vaultAddresses",
+        "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "underlyingAsset",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "userPoolData",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "juniorTrancheBalance",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "seniorTrancheBalance",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
