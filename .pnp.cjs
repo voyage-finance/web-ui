@@ -62,6 +62,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["graphql", "npm:16.3.0"],\
             ["husky", "npm:8.0.1"],\
             ["lint-staged", "npm:12.4.1"],\
+            ["moment", "npm:2.29.3"],\
             ["next", "virtual:38b3b070c23a9c5dbc07ec866e7649f722342eea653befc64de8f13bf435dbd65fd35c1cf7b784a30574bb302fb600892732c014edec4b7b74d9d3906eda0230#npm:12.1.4"],\
             ["numeral", "npm:2.0.6"],\
             ["prettier", "npm:2.6.2"],\
@@ -6822,6 +6823,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["moment", [\
+        ["npm:2.29.3", {\
+          "packageLocation": "./.yarn/cache/moment-npm-2.29.3-fe4ba99bae-2e780e36d9.zip/node_modules/moment/",\
+          "packageDependencies": [\
+            ["moment", "npm:2.29.3"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["ms", [\
         ["npm:2.0.0", {\
           "packageLocation": "./.yarn/cache/ms-npm-2.0.0-9e1101a471-0e6a22b8b7.zip/node_modules/ms/",\
@@ -9284,6 +9294,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["graphql", "npm:16.3.0"],\
             ["husky", "npm:8.0.1"],\
             ["lint-staged", "npm:12.4.1"],\
+            ["moment", "npm:2.29.3"],\
             ["next", "virtual:38b3b070c23a9c5dbc07ec866e7649f722342eea653befc64de8f13bf435dbd65fd35c1cf7b784a30574bb302fb600892732c014edec4b7b74d9d3906eda0230#npm:12.1.4"],\
             ["numeral", "npm:2.0.6"],\
             ["prettier", "npm:2.6.2"],\
