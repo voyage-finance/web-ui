@@ -27,11 +27,18 @@ export type PoolData = {
   trancheRatio: BigNumber;
 };
 
+export type Unbonding = {
+  time: BigNumber;
+  amount: BigNumber;
+  type: TrancheType;
+};
+
 export type UserPoolData = {
   juniorTrancheBalance: BigNumber;
   withdrawableJuniorTrancheBalance: BigNumber;
   seniorTrancheBalance: BigNumber;
   withdrawableSeniorTrancheBalance: BigNumber;
+  unbondings: Unbonding[];
 };
 
 export type VoyagePoolTokenMap = Record<string, string>;

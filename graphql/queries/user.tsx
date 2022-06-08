@@ -8,6 +8,11 @@ export const GET_USER_DATA = gql`
         seniorTrancheBalance
         decimals
       }
+      unbondings {
+        time
+        amount
+        type
+      }
     }
   }
 `;
