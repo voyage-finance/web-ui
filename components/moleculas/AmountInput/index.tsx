@@ -2,22 +2,27 @@ import { Button, Text } from '@components/base';
 import { Group, InputProps, TextInput } from '@mantine/core';
 import { useGetUserErc20Balance } from '../../../hooks';
 import { GetInputProps } from '@mantine/form/lib/types';
+import { BigNumber } from 'bignumber.js';
 
 type IProps<C = 'input'> = InputProps<C> &
   GetInputProps<'input'> & {
     symbol?: string;
     decimals?: number;
+    maximum?: BigNumber;
   };
 
 const AmountInput: React.FC<IProps> = ({
   symbol = '',
   decimals = 18,
   onChange,
+  maximum,
   ...props
 }) => {
   const userBalance = useGetUserErc20Balance(symbol, decimals);
+  const maxAmount = maximum ? maximum : userBalance;
+
   const onClickMax = () => {
-    onChange(userBalance);
+    onChange(maxAmount);
   };
 
   return (

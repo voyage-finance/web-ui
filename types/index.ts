@@ -35,9 +35,9 @@ export type Unbonding = {
 
 export type UserPoolData = {
   juniorTrancheBalance: BigNumber;
-  withdrawableJuniorTrancheBalance: BigNumber;
+  withdrawableJuniorBalance: BigNumber;
   seniorTrancheBalance: BigNumber;
-  withdrawableSeniorTrancheBalance: BigNumber;
+  withdrawableSeniorBalance: BigNumber;
   unbondings: Unbonding[];
 };
 
