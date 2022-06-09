@@ -11,9 +11,15 @@ import { ReserveAssets } from 'consts';
 import { usdValue } from 'utils/price';
 import { useState } from 'react';
 import DangerImg from 'assets/danger.png';
-import { useSymbolCtx, useUserDataCtx } from 'hooks/context/usePoolDataCtx';
-
-const noop = () => undefined;
+import {
+  usePoolDataCtx,
+  useSymbolCtx,
+  useUserDataCtx,
+} from 'hooks/context/usePoolDataCtx';
+import { useWithdraw } from 'hooks';
+import { showNotification } from '@mantine/notifications';
+import { getTxExpolerLink } from 'utils/env';
+import { shortenHash } from 'utils/hash';
 
 type IProps = {
   type: TrancheType;
@@ -23,16 +29,18 @@ type IProps = {
 const EnterAmountStep: React.FC<IProps> = ({ type, onSuccess }) => {
   const [symbol] = useSymbolCtx();
   const [userData] = useUserDataCtx();
+  const [poolData] = usePoolDataCtx();
   const [priceData] = useAssetPrice(ReserveAssets.TUS);
   const userHoldings = useGetUserErc20Balance(symbol);
+  const { onWithdraw } = useWithdraw();
+  const [isLoading, setIsLoading] = useState(false);
   const balance = userData
     ? type === TrancheType.Junior
       ? userData.juniorTrancheBalance
       : userData.seniorTrancheBalance
     : Zero;
 
-  const [isConfirming] = useState(false);
-  const [error] = useState('Withdrawal amount exceeds balance.');
+  const [errorMsg, setErrorMsg] = useState('');
 
   const form = useForm({
     initialValues: { amount: '' },
@@ -57,14 +65,50 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onSuccess }) => {
     },
   });
 
-  const onWithdraw = async () => {
-    // TODO: implement after the indexer part is ready
-    noop();
-    onSuccess();
+  const withdraw = async () => {
+    if (userData && poolData) {
+      try {
+        setIsLoading(true);
+        const tx = await onWithdraw(
+          form.values.amount,
+          type,
+          poolData.decimals,
+          symbol
+        );
+        showNotification({
+          title: 'Withdrawal submitted',
+          message: (
+            <div>
+              Transaction block is initialized{' '}
+              <a href={getTxExpolerLink(tx.hash)}>{shortenHash(tx.hash)}</a>
+            </div>
+          ),
+          color: 'green',
+        });
+        const txReceipt = await tx.wait();
+        console.log('withdrawal tx confirmed: ', txReceipt);
+        onSuccess();
+      } catch (err) {
+        showNotification({
+          title: 'Transaction error',
+          message: (err as Error).toString(),
+          color: 'red',
+        });
+        setErrorMsg((err as Error).toString());
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      showNotification({
+        title: 'Error',
+        message: "Pool and user data aren't fetched",
+        color: 'red',
+      });
+    }
   };
 
   return (
-    <form onSubmit={form.onSubmit(onWithdraw)}>
+    <form onSubmit={form.onSubmit(withdraw)}>
       <Box
         px={30}
         py={20}
@@ -124,15 +168,15 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onSuccess }) => {
         </Text>
       </Group>
       <AmountInput mt={16} {...form.getInputProps('amount')} symbol={symbol} />
-      {error && (
+      {errorMsg && (
         <Text mt={16} type="danger" align="center">
-          Error: {error}
+          Error: {errorMsg}
         </Text>
       )}
       <Button
         fullWidth
         mt={16}
-        loading={isConfirming}
+        loading={isLoading}
         type="submit"
         disabled={!form.values.amount}
       >
