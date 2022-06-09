@@ -6,6 +6,8 @@ export const GET_USER_DATA = gql`
       poolData {
         juniorTrancheBalance
         seniorTrancheBalance
+        withdrawableJuniorBalance
+        withdrawableSeniorBalance
         decimals
       }
       unbondings {

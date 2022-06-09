@@ -65,8 +65,8 @@ const TrancheCard: React.FC<IProps> = ({
     : Zero;
   const withdrawable =
     (type === TrancheType.Junior
-      ? userData?.withdrawableJuniorTrancheBalance
-      : userData?.withdrawableSeniorTrancheBalance) || Zero;
+      ? userData?.withdrawableJuniorBalance
+      : userData?.withdrawableSeniorBalance) || Zero;
   return (
     <Card
       px={32}
@@ -171,7 +171,7 @@ const TrancheCard: React.FC<IProps> = ({
             </Button>
             <Button
               kind="secondary"
-              disabled={!withdrawable?.isZero()}
+              disabled={withdrawable?.isZero()}
               style={{ width: 205 }}
               onClick={onWithdrawClick}
             >

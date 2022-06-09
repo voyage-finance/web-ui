@@ -43,8 +43,13 @@ const resultToUserPoolData = (res: any): UserPoolData => {
       time: new BigNumber(v.time),
       type: v.type === 1 ? TrancheType.Senior : TrancheType.Junior,
     })),
-    // TODO: update when indexer will return this fields
-    withdrawableJuniorTrancheBalance: Zero,
-    withdrawableSeniorTrancheBalance: Zero,
+    withdrawableJuniorBalance: shiftDecimals(
+      poolData.withdrawableJuniorBalance,
+      decimals
+    ),
+    withdrawableSeniorBalance: shiftDecimals(
+      poolData.withdrawableSeniorBalance,
+      decimals
+    ),
   };
 };

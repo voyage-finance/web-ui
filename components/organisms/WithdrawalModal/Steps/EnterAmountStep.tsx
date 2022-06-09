@@ -31,13 +31,17 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onSuccess }) => {
   const [userData] = useUserDataCtx();
   const [poolData] = usePoolDataCtx();
   const [priceData] = useAssetPrice(ReserveAssets.TUS);
-  const userHoldings = useGetUserErc20Balance(symbol);
   const { onWithdraw } = useWithdraw();
   const [isLoading, setIsLoading] = useState(false);
   const balance = userData
     ? type === TrancheType.Junior
       ? userData.juniorTrancheBalance
       : userData.seniorTrancheBalance
+    : Zero;
+  const withdrawable = userData
+    ? type === TrancheType.Junior
+      ? userData.withdrawableJuniorBalance
+      : userData.withdrawableSeniorBalance
     : Zero;
 
   const [errorMsg, setErrorMsg] = useState('');
@@ -56,7 +60,7 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onSuccess }) => {
           return 'Amount should be a positive number';
         }
 
-        if (!userHoldings || num.gt(userHoldings)) {
+        if (!withdrawable || num.gt(withdrawable)) {
           return 'Insufficient balance!';
         }
 
@@ -163,11 +167,16 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onSuccess }) => {
             size="xs"
             weight={700}
           >
-            {`${formatAmount(userHoldings)} ${symbol}`}
+            {`${formatAmount(withdrawable)} ${symbol}`}
           </Text>{' '}
         </Text>
       </Group>
-      <AmountInput mt={16} {...form.getInputProps('amount')} symbol={symbol} />
+      <AmountInput
+        mt={16}
+        {...form.getInputProps('amount')}
+        symbol={symbol}
+        maximum={withdrawable}
+      />
       {errorMsg && (
         <Text mt={16} type="danger" align="center">
           Error: {errorMsg}
