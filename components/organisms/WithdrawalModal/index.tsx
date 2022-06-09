@@ -14,15 +14,18 @@ const WithdrawalModal: React.FC<IProps> = ({
   onClose: _onClose,
   ...props
 }) => {
-  const [, isPoolDataLoading] = usePoolDataCtx();
-  const [, isUserDataLoading] = useUserDataCtx();
+  const [, isPoolDataLoading, refetchPool] = usePoolDataCtx();
+  const [, isUserDataLoading, refetchUserData] = useUserDataCtx();
 
   const onWithdrawn = () => {
+    refetchPool();
+    refetchUserData();
     showNotification({
       title: 'Withdrawal success',
       message: `Your withdrawal was successfull`,
       color: 'green',
     });
+    _onClose();
   };
 
   const onClose = () => {
