@@ -18,17 +18,17 @@ export const Deployments: Record<
     [VoyageContracts.Voyager]: {
       network: Network.Hardhat,
       abi: Voyager,
-      address: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
+      address: '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
     },
     [VoyageContracts.LiquidityManager]: {
       network: Network.Hardhat,
       abi: LiquidityManager,
-      address: '0x0B306BF915C4d645ff596e518fAf3F9669b97016',
+      address: '0x3Aa5ebB10DC797CAC828524e59A333d0A371443c',
     },
     [VoyageContracts.VoyageProtocolDataProvider]: {
       network: Network.Hardhat,
       abi: VoyageProtocolDataProvider,
-      address: '0x8f86403A4DE0BB5791fa46B8e795C547942fE4Cf',
+      address: '0x809d550fca64d94Bd9F66E60752A544199cfAC3D',
     },
   },
   [ChainID.Staging]: {
