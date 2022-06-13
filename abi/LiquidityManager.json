@@ -7,7 +7,7 @@
         "type": "address"
       },
       {
-        "internalType": "address",
+        "internalType": "address payable",
         "name": "_voyager",
         "type": "address"
       }
@@ -156,6 +156,29 @@
   {
     "inputs": [
       {
+        "internalType": "contract ERC20",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "approve",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "_reserve",
         "type": "address"
@@ -180,13 +203,6 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "claimOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -324,25 +340,6 @@
         "internalType": "address",
         "name": "_asset",
         "type": "address"
-      }
-    ],
-    "name": "getJuniorLiquidityIndex",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_asset",
-        "type": "address"
       },
       {
         "internalType": "enum ReserveLogic.Tranche",
@@ -398,16 +395,6 @@
           {
             "internalType": "uint256",
             "name": "currentSeniorLiquidityRate",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "juniorLiquidityIndex",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "seniorLiquidityIndex",
             "type": "uint256"
           },
           {
@@ -505,49 +492,6 @@
         "type": "address"
       },
       {
-        "internalType": "enum ReserveLogic.Tranche",
-        "name": "_tranche",
-        "type": "uint8"
-      }
-    ],
-    "name": "getReserveNormalizedIncome",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_asset",
-        "type": "address"
-      }
-    ],
-    "name": "getSeniorLiquidityIndex",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_asset",
-        "type": "address"
-      },
-      {
         "internalType": "address",
         "name": "_juniorDepositTokenAddress",
         "type": "address"
@@ -585,19 +529,6 @@
   },
   {
     "inputs": [],
-    "name": "isOwner",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "messageSender",
     "outputs": [
       {
@@ -631,19 +562,6 @@
   },
   {
     "inputs": [],
-    "name": "pendingOwner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "proxy",
     "outputs": [
       {
@@ -653,6 +571,41 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract ERC20",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      }
+    ],
+    "name": "pullToken",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -726,6 +679,35 @@
         "internalType": "address",
         "name": "_reserve",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      },
+      {
+        "internalType": "enum ReserveLogic.Tranche",
+        "name": "_tranche",
+        "type": "uint8"
+      }
+    ],
+    "name": "unbonding",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_reserve",
+        "type": "address"
       }
     ],
     "name": "utilizationRate",
@@ -778,35 +760,6 @@
     "name": "withdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_reserve",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
-      },
-      {
-        "internalType": "enum ReserveLogic.Tranche",
-        "name": "_tranche",
-        "type": "uint8"
-      }
-    ],
-    "name": "withdrawAbleAmount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   }
 ]

@@ -67,6 +67,14 @@ const TrancheCard: React.FC<IProps> = ({
     (type === TrancheType.Junior
       ? userData?.withdrawableJuniorBalance
       : userData?.withdrawableSeniorBalance) || Zero;
+  const unbonding =
+    type === TrancheType.Junior
+      ? userData?.juniorTrancheBalance?.minus(
+          userData?.withdrawableJuniorBalance
+        )
+      : userData?.seniorTrancheBalance?.minus(
+          userData?.withdrawableSeniorBalance
+        );
   return (
     <Card
       px={32}
@@ -153,7 +161,7 @@ const TrancheCard: React.FC<IProps> = ({
           <Text type="secondary">Amount Unbonding</Text>
           <Group direction="column" spacing={0} align="end">
             <Title order={5}>
-              {formatAmount(withdrawable)}{' '}
+              {formatAmount(unbonding)}{' '}
               <Text weight={400} component="span">
                 {symbol}
               </Text>
