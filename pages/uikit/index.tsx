@@ -7,9 +7,18 @@ import styles from './index.module.scss';
 import Button from '@components/base/Button';
 import CTAButton from '@components/base/CTAButton';
 import { ArrowUpRight } from 'tabler-icons-react';
+import showNotification from 'utils/notification';
 
 const Home: NextPage = () => {
   const { colors } = useMantineTheme();
+
+  const showSuccessNotification = () => {
+    showNotification({
+      type: 'success',
+      title: 'Deposit success',
+      message: 'Depositing 10,000 TUS...',
+    });
+  };
 
   return (
     <div className={styles.container}>
@@ -73,6 +82,11 @@ const Home: NextPage = () => {
               </Button>
               <Button disabled size="xl">
                 Primary XL
+              </Button>
+            </Group>
+            <Group>
+              <Button onClick={showSuccessNotification}>
+                Show Notification
               </Button>
             </Group>
           </Group>
