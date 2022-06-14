@@ -52,17 +52,17 @@ export const Deployments: Record<
     [VoyageContracts.Voyager]: {
       network: Network.Fuji,
       abi: Voyager,
-      address: '0x5eBA979235019b271a99524f699E49F2791D236C',
+      address: '0x293540a1A293B3adcb2EEA7d8249cF392475e665',
     },
     [VoyageContracts.LiquidityManager]: {
       network: Network.Fuji,
       abi: LiquidityManager,
-      address: '0x47B1edAd418486464544Fc4ba47EF4980FDB4b2d',
+      address: '0x13aA52A79b16021107A0031Ae2c672A561F52287',
     },
     [VoyageContracts.VoyageProtocolDataProvider]: {
       network: Network.Fuji,
       abi: VoyageProtocolDataProvider,
-      address: '0xFEE887be20e55ac5d9dB9e2DcCD7111609413789',
+      address: '0x41D4D41Ae35a5815a77B437932B722e85B6dD453',
     },
   },
   // TODO: after mainnet deployment
