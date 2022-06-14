@@ -61,7 +61,7 @@ const PoolRow: React.FC<PoolData> = ({
         <AmountWithUSD symbol={symbol} amount={Zero} />
       </td>
       <td>
-        <Group style={{ justifyContent: 'end' }}>
+        <Group position="right">
           <CTAButton>Deposit</CTAButton>
           <CTAButton>Withdraw</CTAButton>
           <CTAButton>

@@ -3,8 +3,10 @@
     vertical-align: top;
     padding: 20px 0 !important;
   }
-  th,
-  td {
+  th {
     border-bottom: 1px solid #575b79 !important;
+  }
+  td {
+    border-bottom-width: 0 !important;
   }
 }
