@@ -6,7 +6,7 @@ import { formatAmount, Zero } from 'utils/bn';
 import BigNumber from 'bignumber.js';
 import { useForm } from '@mantine/form';
 import { TrancheType } from 'types';
-import { useAssetPrice, useGetUserErc20Balance } from 'hooks';
+import { useAssetPrice, useWithdraw } from 'hooks';
 import { ReserveAssets } from 'consts';
 import { usdValue } from 'utils/price';
 import { useState } from 'react';
@@ -16,7 +16,6 @@ import {
   useSymbolCtx,
   useUserDataCtx,
 } from 'hooks/context/usePoolDataCtx';
-import { useWithdraw } from 'hooks';
 import { showNotification } from '@mantine/notifications';
 import { getTxExpolerLink } from 'utils/env';
 import { shortenHash } from 'utils/hash';
