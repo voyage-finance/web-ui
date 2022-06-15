@@ -5,7 +5,9 @@ import { PoolData } from 'types';
 import AvalanchePng from '@assets/icons/avalanche.png';
 import AmountWithUSD from '@components/moleculas/AmountWithUSD';
 
-const TableRow: React.FC<PoolData> = ({ symbol, totalLiquidity }) => {
+type IProps = PoolData & { onBorrow: () => void };
+
+const TableRow: React.FC<IProps> = ({ symbol, totalLiquidity, onBorrow }) => {
   return (
     <tr>
       <td style={{ paddingLeft: 0 }}>
@@ -51,7 +53,7 @@ const TableRow: React.FC<PoolData> = ({ symbol, totalLiquidity }) => {
       <td></td>
       <td>
         <Group style={{ justifyContent: 'end' }}>
-          <CTAButton>Borrow</CTAButton>
+          <CTAButton onClick={onBorrow}>Borrow</CTAButton>
         </Group>
       </td>
     </tr>

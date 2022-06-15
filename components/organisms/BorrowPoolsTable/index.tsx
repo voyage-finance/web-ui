@@ -7,11 +7,13 @@ import { PoolData } from 'types';
 import { useGetPools } from 'hooks';
 import WalletConnectionFence from '@components/moleculas/WalletConnectionFence';
 import { useIsMounted } from 'utils/hooks';
+import TakeLoanModal from '../TakeLoanModal';
+import { useState } from 'react';
 
 const BorrowPoolsTable: React.FC = () => {
   const { loading, data } = useGetPools();
   const isMounted = useIsMounted();
-
+  const [isBorrowModalOpened, setIsBorrowModalOpened] = useState(false);
   const columns = [
     'Project',
     'Chain',
@@ -53,11 +55,19 @@ const BorrowPoolsTable: React.FC = () => {
                 </td>
               ) : (
                 data.map((pool: PoolData) => (
-                  <TableRow key={pool.id} {...pool} />
+                  <TableRow
+                    key={pool.id}
+                    {...pool}
+                    onBorrow={() => setIsBorrowModalOpened(true)}
+                  />
                 ))
               ))}
           </tbody>
         </Table>
+        <TakeLoanModal
+          opened={isBorrowModalOpened}
+          onClose={() => setIsBorrowModalOpened(false)}
+        />
       </WalletConnectionFence>
     </Group>
   );
