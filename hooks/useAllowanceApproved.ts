@@ -13,7 +13,7 @@ import { useSupportedTokensCtx } from './context/useSupportedTokensCtx';
 export const useAllowanceApproved = (symbol: string) => {
   const { data: allowanceAmount } = useGetAllowance(symbol);
   const [tokens] = useSupportedTokensCtx();
-  const lmAddress = useGetContractAddress(VoyageContracts.LiquidityManager);
+  const voyager = useGetContractAddress(VoyageContracts.Voyager);
   const {
     isLoading: isApproving,
     error: errorApprove,
@@ -44,7 +44,7 @@ export const useAllowanceApproved = (symbol: string) => {
     );
 
     await approveTx({
-      args: [lmAddress, toHexString(amountNeeded)],
+      args: [voyager, toHexString(amountNeeded)],
     });
 
     if (errorApprove)
