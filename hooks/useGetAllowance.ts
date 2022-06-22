@@ -6,7 +6,7 @@ import { useContractRead } from 'hooks';
 import { useSupportedTokensCtx } from './context/useSupportedTokensCtx';
 
 export const useGetAllowance = (tokenSmb: string) => {
-  const lmAddress = useGetContractAddress(VoyageContracts.LiquidityManager);
+  const voyager = useGetContractAddress(VoyageContracts.Voyager);
   const account = useAccount();
   const [tokens] = useSupportedTokensCtx();
   return useContractRead(
@@ -16,7 +16,7 @@ export const useGetAllowance = (tokenSmb: string) => {
     },
     'allowance',
     {
-      args: [account.data?.address, lmAddress],
+      args: [account.data?.address, voyager],
     }
   );
 };
