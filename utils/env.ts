@@ -1,5 +1,4 @@
 import { Chain } from '@wagmi/core';
-import e from '@beam-australia/react-env';
 
 export enum VoyageEnvironment {
   Development = 'development',
@@ -23,8 +22,10 @@ export enum ChainID {
 }
 
 export const voyageEnvironment = (): VoyageEnvironment => {
-  const env = (e('VYG_ENV') as VoyageEnvironment) || VoyageEnvironment.Staging;
-  console.log('env: ', e('VYG_ENV'));
+  const env =
+    (process.env.NEXT_PUBLIC_VYG_ENV as VoyageEnvironment) ||
+    VoyageEnvironment.Staging;
+  console.log('env: ', process.env.NEXT_PUBLIC_VYG_ENV);
   switch (env) {
     case VoyageEnvironment.Development:
     case VoyageEnvironment.Staging:
