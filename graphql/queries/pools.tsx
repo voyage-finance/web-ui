@@ -8,7 +8,6 @@ export const GET_POOLS = gql`
       underlyingAsset
       symbol
       decimals
-      collateralAsset
       juniorTrancheTotalLiquidity
       juniorTrancheLiquidityRate
       seniorTrancheTotalLiquidity
@@ -23,13 +22,12 @@ export const GET_POOLS = gql`
 
 export const GET_POOL = gql`
   query Pool($asset: Bytes) {
-    pool(underlyingAsset: $asset) {
+    pool(id: $asset) {
       id
       isActive
       underlyingAsset
       symbol
       decimals
-      collateralAsset
       juniorTrancheTotalLiquidity
       juniorTrancheLiquidityRate
       seniorTrancheTotalLiquidity

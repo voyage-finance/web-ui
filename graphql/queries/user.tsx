@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 
 export const GET_USER_DATA = gql`
-  query getUserPoolData($underlyingAsset: Bytes, $address: Bytes) {
-    user(underlyingAsset: $underlyingAsset, address: $address) {
-      poolData {
+  query getUserPoolData($depositDataAddress: Bytes, $address: Bytes) {
+    userData(id: $address) {
+      depositData(where: { id: $depositDataAddress }) {
         juniorTrancheBalance
         seniorTrancheBalance
         withdrawableJuniorBalance
