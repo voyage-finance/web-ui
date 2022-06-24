@@ -41,7 +41,6 @@ const resultToPoolData = (res: any): PoolData => ({
   underlyingAsset: res.underlyingAsset,
   symbol: res.symbol,
   decimals: Number(res.decimals),
-  collateralAsset: res.collateralAsset,
   juniorTrancheTotalLiquidity: shiftDecimals(
     res.juniorTrancheTotalLiquidity,
     Number(res.decimals)

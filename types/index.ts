@@ -14,7 +14,6 @@ export type PoolData = {
   id: string;
   isActive: boolean;
   underlyingAsset: string;
-  collateralAsset: string;
   symbol: string;
   decimals: number;
   juniorTrancheTotalLiquidity: BigNumber;

@@ -13,5 +13,9 @@ export const useFetchPoolTokens = () => {
     'getPoolTokens'
   );
 
-  return Object.fromEntries(tokens || []) as VoyagePoolTokenMap;
+  let tokensMap = Object.fromEntries(tokens || []) as VoyagePoolTokenMap;
+  for (const key in tokensMap) {
+    tokensMap[key] = tokensMap[key].toLowerCase();
+  }
+  return tokensMap;
 };

@@ -9,11 +9,12 @@ import { useSupportedTokensCtx } from './context/useSupportedTokensCtx';
 export const useGetUserPoolData = (tokenSmb: string) => {
   const [tokens] = useSupportedTokensCtx();
   const account = useAccount();
+  const accountAddress = account.data?.address?.toLowerCase();
 
   const { loading, data, error, refetch } = useQuery(GET_USER_DATA, {
     variables: {
-      underlyingAsset: tokens[tokenSmb],
-      address: account.data?.address,
+      depositDataAddress: `${accountAddress}_${tokens[tokenSmb]}`,
+      address: accountAddress,
     },
     notifyOnNetworkStatusChange: true,
   });
@@ -26,30 +27,28 @@ export const useGetUserPoolData = (tokenSmb: string) => {
 };
 
 const resultToUserPoolData = (res: any): UserPoolData => {
-  const poolData = res.user.poolData[0];
-  const unbondings = res.user.unbondings || [];
-  const decimals = Number(poolData.decimals);
+  const poolData = res.userData.depositData
+    ? res.userData.depositData[0]
+    : null;
+  const unbondings = res.userData.unbondings || [];
+  const decimals = poolData ? Number(poolData.decimals) : 0;
   return {
-    juniorTrancheBalance: shiftDecimals(
-      poolData.juniorTrancheBalance,
-      decimals
-    ),
-    seniorTrancheBalance: shiftDecimals(
-      poolData.seniorTrancheBalance,
-      decimals
-    ),
+    juniorTrancheBalance: poolData
+      ? shiftDecimals(poolData.juniorTrancheBalance, decimals)
+      : Zero,
+    seniorTrancheBalance: poolData
+      ? shiftDecimals(poolData.seniorTrancheBalance, decimals)
+      : Zero,
     unbondings: unbondings.map((v: any) => ({
       amount: shiftDecimals(v.amount, decimals),
       time: new BigNumber(v.time),
-      type: v.type === 1 ? TrancheType.Senior : TrancheType.Junior,
+      type: v.type === 'Senior' ? TrancheType.Senior : TrancheType.Junior,
     })),
-    withdrawableJuniorBalance: shiftDecimals(
-      poolData.withdrawableJuniorBalance,
-      decimals
-    ),
-    withdrawableSeniorBalance: shiftDecimals(
-      poolData.withdrawableSeniorBalance,
-      decimals
-    ),
+    withdrawableJuniorBalance: poolData
+      ? shiftDecimals(poolData.withdrawableJuniorBalance, decimals)
+      : Zero,
+    withdrawableSeniorBalance: poolData
+      ? shiftDecimals(poolData.withdrawableSeniorBalance, decimals)
+      : Zero,
   };
 };
