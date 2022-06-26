@@ -4,7 +4,7 @@ import { useState } from 'react';
 import DepositStatusStep from './Steps/DepositStatusStep';
 import EnterAmountStep from './Steps/EnterAmountStep';
 import { TrancheTextMap, TrancheType } from 'types';
-import { showNotification } from '@mantine/notifications';
+import { showNotification } from 'utils/notification';
 import { usePoolDataCtx, useUserDataCtx } from 'hooks/context/usePoolDataCtx';
 
 type IProps = ModalProps & {
@@ -33,9 +33,9 @@ const DepositTrancheModal: React.FC<IProps> = ({
     setDepositedAmount(amount);
     setErrorMessage('');
     showNotification({
+      type: 'success',
       title: 'Deposit success',
       message: `Your deposit of amount ${amount} was successfull`,
-      color: 'green',
     });
     refetchPool();
     refetchData();
@@ -47,7 +47,7 @@ const DepositTrancheModal: React.FC<IProps> = ({
     showNotification({
       title: 'Transaction error',
       message: error,
-      color: 'red',
+      type: 'error',
     });
   };
 
