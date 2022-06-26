@@ -36,7 +36,13 @@ const NotificationBody: React.FC<{
     <Group direction="column" spacing={0}>
       <div> {message}</div>
       {link && (
-        <Group spacing={0} className="expolerLink">
+        <Group
+          spacing={0}
+          className="expolerLink"
+          onClick={() => {
+            window.open(link, '_blank', 'noopener,noreferrer');
+          }}
+        >
           View on explorer
           <ArrowUpRightSvg className="arrowIcon" />
         </Group>
