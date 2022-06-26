@@ -17,6 +17,25 @@ const Home: NextPage = () => {
       type: 'success',
       title: 'Deposit success',
       message: 'Depositing 10,000 TUS...',
+      link: 'dsf',
+    });
+  };
+
+  const showInfoNotification = () => {
+    showNotification({
+      type: 'info',
+      title: 'Deposit success',
+      message: 'Depositing 10,000 TUS...',
+      link: 'dsf',
+    });
+  };
+
+  const showErrorNotification = () => {
+    showNotification({
+      type: 'error',
+      title: 'Deposit success',
+      message: 'Depositing 10,000 TUS...',
+      link: 'dsf',
     });
   };
 
@@ -84,10 +103,17 @@ const Home: NextPage = () => {
                 Primary XL
               </Button>
             </Group>
+          </Group>
+        </div>
+        <div>
+          <Title order={3} style={{ color: 'white', textAlign: 'center' }}>
+            Notifications
+          </Title>
+          <Group direction="column">
             <Group>
-              <Button onClick={showSuccessNotification}>
-                Show Notification
-              </Button>
+              <Button onClick={showSuccessNotification}>Success</Button>
+              <Button onClick={showInfoNotification}>Info</Button>
+              <Button onClick={showErrorNotification}>Error</Button>
             </Group>
           </Group>
         </div>

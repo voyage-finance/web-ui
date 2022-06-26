@@ -19,7 +19,7 @@ import { usdValue } from 'utils/price';
 import { VoyageContracts } from 'consts/addresses';
 import { useGetDeployment } from 'hooks/useGetDeployment';
 import { useState } from 'react';
-import { showNotification } from '@mantine/notifications';
+import { showNotification } from 'utils/notification';
 import { getTxExpolerLink } from 'utils/env';
 import { shortenHash } from 'utils/hash';
 import DangerImg from 'assets/danger.png';
@@ -115,7 +115,7 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onDeposited, onError }) => {
               <a href={getTxExpolerLink(tx.hash)}>{shortenHash(tx.hash)}</a>
             </div>
           ),
-          color: 'green',
+          type: 'success',
         });
         const txReceipt = await tx.wait();
         console.log('deposit tx confirmed: ', txReceipt);
@@ -129,7 +129,7 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onDeposited, onError }) => {
       showNotification({
         title: 'Error',
         message: "Pool and user data aren't fetched",
-        color: 'red',
+        type: 'error',
       });
     }
   };

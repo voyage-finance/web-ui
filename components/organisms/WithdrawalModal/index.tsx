@@ -2,7 +2,7 @@ import { Modal } from '@components/base';
 import { LoadingOverlay, ModalProps } from '@mantine/core';
 import EnterAmountStep from './Steps/EnterAmountStep';
 import { TrancheTextMap, TrancheType } from 'types';
-import { showNotification } from '@mantine/notifications';
+import { showNotification } from 'utils/notification';
 import { usePoolDataCtx, useUserDataCtx } from 'hooks/context/usePoolDataCtx';
 
 type IProps = ModalProps & {
@@ -23,7 +23,7 @@ const WithdrawalModal: React.FC<IProps> = ({
     showNotification({
       title: 'Withdrawal success',
       message: `Your withdrawal was successfull`,
-      color: 'green',
+      type: 'success',
     });
     _onClose();
   };

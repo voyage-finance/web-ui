@@ -16,9 +16,8 @@ import {
   useSymbolCtx,
   useUserDataCtx,
 } from 'hooks/context/usePoolDataCtx';
-import { showNotification } from '@mantine/notifications';
+import { showNotification } from 'utils/notification';
 import { getTxExpolerLink } from 'utils/env';
-import { shortenHash } from 'utils/hash';
 
 type IProps = {
   type: TrancheType;
@@ -80,13 +79,9 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onSuccess }) => {
         );
         showNotification({
           title: 'Withdrawal submitted',
-          message: (
-            <div>
-              Transaction block is initialized{' '}
-              <a href={getTxExpolerLink(tx.hash)}>{shortenHash(tx.hash)}</a>
-            </div>
-          ),
-          color: 'green',
+          message: <div>Transaction block is initialized</div>,
+          type: 'success',
+          link: getTxExpolerLink(tx.hash),
         });
         const txReceipt = await tx.wait();
         console.log('withdrawal tx confirmed: ', txReceipt);
@@ -95,7 +90,7 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onSuccess }) => {
         showNotification({
           title: 'Transaction error',
           message: (err as Error).toString(),
-          color: 'red',
+          type: 'error',
         });
         setErrorMsg((err as Error).toString());
       } finally {
@@ -105,7 +100,7 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onSuccess }) => {
       showNotification({
         title: 'Error',
         message: "Pool and user data aren't fetched",
-        color: 'red',
+        type: 'error',
       });
     }
   };

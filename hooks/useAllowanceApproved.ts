@@ -1,4 +1,4 @@
-import { showNotification } from '@mantine/notifications';
+import { showNotification } from 'utils/notification';
 import BigNumber from 'bignumber.js';
 import { MAX_UINT_AMOUNT } from 'consts';
 import { useEffect, useState } from 'react';
@@ -51,13 +51,13 @@ export const useAllowanceApproved = (symbol: string) => {
       showNotification({
         title: 'Transaction error',
         message: errorApprove.message,
-        color: 'red',
+        type: 'error',
       });
     else {
       showNotification({
         title: 'Allowance increased',
         message: 'You can now start depositing',
-        color: 'green',
+        type: 'success',
       });
       setIsApproved(true);
     }
