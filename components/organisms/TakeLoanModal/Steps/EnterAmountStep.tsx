@@ -1,11 +1,12 @@
 import { Button, Divider, Text, Title } from '@components/base';
 import AmountInput from '@components/moleculas/AmountInput';
 import { Group } from '@mantine/core';
-import { formatAmount, Zero } from 'utils/bn';
+import { formatAmount } from 'utils/bn';
 import BigNumber from 'bignumber.js';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
 import PaymentRoadmap from '@components/moleculas/PaymentRoadmap';
+import { useGetUserErc20Balance } from 'hooks';
 
 type IProps = {
   onSuccess: () => void;
@@ -14,9 +15,9 @@ type IProps = {
 const EnterAmountStep: React.FC<IProps> = ({}) => {
   const symbol = 'TUS';
   const [isLoading] = useState(false);
-  const balance = Zero;
-
   const [errorMsg] = useState('');
+  const [margin, setMargin] = useState(0);
+  const balance = useGetUserErc20Balance(symbol);
 
   const form = useForm({
     initialValues: { amount: '' },
@@ -43,6 +44,12 @@ const EnterAmountStep: React.FC<IProps> = ({}) => {
 
   const borrow = async () => undefined;
 
+  const handleAmountChange = (eventOrValue: any) => {
+    const value = eventOrValue?.currentTarget?.value || eventOrValue || 0;
+    setMargin(Math.round(value * 0.1 * 100) / 100);
+    form.setFieldValue('amount', value);
+  };
+
   return (
     <form onSubmit={form.onSubmit(borrow)}>
       <Group position="apart" mt={16} align="start">
@@ -55,12 +62,12 @@ const EnterAmountStep: React.FC<IProps> = ({}) => {
         <Group spacing={0} direction="column" align={'end'}>
           <Text type="secondary">Available for Loan</Text>
           <Title order={4}>
-            100,199,856,553.84956{' '}
+            XXX,XXXXX{' '}
             <Text component="span" inherit type="accent">
               {symbol}
             </Text>
           </Title>
-          <Text size="sm">~$100,000,000,000.00</Text>
+          <Text size="sm">~$XXX,XXX,XXX.00</Text>
         </Group>
       </Group>
       <Divider my={16} orientation="horizontal" />
@@ -70,6 +77,7 @@ const EnterAmountStep: React.FC<IProps> = ({}) => {
       <AmountInput
         mt={12}
         {...form.getInputProps('amount')}
+        onChange={handleAmountChange}
         symbol={symbol}
         maximum={balance}
       />
@@ -90,9 +98,11 @@ const EnterAmountStep: React.FC<IProps> = ({}) => {
       </Group>
       <AmountInput
         mt={12}
-        {...form.getInputProps('amount')}
+        value={margin}
+        onChange={() => undefined}
         symbol={symbol}
         maximum={balance}
+        showMaxBtn={false}
       />
       {errorMsg && (
         <Text mt={16} type="danger" align="center">
