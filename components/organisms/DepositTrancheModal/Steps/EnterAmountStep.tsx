@@ -2,7 +2,7 @@ import { Button, Divider, Text, Title } from '@components/base';
 import AmountInput from '@components/moleculas/AmountInput';
 import { Box, Group } from '@mantine/core';
 import Image from 'next/image';
-import { useContractWrite, useSigner } from 'wagmi';
+import { useAccount, useContractWrite, useSigner } from 'wagmi';
 import {
   addDecimals,
   formatAmount,
@@ -38,6 +38,7 @@ type IProps = {
 const EnterAmountStep: React.FC<IProps> = ({ type, onDeposited, onError }) => {
   const [symbol] = useSymbolCtx();
   const { data: signer } = useSigner();
+  const { data: account } = useAccount();
   const [tokens] = useSupportedTokensCtx();
   const [poolData] = usePoolDataCtx();
   const [userData] = useUserDataCtx();
@@ -96,14 +97,16 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onDeposited, onError }) => {
   });
 
   const onDeposit = async () => {
-    if (poolData && userData)
+    if (poolData && userData) {
+      let tx;
       try {
         setIsConfirming(true);
-        const tx = await deposit({
+        tx = await deposit({
           args: [
             tokens[symbol],
             type == TrancheType.Senior ? '1' : '0',
             toHexString(addDecimals(form.values.amount, poolData.decimals)),
+            account?.address,
           ],
         });
         showNotification({
@@ -114,13 +117,26 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onDeposited, onError }) => {
         });
         const txReceipt = await tx.wait();
         console.log('deposit tx confirmed: ', txReceipt);
+        showNotification({
+          type: 'success',
+          title: 'Deposit success',
+          message: `Deposited ${form.values.amount} ${symbol} successfully.`,
+          link: getTxExpolerLink(tx.hash),
+        });
         onDeposited(form.values.amount);
       } catch (err) {
-        onError((err as Error).toString());
+        const error = (err as Error).toString();
+        onError(error);
+        showNotification({
+          title: 'Deposit Failed',
+          message: error,
+          type: 'error',
+          link: tx?.hash ? getTxExpolerLink(tx.hash) : undefined,
+        });
       } finally {
         setIsConfirming(false);
       }
-    else {
+    } else {
       showNotification({
         title: 'Deposit Failed',
         message: "Pool and user data aren't fetched",

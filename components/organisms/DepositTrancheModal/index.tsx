@@ -4,12 +4,7 @@ import { useState } from 'react';
 import DepositStatusStep from './Steps/DepositStatusStep';
 import EnterAmountStep from './Steps/EnterAmountStep';
 import { TrancheTextMap, TrancheType } from 'types';
-import { showNotification } from 'utils/notification';
-import {
-  usePoolDataCtx,
-  useSymbolCtx,
-  useUserDataCtx,
-} from 'hooks/context/usePoolDataCtx';
+import { usePoolDataCtx, useUserDataCtx } from 'hooks/context/usePoolDataCtx';
 
 type IProps = ModalProps & {
   type: TrancheType;
@@ -31,17 +26,11 @@ const DepositTrancheModal: React.FC<IProps> = ({
   const [step, setStep] = useState(STEP.Deposit);
   const [depositedAmount, setDepositedAmount] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [symbol] = useSymbolCtx();
 
   const onDeposited = (amount: string) => {
     setStep(STEP.Success);
     setDepositedAmount(amount);
     setErrorMessage('');
-    showNotification({
-      type: 'success',
-      title: 'Deposit success',
-      message: `Deposited ${amount} ${symbol} successfully.`,
-    });
     refetchPool();
     refetchData();
   };
@@ -49,11 +38,6 @@ const DepositTrancheModal: React.FC<IProps> = ({
   const onError = (error: string) => {
     setStep(STEP.Error);
     setErrorMessage(error);
-    showNotification({
-      title: 'Deposit Failed',
-      message: error,
-      type: 'error',
-    });
   };
 
   const onClose = () => {
