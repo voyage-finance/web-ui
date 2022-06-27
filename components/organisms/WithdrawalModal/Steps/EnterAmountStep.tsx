@@ -78,9 +78,9 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onSuccess }) => {
           symbol
         );
         showNotification({
-          title: 'Withdrawal submitted',
-          message: <div>Transaction block is initialized</div>,
-          type: 'success',
+          title: 'Withdrawal pending',
+          message: `Withdrawing ${form.values.amount} ${symbol}...`,
+          type: 'info',
           link: getTxExpolerLink(tx.hash),
         });
         const txReceipt = await tx.wait();

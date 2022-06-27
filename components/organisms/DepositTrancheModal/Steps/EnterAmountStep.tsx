@@ -21,7 +21,6 @@ import { useGetDeployment } from 'hooks/useGetDeployment';
 import { useState } from 'react';
 import { showNotification } from 'utils/notification';
 import { getTxExpolerLink } from 'utils/env';
-import { shortenHash } from 'utils/hash';
 import DangerImg from 'assets/danger.png';
 import { useSupportedTokensCtx } from 'hooks/context/useSupportedTokensCtx';
 import {
@@ -108,14 +107,10 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onDeposited, onError }) => {
           ],
         });
         showNotification({
-          title: 'Deposit sent',
-          message: (
-            <div>
-              Transaction block is initialized{' '}
-              <a href={getTxExpolerLink(tx.hash)}>{shortenHash(tx.hash)}</a>
-            </div>
-          ),
+          title: 'Deposit Pending',
+          message: `Depositing ${form.values.amount} ${symbol}...`,
           type: 'success',
+          link: getTxExpolerLink(tx.hash),
         });
         const txReceipt = await tx.wait();
         console.log('deposit tx confirmed: ', txReceipt);
@@ -127,7 +122,7 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onDeposited, onError }) => {
       }
     else {
       showNotification({
-        title: 'Error',
+        title: 'Deposit Failed',
         message: "Pool and user data aren't fetched",
         type: 'error',
       });

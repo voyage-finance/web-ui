@@ -17,7 +17,7 @@ const Home: NextPage = () => {
       type: 'success',
       title: 'Deposit success',
       message: 'Depositing 10,000 TUS...',
-      link: 'dsf',
+      link: 'voyage.finance',
     });
   };
 
@@ -26,7 +26,7 @@ const Home: NextPage = () => {
       type: 'info',
       title: 'Deposit success',
       message: 'Depositing 10,000 TUS...',
-      link: 'dsf',
+      link: 'voyage.finance',
     });
   };
 
@@ -35,7 +35,7 @@ const Home: NextPage = () => {
       type: 'error',
       title: 'Deposit success',
       message: 'Depositing 10,000 TUS...',
-      link: 'dsf',
+      link: 'voyage.finance',
     });
   };
 
