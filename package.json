@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "react-env --env APP_ENV --prefix NEXT_PUBLIC -- next dev",
+    "dev": "next dev",
     "build": "next build",
-    "start": "react-env --env APP_ENV --prefix NEXT_PUBLIC -- next start",
+    "start": "next start",
     "lint": "next lint"
   },
   "husky": {
