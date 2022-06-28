@@ -5,7 +5,9 @@ export const GET_USER_DATA = gql`
     userData(id: $address) {
       depositData(where: { id: $depositDataAddress }) {
         juniorTrancheBalance
+        juniorTranchePnl
         seniorTrancheBalance
+        seniorTranchePnl
         withdrawableJuniorBalance
         withdrawableSeniorBalance
         decimals
