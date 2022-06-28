@@ -50,5 +50,13 @@ const resultToUserPoolData = (res: any): UserPoolData => {
     withdrawableSeniorBalance: poolData
       ? shiftDecimals(poolData.withdrawableSeniorBalance, decimals)
       : Zero,
+    juniorTranchePnl: shiftDecimals(
+      poolData.juniorTranchePnl,
+      Number(decimals)
+    ),
+    seniorTranchePnl: shiftDecimals(
+      poolData.seniorTranchePnl,
+      Number(decimals)
+    ),
   };
 };

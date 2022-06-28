@@ -37,6 +37,8 @@ export type UserPoolData = {
   withdrawableJuniorBalance: BigNumber;
   seniorTrancheBalance: BigNumber;
   withdrawableSeniorBalance: BigNumber;
+  seniorTranchePnl: BigNumber;
+  juniorTranchePnl: BigNumber;
   unbondings: Unbonding[];
 };
 

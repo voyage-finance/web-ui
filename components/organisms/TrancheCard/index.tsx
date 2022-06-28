@@ -67,6 +67,10 @@ const TrancheCard: React.FC<IProps> = ({
     (type === TrancheType.Junior
       ? userData?.withdrawableJuniorBalance
       : userData?.withdrawableSeniorBalance) || Zero;
+  const pnl =
+    (type === TrancheType.Junior
+      ? userData?.withdrawableJuniorBalance
+      : userData?.withdrawableSeniorBalance) || Zero;
   const unbonding =
     type === TrancheType.Junior
       ? userData?.juniorTrancheBalance?.minus(
@@ -153,8 +157,12 @@ const TrancheCard: React.FC<IProps> = ({
         <Group position="apart" mt={7}>
           <Text type="secondary">Lifetime PnL</Text>
           {/* TODO */}
-          <Title order={5} style={{ color: '#0CCDAA' }}>
-            +0 TUS
+          <Title
+            order={5}
+            style={{ color: pnl.isNegative() ? '#F41B6A' : '#0CCDAA' }}
+          >
+            {pnl.isNegative() ? '-' : '+'}
+            {formatAmount(pnl)} {symbol}
           </Title>
         </Group>
         <Group position="apart" mt={7}>
