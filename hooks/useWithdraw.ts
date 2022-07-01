@@ -27,8 +27,9 @@ export const useWithdraw = () => {
     symbol: string
   ) => {
     const amountHex = toHexString(addDecimals(value, decimals));
+    const user = await signer?.getAddress();
     const tx = await withdraw({
-      args: [tokens[symbol], type == TrancheType.Senior ? '1' : '0', amountHex],
+      args: [tokens[symbol], type == TrancheType.Senior ? '1' : '0', amountHex, user],
     });
 
     return tx;

@@ -28,7 +28,7 @@ export const Deployments: Record<
     [VoyageContracts.Voyager]: {
       network: Network.Fuji,
       abi: Voyager,
-      address: '0xb1d5004013c5932b71DE270c1Dc632793febB593',
+      address: '0xF62e0575e562B84610587828Cd51278D38C39e6F',
     },
   },
   // TODO: after mainnet deployment
