@@ -10,11 +10,9 @@ export const GET_POOLS = gql`
       decimals
       juniorTrancheTotalLiquidity
       juniorTrancheLiquidityRate
-      juniorTranchePnl
       seniorTrancheTotalLiquidity
       seniorTrancheAvailableLiquidity
       seniorTrancheLiquidityRate
-      seniorTranchePnl
       totalLiquidity
       totalBorrow
       trancheRatio
