@@ -50,8 +50,8 @@ const PoolRow: React.FC<PoolData> = ({
           <Group direction="column" spacing={0}>
             <Title order={5}>
               <Text inherit transform="uppercase">
-                {/* TODO */}
-                [NAME]
+                {/* TODO: make this dynamic */}
+                Crabada
               </Text>
             </Title>
             <Text type="accent" weight="bold">
