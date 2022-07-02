@@ -14,14 +14,14 @@ export const Deployments: Record<
     [VoyageContracts.Voyager]: {
       network: Network.Hardhat,
       abi: Voyager,
-      address: '0x8A791620dd6260079BF849Dc5567aDC3F2FdC318',
+      address: '0xF62e0575e562B84610587828Cd51278D38C39e6F',
     },
   },
   [ChainID.Staging]: {
     [VoyageContracts.Voyager]: {
       network: Network.Voyage,
       abi: Voyager,
-      address: '0x37Cd9dDf18Eab2cc734Efe9dd853CE23215E9dfE',
+      address: '0xF62e0575e562B84610587828Cd51278D38C39e6F',
     },
   },
   [ChainID.Fuji]: {

@@ -4,6 +4,7 @@ import BorrowInfoCard from '@components/organisms/BorrowInfoCard';
 import BorrowPoolsTable from '@components/organisms/BorrowPoolsTable';
 import YourLoansTable from '@components/organisms/YourLoansTable';
 import { Card, Grid, Group } from '@mantine/core';
+import { useGetUserVaultPools } from 'hooks/useGetUserVaultPools';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import styles from 'styles/Home.module.scss';
@@ -43,6 +44,7 @@ const DashboardCardsLine: React.FC = () => (
 );
 
 const BorrowPage: NextPage = () => {
+  const { loading, data: vaults } = useGetUserVaultPools();
   return (
     <div>
       <Head>
@@ -59,8 +61,8 @@ const BorrowPage: NextPage = () => {
               padding: 24,
             }}
           >
-            <BorrowPoolsTable />
-            <YourLoansTable mt={21} />
+            <BorrowPoolsTable loading={loading} vaults={vaults} />
+            <YourLoansTable mt={21} loading={loading} vaults={vaults} />
           </Card>
         </Group>
       </main>

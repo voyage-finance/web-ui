@@ -3,15 +3,18 @@ import { Group, Loader, Table } from '@mantine/core';
 import styles from './index.module.scss';
 import { Text, Title } from '@components/base';
 import TableRow from './TableRow';
-import { PoolData } from 'types';
-import { useGetPools } from 'hooks';
+import { VaultData } from 'types';
 import WalletConnectionFence from '@components/moleculas/WalletConnectionFence';
 import { useIsMounted } from 'utils/hooks';
 import TakeLoanModal from '../TakeLoanModal';
 import { useState } from 'react';
 
-const BorrowPoolsTable: React.FC = () => {
-  const { loading, data } = useGetPools();
+type IProps = {
+  loading: boolean;
+  vaults: VaultData[];
+};
+
+const BorrowPoolsTable: React.FC<IProps> = ({ loading, vaults }) => {
   const isMounted = useIsMounted();
   const [isBorrowModalOpened, setIsBorrowModalOpened] = useState(false);
   const columns = [
@@ -54,10 +57,10 @@ const BorrowPoolsTable: React.FC = () => {
                   <Loader />
                 </td>
               ) : (
-                data.map((pool: PoolData) => (
+                vaults.map((vault: VaultData) => (
                   <TableRow
-                    key={pool.id}
-                    {...pool}
+                    key={vault.id}
+                    vault={vault}
                     onBorrow={() => setIsBorrowModalOpened(true)}
                   />
                 ))

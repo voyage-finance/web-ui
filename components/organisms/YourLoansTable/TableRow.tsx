@@ -4,22 +4,37 @@ import { Group } from '@mantine/core';
 import Image from 'next/image';
 import AmountWithUSD from '@components/moleculas/AmountWithUSD';
 import LoanInfoPopover from '@components/moleculas/LoanInfoPopover';
-import { PaymentStatus } from 'types';
-import PaymentRow from './PaymentRow';
+import { VaultData } from 'types';
+import DrawdownRow from './DrawdownRow';
+import { Zero } from 'utils/bn';
 
-type PaymentInfo = {
-  status: PaymentStatus;
+type IProps = {
+  vault: VaultData;
 };
 
-const TableRow: React.FC = () => {
+const TableRow: React.FC<IProps> = ({ vault }) => {
+  // TODO: fetch it from gql
   const symbol = 'TUS';
-  const totalLiquidity = new BigNumber(100000);
 
-  const payments: PaymentInfo[] = [
-    { status: PaymentStatus.UPCOMING },
-    { status: PaymentStatus.LATE },
-    { status: PaymentStatus.PAID },
-  ];
+  const totalPrincipal = vault.drawdowns.reduce(
+    (prev: BigNumber, drawdown) => prev.plus(drawdown.principal),
+    Zero
+  );
+  // sum(interestPerPayment*paymentCount)
+  const totalInterest = vault.drawdowns.reduce(
+    (prev: BigNumber, drawdown) =>
+      prev.plus(drawdown.pmt_interest.multipliedBy(3)),
+    Zero
+  );
+  const totalLoanAmount = totalPrincipal.plus(totalInterest);
+
+  const totalRapayedAmount = vault.drawdowns.reduce(
+    (prev: BigNumber, drawdown) =>
+      prev.plus(drawdown.totalPrincipalPaid.plus(drawdown.totalInterestPaid)),
+    Zero
+  );
+
+  const totalRemainingAmount = totalLoanAmount.minus(totalRapayedAmount);
 
   return (
     <>
@@ -35,8 +50,8 @@ const TableRow: React.FC = () => {
             <Group direction="column" spacing={0}>
               <Title order={5}>
                 <Text inherit transform="uppercase">
-                  {/* TODO */}
-                  [NAME]
+                  {/* TODO: make it dynamic */}
+                  CRABADA
                 </Text>
               </Title>
               <Text type="accent" weight="bold">
@@ -48,23 +63,23 @@ const TableRow: React.FC = () => {
         <td>
           <LoanInfoPopover
             position="right"
-            loan={new BigNumber(50000)}
-            interest={new BigNumber(50000)}
+            loan={totalPrincipal}
+            interest={totalInterest}
           >
-            <AmountWithUSD symbol={symbol} amount={totalLiquidity} />
+            <AmountWithUSD symbol={symbol} amount={totalLoanAmount} />
           </LoanInfoPopover>
         </td>
         <td>
           <AmountWithUSD
             symbol={symbol}
-            amount={totalLiquidity}
+            amount={totalRapayedAmount}
             kind="success"
           />
         </td>
         <td>
           <AmountWithUSD
             symbol={symbol}
-            amount={totalLiquidity}
+            amount={totalRemainingAmount}
             kind="danger"
           />
         </td>
@@ -82,11 +97,11 @@ const TableRow: React.FC = () => {
         </td>
         <td></td>
       </tr>
-      {payments.map((payment, index) => (
-        <PaymentRow
+      {vault.drawdowns.map((drawdown, index) => (
+        <DrawdownRow
           key={index}
-          status={payment.status}
-          borderBottom={index === payments.length - 1}
+          drawdown={drawdown}
+          borderBottom={index === vault.drawdowns.length - 1}
         />
       ))}
     </>
