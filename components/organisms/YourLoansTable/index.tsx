@@ -3,13 +3,16 @@ import { Group, GroupProps, Loader, Table } from '@mantine/core';
 import styles from './index.module.scss';
 import { Text, Title } from '@components/base';
 import TableRow from './TableRow';
-import { PoolData } from 'types';
-import { useGetPools } from 'hooks';
+import { VaultData } from 'types';
 import WalletConnectionFence from '@components/moleculas/WalletConnectionFence';
 import { useIsMounted } from 'utils/hooks';
 
-const YourLoansTable: React.FC<GroupProps> = (props) => {
-  const { loading, data } = useGetPools();
+type IProps = GroupProps & {
+  loading: boolean;
+  vaults: VaultData[];
+};
+
+const YourLoansTable: React.FC<IProps> = ({ loading, vaults, ...props }) => {
   const isMounted = useIsMounted();
 
   const columns = [
@@ -54,8 +57,8 @@ const YourLoansTable: React.FC<GroupProps> = (props) => {
                   <Loader />
                 </td>
               ) : (
-                data.map((pool: PoolData) => (
-                  <TableRow key={pool.id} {...pool} />
+                vaults.map((vault: VaultData) => (
+                  <TableRow key={vault.id} vault={vault} />
                 ))
               ))}
           </tbody>

@@ -1,13 +1,15 @@
 import { CTAButton, Text, Title } from '@components/base';
 import { Avatar, Group } from '@mantine/core';
 import Image from 'next/image';
-import { PoolData } from 'types';
 import AvalanchePng from '@assets/icons/avalanche.png';
+import { VaultData } from 'types';
 import AmountWithUSD from '@components/moleculas/AmountWithUSD';
+// import AmountWithUSD from '@components/moleculas/AmountWithUSD';
 
-type IProps = PoolData & { onBorrow: () => void };
+type IProps = { vault: VaultData; onBorrow: () => void };
 
-const TableRow: React.FC<IProps> = ({ symbol, totalLiquidity, onBorrow }) => {
+const TableRow: React.FC<IProps> = ({ onBorrow, vault }) => {
+  const symbol = 'TUS';
   return (
     <tr>
       <td style={{ paddingLeft: 0 }}>
@@ -21,8 +23,8 @@ const TableRow: React.FC<IProps> = ({ symbol, totalLiquidity, onBorrow }) => {
           <Group direction="column" spacing={0}>
             <Title order={5}>
               <Text inherit transform="uppercase">
-                {/* TODO */}
-                [NAME]
+                {/* TODO: make it dynamic */}
+                Crabada
               </Text>
             </Title>
             <Text type="accent" weight="bold">
@@ -38,16 +40,16 @@ const TableRow: React.FC<IProps> = ({ symbol, totalLiquidity, onBorrow }) => {
         </Group>
       </td>
       <td>
-        <AmountWithUSD symbol={symbol} amount={totalLiquidity} />
+        <AmountWithUSD symbol={symbol} amount={vault.totalDebt} />
       </td>
       <td>
         <Text type="success" align="right">
-          +51.84%
+          +X.XX%
         </Text>
       </td>
       <td>
         <Text type="success" align="right">
-          +10.67%
+          +X.XX%
         </Text>
       </td>
       <td></td>

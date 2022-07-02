@@ -42,6 +42,37 @@ export type UserPoolData = {
   unbondings: Unbonding[];
 };
 
+export type VaultData = {
+  id: string;
+  borrowRate: BigNumber;
+  drawdowns: Drawdown[];
+  totalDebt: BigNumber;
+  totalMargin: BigNumber;
+  withdrawableSecurityDeposit: BigNumber;
+  creditLimit: BigNumber;
+  spendableBalance: BigNumber;
+  gav: number;
+  ltv: number;
+  healthFactor: number;
+};
+
+export type Drawdown = {
+  id: string;
+  pmt_principal: BigNumber;
+  pmt_interest: BigNumber;
+  pmt_payment: BigNumber;
+  principal: BigNumber;
+  term: number;
+  epoch: number;
+  nper: number;
+  apr: BigNumber;
+  borrowAt: number;
+  nextPaymentDue: number;
+  totalPrincipalPaid: BigNumber;
+  totalInterestPaid: BigNumber;
+  paidTimes: number;
+};
+
 export type VoyagePoolTokenMap = Record<string, string>;
 
 export enum PaymentStatus {
