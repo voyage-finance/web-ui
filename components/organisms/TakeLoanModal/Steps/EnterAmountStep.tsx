@@ -170,7 +170,12 @@ const EnterAmountStep: React.FC<IProps> = ({ vault, onSuccess }) => {
           Error: {errorMsg}
         </Text>
       )}
-      <PaymentRoadmap mt={28} />
+      <PaymentRoadmap
+        mt={28}
+        amount={form.values.amount}
+        interest={vault?.marginRequirement || Zero}
+        symbol={symbol}
+      />
       <Button
         fullWidth
         mt={16}
