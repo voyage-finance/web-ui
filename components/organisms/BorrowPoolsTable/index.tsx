@@ -17,6 +17,13 @@ type IProps = {
 const BorrowPoolsTable: React.FC<IProps> = ({ loading, vaults }) => {
   const isMounted = useIsMounted();
   const [isBorrowModalOpened, setIsBorrowModalOpened] = useState(false);
+  const [clickedVault, setClickedVault] = useState<VaultData>();
+
+  const onBorrowClick = (vault: VaultData) => {
+    setClickedVault(vault);
+    setIsBorrowModalOpened(true);
+  };
+
   const columns = [
     'Project',
     'Chain',
@@ -61,7 +68,7 @@ const BorrowPoolsTable: React.FC<IProps> = ({ loading, vaults }) => {
                   <TableRow
                     key={vault.id}
                     vault={vault}
-                    onBorrow={() => setIsBorrowModalOpened(true)}
+                    onBorrow={() => onBorrowClick(vault)}
                   />
                 ))
               ))}
@@ -69,6 +76,7 @@ const BorrowPoolsTable: React.FC<IProps> = ({ loading, vaults }) => {
         </Table>
         <TakeLoanModal
           opened={isBorrowModalOpened}
+          vault={clickedVault}
           onClose={() => setIsBorrowModalOpened(false)}
         />
       </WalletConnectionFence>

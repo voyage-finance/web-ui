@@ -9,10 +9,7 @@ export const shiftDecimals = (bn: BigNumber, decimals: number) => {
   );
 };
 
-export const formatEthersBN = (
-  bn: EthersBN | BigNumber,
-  decimals: number = 0
-) => {
+export const formatEthersBN = (bn: EthersBN | BigNumber, decimals = 0) => {
   const n = EthersBN.isBigNumber(bn) ? new BigNumber(bn.toString()) : bn;
   return n.shiftedBy(decimals * -1);
 };

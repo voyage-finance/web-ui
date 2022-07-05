@@ -1,28 +1,32 @@
 import { Button, Divider, Text, Title } from '@components/base';
 import AmountInput from '@components/moleculas/AmountInput';
 import { Group } from '@mantine/core';
-import { addDecimals, formatAmount, toHexString } from 'utils/bn';
+import { addDecimals, formatAmount, toHexString, Zero } from 'utils/bn';
 import BigNumber from 'bignumber.js';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
 import PaymentRoadmap from '@components/moleculas/PaymentRoadmap';
-import { useGetUserErc20Balance } from 'hooks';
+import { useAssetPrice, useGetUserErc20Balance } from 'hooks';
 import { useContractWrite, useSigner } from 'wagmi';
 import { VoyageContracts } from 'consts/addresses';
 import { useGetDeployment } from 'hooks/useGetDeployment';
 import { useSupportedTokensCtx } from 'hooks/context/useSupportedTokensCtx';
 import showNotification from 'utils/notification';
 import { getTxExpolerLink } from 'utils/env';
+import { VaultData } from 'types';
+import { usdValue } from 'utils/price';
+import { ReserveAssets } from 'consts';
 
 type IProps = {
+  vault?: VaultData;
   onSuccess: () => void;
 };
 
-const EnterAmountStep: React.FC<IProps> = ({ onSuccess }) => {
+const EnterAmountStep: React.FC<IProps> = ({ vault, onSuccess }) => {
   const { data: signer } = useSigner();
   const [tokens] = useSupportedTokensCtx();
   // TODO: get from current asset context
-  const symbol = 'TUS';
+  const symbol = vault?.symbol || '';
   const [errorMsg, setErrorMsg] = useState('');
   const [margin, setMargin] = useState(0);
   const balance = useGetUserErc20Balance(symbol);
@@ -39,6 +43,8 @@ const EnterAmountStep: React.FC<IProps> = ({ onSuccess }) => {
     },
     'borrow'
   );
+
+  const [priceData] = useAssetPrice(ReserveAssets.TUS);
 
   const form = useForm({
     initialValues: { amount: '' },
@@ -69,10 +75,8 @@ const EnterAmountStep: React.FC<IProps> = ({ onSuccess }) => {
       const tx = await borrow({
         args: [
           tokens[symbol],
-          // TODO: hardcoded decimals
-          toHexString(addDecimals(form.values.amount, 18)),
-          // TODO: hardcoded vault address
-          '0xb9b09db01cC96fD7EAC92a8A32B9450625DEdD88',
+          toHexString(addDecimals(form.values.amount, vault?.decimals || 0)),
+          vault?.id,
         ],
       });
       showNotification({
@@ -98,9 +102,11 @@ const EnterAmountStep: React.FC<IProps> = ({ onSuccess }) => {
   };
 
   const handleAmountChange = (eventOrValue: any) => {
-    const value = eventOrValue?.currentTarget?.value || eventOrValue || 0;
-    setMargin(Math.round(value * 0.1 * 100) / 100);
-    form.setFieldValue('amount', value);
+    if (vault) {
+      const value = eventOrValue?.currentTarget?.value || eventOrValue || 0;
+      setMargin(Math.round(value * vault.marginRequirement.toNumber()) / 100);
+      form.setFieldValue('amount', value);
+    }
   };
 
   return (
@@ -110,17 +116,20 @@ const EnterAmountStep: React.FC<IProps> = ({ onSuccess }) => {
           <Text type="secondary">
             <strong>Interest</strong>
           </Text>
-          <Title order={4}>X.XX%</Title>
+          <Title order={4}>{vault?.marginRequirement.toString()}%</Title>
         </Group>
         <Group spacing={0} direction="column" align={'end'}>
           <Text type="secondary">Available for Loan</Text>
           <Title order={4}>
-            XXX,XXXXX{' '}
+            {formatAmount(vault?.spendableBalance)}{' '}
             <Text component="span" inherit type="accent">
               {symbol}
             </Text>
           </Title>
-          <Text size="sm">~$XXX,XXX,XXX.00</Text>
+          <Text size="sm">{`~${usdValue(
+            vault?.spendableBalance || Zero,
+            priceData.latestPrice
+          )}`}</Text>
         </Group>
       </Group>
       <Divider my={16} orientation="horizontal" />
@@ -154,7 +163,6 @@ const EnterAmountStep: React.FC<IProps> = ({ onSuccess }) => {
         value={margin}
         onChange={() => undefined}
         symbol={symbol}
-        maximum={balance}
         showMaxBtn={false}
       />
       {errorMsg && (

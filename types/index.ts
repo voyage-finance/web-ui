@@ -45,9 +45,12 @@ export type UserPoolData = {
 export type VaultData = {
   id: string;
   borrowRate: BigNumber;
+  symbol: string;
+  decimals: number;
   drawdowns: Drawdown[];
   totalDebt: BigNumber;
   totalMargin: BigNumber;
+  marginRequirement: BigNumber;
   withdrawableSecurityDeposit: BigNumber;
   creditLimit: BigNumber;
   spendableBalance: BigNumber;

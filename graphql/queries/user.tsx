@@ -28,7 +28,12 @@ export const GET_USER_VAULT_POOLS = gql`
         id
         borrowRate
         totalDebt
+        pool {
+          symbol
+          decimals
+        }
         totalMargin
+        marginRequirement
         withdrawableSecurityDeposit
         creditLimit
         spendableBalance
