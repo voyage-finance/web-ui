@@ -9,7 +9,7 @@ import AmountWithUSD from '@components/moleculas/AmountWithUSD';
 type IProps = { vault: VaultData; onBorrow: () => void };
 
 const TableRow: React.FC<IProps> = ({ onBorrow, vault }) => {
-  const symbol = 'TUS';
+  const symbol = vault.symbol;
   return (
     <tr>
       <td style={{ paddingLeft: 0 }}>
