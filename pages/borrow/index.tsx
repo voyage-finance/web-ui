@@ -44,7 +44,8 @@ const DashboardCardsLine: React.FC = () => (
 );
 
 const BorrowPage: NextPage = () => {
-  const { loading, data: vaults } = useGetUserVaultPools();
+  const { loading, data: vaults, refetch } = useGetUserVaultPools();
+
   return (
     <div>
       <Head>
@@ -61,7 +62,11 @@ const BorrowPage: NextPage = () => {
               padding: 24,
             }}
           >
-            <BorrowPoolsTable loading={loading} vaults={vaults} />
+            <BorrowPoolsTable
+              loading={loading}
+              vaults={vaults}
+              onUpdate={refetch}
+            />
             <YourLoansTable mt={21} loading={loading} vaults={vaults} />
           </Card>
         </Group>
