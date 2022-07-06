@@ -175,6 +175,7 @@ const EnterAmountStep: React.FC<IProps> = ({ vault, onSuccess }) => {
         amount={form.values.amount}
         interest={vault?.marginRequirement || Zero}
         symbol={symbol}
+        assetAddress={vault?.assetAddress}
       />
       <Button
         fullWidth

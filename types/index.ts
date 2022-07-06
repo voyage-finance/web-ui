@@ -45,6 +45,7 @@ export type UserPoolData = {
 export type VaultData = {
   id: string;
   borrowRate: BigNumber;
+  assetAddress: string;
   symbol: string;
   decimals: number;
   drawdowns: Drawdown[];
@@ -74,6 +75,11 @@ export type Drawdown = {
   totalPrincipalPaid: BigNumber;
   totalInterestPaid: BigNumber;
   paidTimes: number;
+};
+
+export type BorrowParams = {
+  term: BigNumber;
+  epoch: BigNumber;
 };
 
 export type VoyagePoolTokenMap = Record<string, string>;

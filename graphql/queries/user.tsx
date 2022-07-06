@@ -29,6 +29,7 @@ export const GET_USER_VAULT_POOLS = gql`
         borrowRate
         totalDebt
         pool {
+          id
           symbol
           decimals
         }

@@ -30,6 +30,7 @@ const resultToVaults = (res: any): VaultData[] => {
     return {
       id: vault.id,
       symbol: vault.pool?.symbol || '',
+      assetAddress: vault.pool?.id || '',
       decimals,
       borrowRate: shiftDecimals(vault.borrowRate, decimals),
       totalDebt: shiftDecimals(vault.totalDebt, decimals),
