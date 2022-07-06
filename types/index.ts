@@ -83,17 +83,3 @@ export type BorrowParams = {
 };
 
 export type VoyagePoolTokenMap = Record<string, string>;
-
-export enum PaymentStatus {
-  UPCOMING,
-  LATE,
-  PAID,
-  LIQUIDATED,
-}
-
-export const PaymentStatusTextMap = {
-  [PaymentStatus.UPCOMING]: 'UPCOMING',
-  [PaymentStatus.LATE]: 'LATE',
-  [PaymentStatus.PAID]: 'PAID',
-  [PaymentStatus.LIQUIDATED]: 'LIQUIDATED',
-};
