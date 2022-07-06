@@ -12,9 +12,10 @@ import { useState } from 'react';
 type IProps = {
   loading: boolean;
   vaults: VaultData[];
+  onUpdate: () => void;
 };
 
-const BorrowPoolsTable: React.FC<IProps> = ({ loading, vaults }) => {
+const BorrowPoolsTable: React.FC<IProps> = ({ loading, vaults, onUpdate }) => {
   const isMounted = useIsMounted();
   const [isBorrowModalOpened, setIsBorrowModalOpened] = useState(false);
   const [clickedVault, setClickedVault] = useState<VaultData>();
@@ -78,6 +79,7 @@ const BorrowPoolsTable: React.FC<IProps> = ({ loading, vaults }) => {
           opened={isBorrowModalOpened}
           vault={clickedVault}
           onClose={() => setIsBorrowModalOpened(false)}
+          onUpdate={onUpdate}
         />
       </WalletConnectionFence>
     </Group>
