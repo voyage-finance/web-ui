@@ -1,6 +1,6 @@
 import { ChainID, Network } from '../utils/env';
 
-import Voyager from '../abi/Voyager.json';
+import Voyage from '../abi/Voyage.json';
 
 export enum VoyageContracts {
   Voyager,
@@ -13,29 +13,29 @@ export const Deployments: Record<
   [ChainID.Hardhat]: {
     [VoyageContracts.Voyager]: {
       network: Network.Hardhat,
-      abi: Voyager,
+      abi: Voyage,
       address: '0xF62e0575e562B84610587828Cd51278D38C39e6F',
     },
   },
   [ChainID.Staging]: {
     [VoyageContracts.Voyager]: {
       network: Network.Voyage,
-      abi: Voyager,
+      abi: Voyage,
       address: '0xF62e0575e562B84610587828Cd51278D38C39e6F',
     },
   },
   [ChainID.Fuji]: {
     [VoyageContracts.Voyager]: {
       network: Network.Fuji,
-      abi: Voyager,
-      address: '0xF62e0575e562B84610587828Cd51278D38C39e6F',
+      abi: Voyage,
+      address: '0x03283567F0BCeB25829e7A4DfE0a00D7A1E8E9A6',
     },
   },
   // TODO: after mainnet deployment
   [ChainID.Avalanche]: {
     [VoyageContracts.Voyager]: {
       network: Network.Avalanche,
-      abi: Voyager,
+      abi: Voyage,
       address: '',
     },
   },

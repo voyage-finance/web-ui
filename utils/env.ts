@@ -74,7 +74,7 @@ const ProviderConfigurationMap: Record<VoyageEnvironment, ProviderConfig> = {
   },
   [VoyageEnvironment.Testnet]: {
     chainId: ChainID.Fuji,
-    endpoint: 'https://fuji-c.staging.voyage.finance/rpc',
+    endpoint: 'https://api.avax-test.network/ext/bc/C/rpc',
     explorer: 'https://testnet.snowtrace.io/',
     name: Network.Fuji,
     currency: {
