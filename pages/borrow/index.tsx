@@ -3,10 +3,12 @@ import LineChart, { generateTimeSeries } from '@components/base/LineChart';
 import BorrowInfoCard from '@components/organisms/BorrowInfoCard';
 import BorrowPoolsTable from '@components/organisms/BorrowPoolsTable';
 import YourLoansTable from '@components/organisms/YourLoansTable';
-import { Card, Grid, Group } from '@mantine/core';
+import { Card, Grid, Group, LoadingOverlay } from '@mantine/core';
+import { useInterval } from '@mantine/hooks';
 import { useGetUserVaultPools } from 'hooks/useGetUserVaultPools';
 import { NextPage } from 'next';
 import Head from 'next/head';
+import { useEffect } from 'react';
 import styles from 'styles/Home.module.scss';
 
 const DashboardCardsLine: React.FC = () => (
@@ -45,6 +47,11 @@ const DashboardCardsLine: React.FC = () => (
 
 const BorrowPage: NextPage = () => {
   const { loading, data: vaults, refetch } = useGetUserVaultPools();
+  const interval = useInterval(refetch, 5000);
+  useEffect(() => {
+    interval.start();
+    return interval.stop;
+  }, []);
 
   return (
     <div>
@@ -62,6 +69,7 @@ const BorrowPage: NextPage = () => {
               padding: 24,
             }}
           >
+            <LoadingOverlay visible={loading} />
             <BorrowPoolsTable
               loading={loading}
               vaults={vaults}
