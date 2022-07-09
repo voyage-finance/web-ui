@@ -72,7 +72,10 @@ const AmountInput: React.FC<IProps> = ({
         },
         rightSection: {
           right: 12.5,
-          width: 78,
+          width: showMaxBtn ? 78 : 26,
+        },
+        disabled: {
+          color: 'rgba(255, 255, 255, 0.35) !important',
         },
         ...props.styles,
       })}

@@ -8,6 +8,7 @@ import { formatAmount } from 'utils/bn';
 
 type IPaymentRoadmapProps = GroupProps & {
   amount: string;
+  startDate?: number;
   interest: BigNumber;
   symbol: string;
   assetAddress?: string;
@@ -18,14 +19,16 @@ const PaymentRoadmap: React.FunctionComponent<IPaymentRoadmapProps> = ({
   interest,
   symbol,
   assetAddress,
+  startDate: _startDate,
   ...props
 }) => {
   const [borrowParams] = useGetBorrowParams(assetAddress);
   const epoch = borrowParams?.epoch?.toNumber() || 0;
+  const startDate = _startDate ? _startDate * 1000 : undefined;
   const pmtDates = [
-    moment().add(epoch, 'days'),
-    moment().add(epoch * 2, 'days'),
-    moment().add(epoch * 3, 'days'),
+    moment(startDate).add(epoch, 'days'),
+    moment(startDate).add(epoch * 2, 'days'),
+    moment(startDate).add(epoch * 3, 'days'),
   ];
   // [amount * (100+interestPercent)/100]/3
   const singlePmtAmount = new BigNumber(amount || '0')

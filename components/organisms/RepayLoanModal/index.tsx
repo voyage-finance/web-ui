@@ -17,6 +17,7 @@ import { getTxExpolerLink } from 'utils/env';
 import { Drawdown, VaultData } from 'types';
 import { usdValue } from 'utils/price';
 import { ReserveAssets } from 'consts';
+import moment from 'moment';
 
 type IProps = ModalProps & {
   drawdown?: Drawdown;
@@ -41,6 +42,12 @@ const RepayLoanModal: React.FC<IProps> = ({
   const { address: voyagerAddress, abi: voyagerAbi } = useGetDeployment(
     VoyageContracts.Voyager
   );
+
+  const paymentDaysLeft = drawdown?.nextPaymentDue
+    ? moment(drawdown?.nextPaymentDue).diff(moment(), 'days')
+    : 0;
+  const graceDaysLeft = paymentDaysLeft < 0 ? -paymentDaysLeft : 0;
+
   const { isLoading, writeAsync: repay } = useContractWrite(
     {
       addressOrName: voyagerAddress,
@@ -123,9 +130,12 @@ const RepayLoanModal: React.FC<IProps> = ({
         <Divider my={16} orientation="horizontal" />
         <PaymentRoadmap
           mt={28}
-          amount={drawdown?.pmt_payment.toString() || '0'}
-          interest={vault?.marginRequirement || Zero}
+          amount={
+            drawdown?.pmt_payment.multipliedBy(drawdown.nper).toString() || '0'
+          }
+          interest={Zero}
           symbol={symbol}
+          startDate={drawdown?.borrowAt}
           assetAddress={vault?.assetAddress}
         />
         <Group direction="column" align="stretch" mt={16} spacing={5}>
@@ -139,13 +149,15 @@ const RepayLoanModal: React.FC<IProps> = ({
             <Text type="secondary" size="sm">
               Repayment Period
             </Text>
-            <Text size="sm">0 of 30 days left</Text>
+            <Text size="sm">
+              {paymentDaysLeft > 0 ? paymentDaysLeft : 0} of 30 days left
+            </Text>
           </Group>
           <Group position="apart">
             <Text type="secondary" size="sm">
               Grace Period
             </Text>
-            <Text size="sm">10 of 14 days left</Text>
+            <Text size="sm">{graceDaysLeft} of 14 days left</Text>
           </Group>
         </Group>
         <Group position="apart" mt={16}>
