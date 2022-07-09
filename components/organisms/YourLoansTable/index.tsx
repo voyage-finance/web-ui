@@ -3,9 +3,11 @@ import { Group, GroupProps, Loader, Table } from '@mantine/core';
 import styles from './index.module.scss';
 import { Text, Title } from '@components/base';
 import TableRow from './TableRow';
-import { VaultData } from 'types';
+import { Drawdown, VaultData } from 'types';
 import WalletConnectionFence from '@components/moleculas/WalletConnectionFence';
 import { useIsMounted } from 'utils/hooks';
+import RepayLoanModal from '../RepayLoanModal';
+import { useState } from 'react';
 
 type IProps = GroupProps & {
   loading: boolean;
@@ -14,6 +16,11 @@ type IProps = GroupProps & {
 
 const YourLoansTable: React.FC<IProps> = ({ loading, vaults, ...props }) => {
   const isMounted = useIsMounted();
+  const [isRepayModalOpened, setIsRepayModalOpened] = useState(false);
+  const [clickedVaultNDrawdown, setClickedVaultNDrawdown] = useState<{
+    vault: VaultData;
+    drawdown: Drawdown;
+  }>();
 
   const columns = [
     'Project',
@@ -26,6 +33,11 @@ const YourLoansTable: React.FC<IProps> = ({ loading, vaults, ...props }) => {
     'Status',
     'Actions',
   ];
+
+  const onRepayClick = (vault: VaultData, drawdown: Drawdown) => {
+    setClickedVaultNDrawdown({ vault, drawdown });
+    setIsRepayModalOpened(true);
+  };
 
   return (
     <Group {...props} direction="column" spacing={0}>
@@ -58,11 +70,22 @@ const YourLoansTable: React.FC<IProps> = ({ loading, vaults, ...props }) => {
                 </td>
               ) : (
                 vaults.map((vault: VaultData) => (
-                  <TableRow key={vault.id} vault={vault} />
+                  <TableRow
+                    key={vault.id}
+                    vault={vault}
+                    onRepayClick={onRepayClick}
+                  />
                 ))
               ))}
           </tbody>
         </Table>
+        <RepayLoanModal
+          opened={isRepayModalOpened}
+          onClose={() => setIsRepayModalOpened(false)}
+          onUpdate={() => undefined}
+          vault={clickedVaultNDrawdown?.vault}
+          drawdown={clickedVaultNDrawdown?.drawdown}
+        />
       </WalletConnectionFence>
     </Group>
   );
