@@ -1,5 +1,5 @@
 // noinspection HtmlUnknownTarget
-import { Group, GroupProps, Loader, Table } from '@mantine/core';
+import { Group, GroupProps, Table } from '@mantine/core';
 import styles from './index.module.scss';
 import { Text, Title } from '@components/base';
 import TableRow from './TableRow';
@@ -14,7 +14,7 @@ type IProps = GroupProps & {
   vaults: VaultData[];
 };
 
-const YourLoansTable: React.FC<IProps> = ({ loading, vaults, ...props }) => {
+const YourLoansTable: React.FC<IProps> = ({ vaults, ...props }) => {
   const isMounted = useIsMounted();
   const [isRepayModalOpened, setIsRepayModalOpened] = useState(false);
   const [clickedVaultNDrawdown, setClickedVaultNDrawdown] = useState<{
@@ -64,18 +64,12 @@ const YourLoansTable: React.FC<IProps> = ({ loading, vaults, ...props }) => {
           </thead>
           <tbody>
             {isMounted &&
-              (loading ? (
-                <td colSpan={9} align="center" style={{ padding: 20 }}>
-                  <Loader />
-                </td>
-              ) : (
-                vaults.map((vault: VaultData) => (
-                  <TableRow
-                    key={vault.id}
-                    vault={vault}
-                    onRepayClick={onRepayClick}
-                  />
-                ))
+              vaults.map((vault: VaultData) => (
+                <TableRow
+                  key={vault.id}
+                  vault={vault}
+                  onRepayClick={onRepayClick}
+                />
               ))}
           </tbody>
         </Table>

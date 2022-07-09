@@ -14,6 +14,7 @@ const Modal: React.FC<ModalProps> = ({ title: _title, ...props }) => {
   return (
     <MantineModal
       title={title}
+      zIndex={500}
       {...props}
       styles={(theme) => ({
         close: {

@@ -1,5 +1,5 @@
 // noinspection HtmlUnknownTarget
-import { Group, Loader, Table } from '@mantine/core';
+import { Group, Table } from '@mantine/core';
 import styles from './index.module.scss';
 import { Text, Title } from '@components/base';
 import TableRow from './TableRow';
@@ -15,7 +15,7 @@ type IProps = {
   onUpdate: () => void;
 };
 
-const BorrowPoolsTable: React.FC<IProps> = ({ loading, vaults, onUpdate }) => {
+const BorrowPoolsTable: React.FC<IProps> = ({ vaults, onUpdate }) => {
   const isMounted = useIsMounted();
   const [isBorrowModalOpened, setIsBorrowModalOpened] = useState(false);
   const [clickedVault, setClickedVault] = useState<VaultData>();
@@ -60,18 +60,12 @@ const BorrowPoolsTable: React.FC<IProps> = ({ loading, vaults, onUpdate }) => {
           </thead>
           <tbody>
             {isMounted &&
-              (loading ? (
-                <td colSpan={9} align="center" style={{ padding: 20 }}>
-                  <Loader />
-                </td>
-              ) : (
-                vaults.map((vault: VaultData) => (
-                  <TableRow
-                    key={vault.id}
-                    vault={vault}
-                    onBorrow={() => onBorrowClick(vault)}
-                  />
-                ))
+              vaults.map((vault: VaultData) => (
+                <TableRow
+                  key={vault.id}
+                  vault={vault}
+                  onBorrow={() => onBorrowClick(vault)}
+                />
               ))}
           </tbody>
         </Table>
