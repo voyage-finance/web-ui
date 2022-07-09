@@ -164,6 +164,7 @@ const EnterAmountStep: React.FC<IProps> = ({ vault, onSuccess }) => {
         onChange={() => undefined}
         symbol={symbol}
         showMaxBtn={false}
+        disabled
       />
       {errorMsg && (
         <Text mt={16} type="danger" align="center">
