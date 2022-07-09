@@ -16,10 +16,16 @@ const useStyles = createStyles(() => ({
 type IProps = {
   drawdown: Drawdown;
   borderBottom?: boolean;
+  onRepayClick: () => void;
 };
 
-const PaymentRow: React.FC<IProps> = ({ drawdown, borderBottom }) => {
+const PaymentRow: React.FC<IProps> = ({
+  drawdown,
+  borderBottom,
+  onRepayClick,
+}) => {
   const { classes } = useStyles();
+  // TODO: make it dynamic
   const symbol = 'TUS';
   const totalInterest = drawdown.pmt_interest.multipliedBy(3);
   const totalLoan = drawdown.principal.plus(totalInterest);
@@ -74,7 +80,7 @@ const PaymentRow: React.FC<IProps> = ({ drawdown, borderBottom }) => {
       </td>
       <td>
         <Group position="right">
-          <CTAButton>Repay</CTAButton>
+          <CTAButton onClick={onRepayClick}>Repay</CTAButton>
         </Group>
       </td>
     </tr>

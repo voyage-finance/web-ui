@@ -4,15 +4,16 @@ import { Group } from '@mantine/core';
 import Image from 'next/image';
 import AmountWithUSD from '@components/moleculas/AmountWithUSD';
 import LoanInfoPopover from '@components/moleculas/LoanInfoPopover';
-import { VaultData } from 'types';
+import { Drawdown, VaultData } from 'types';
 import DrawdownRow from './DrawdownRow';
 import { Zero } from 'utils/bn';
 
 type IProps = {
   vault: VaultData;
+  onRepayClick: (vault: VaultData, drawdown: Drawdown) => void;
 };
 
-const TableRow: React.FC<IProps> = ({ vault }) => {
+const TableRow: React.FC<IProps> = ({ vault, onRepayClick }) => {
   // TODO: fetch it from gql
   const symbol = 'TUS';
 
@@ -102,6 +103,7 @@ const TableRow: React.FC<IProps> = ({ vault }) => {
           key={index}
           drawdown={drawdown}
           borderBottom={index === vault.drawdowns.length - 1}
+          onRepayClick={() => onRepayClick(vault, drawdown)}
         />
       ))}
     </>
