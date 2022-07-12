@@ -2,6 +2,7 @@ import { Title } from '@components/base';
 import LineChart, { generateTimeSeries } from '@components/base/LineChart';
 import BorrowInfoCard from '@components/organisms/BorrowInfoCard';
 import BorrowPoolsTable from '@components/organisms/BorrowPoolsTable';
+import BorrowSingupForm from '@components/organisms/BorrowSignupForm';
 import YourLoansTable from '@components/organisms/YourLoansTable';
 import { Card, Grid, Group, LoadingOverlay } from '@mantine/core';
 import { useInterval } from '@mantine/hooks';
@@ -64,6 +65,7 @@ const BorrowPage: NextPage = () => {
       <main className={styles.main}>
         <Group direction="column" align="stretch">
           <DashboardCardsLine />
+          <BorrowSingupForm />
           <Card
             style={{
               padding: 24,
