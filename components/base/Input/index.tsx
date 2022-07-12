@@ -15,7 +15,6 @@ const Input: React.FC<IProps> = ({ label, width, required, ...props }) => {
       placeholder="0"
       size="md"
       {...props}
-      type="number"
       rightSection={
         props.error ? (
           <AlertCircle size={24} color="#F4501B" />
