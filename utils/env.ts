@@ -2,7 +2,6 @@ import { Chain } from '@wagmi/core';
 
 export enum VoyageEnvironment {
   Development = 'development',
-  Staging = 'staging',
   Testnet = 'testnet',
   Mainnet = 'mainnet',
 }
@@ -16,7 +15,6 @@ export enum Network {
 
 export enum ChainID {
   Hardhat = 31337,
-  Staging = 666,
   Fuji = 43113,
   Avalanche = 43114,
 }
@@ -24,11 +22,10 @@ export enum ChainID {
 export const voyageEnvironment = (): VoyageEnvironment => {
   const env =
     (process.env.NEXT_PUBLIC_VYG_ENV as VoyageEnvironment) ||
-    VoyageEnvironment.Staging;
+    VoyageEnvironment.Testnet;
   console.log('env: ', process.env.NEXT_PUBLIC_VYG_ENV);
   switch (env) {
     case VoyageEnvironment.Development:
-    case VoyageEnvironment.Staging:
     case VoyageEnvironment.Testnet:
     case VoyageEnvironment.Mainnet:
       return env;
@@ -55,17 +52,6 @@ const ProviderConfigurationMap: Record<VoyageEnvironment, ProviderConfig> = {
     endpoint: 'http://localhost:8545',
     explorer: 'https://vethtet-explorer.staging.voyage.finance/',
     name: Network.Hardhat,
-    currency: {
-      name: 'Voyage',
-      symbol: 'VYG',
-      decimals: 18,
-    },
-  },
-  [VoyageEnvironment.Staging]: {
-    chainId: ChainID.Staging,
-    endpoint: 'https://vethtest.staging.voyage.finance/',
-    explorer: 'https://vethtet-explorer.staging.voyage.finance/',
-    name: Network.Voyage,
     currency: {
       name: 'Voyage',
       symbol: 'VYG',
