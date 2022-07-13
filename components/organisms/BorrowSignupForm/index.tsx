@@ -4,6 +4,10 @@ import { Button, Card, Text } from '@components/base';
 import Input from '@components/base/Input';
 import { useForm, yupResolver } from '@mantine/form';
 import * as Yup from 'yup';
+import { useEffect } from 'react';
+import { database } from 'firestore';
+import { ref, child, get, onValue } from 'firebase/database';
+import Select from '@components/base/Select';
 
 type IProps = {};
 
@@ -48,6 +52,24 @@ const BorrowSingupForm: React.FC<IProps> = ({}) => {
 
   const onSubmit = () => undefined;
 
+  useEffect(() => {
+    const dbRef = ref(database);
+    onValue(dbRef, (snapshot) => {
+      console.log('fire', snapshot);
+    });
+    // get(child(dbRef, `borrowers`))
+    //   .then((snapshot) => {
+    //     if (snapshot.exists()) {
+    //       console.log('firebase', snapshot.val());
+    //     } else {
+    //       console.log('No data available');
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
+  }, []);
+
   return (
     <Card>
       <form onSubmit={form.onSubmit(onSubmit)}>
@@ -78,10 +100,16 @@ const BorrowSingupForm: React.FC<IProps> = ({}) => {
               />
             </Group>
             <Group align="start">
-              <Input
+              <Select
                 placeholder="Choose Guild Size"
                 label="Guild Size"
                 required
+                data={[
+                  { value: 'react', label: 'React' },
+                  { value: 'ng', label: 'Angular' },
+                  { value: 'svelte', label: 'Svelte' },
+                  { value: 'vue', label: 'Vue' },
+                ]}
                 {...form.getInputProps('guildSize')}
                 width={440}
               />
