@@ -1,18 +1,17 @@
-import { Group, InputProps, TextInput } from '@mantine/core';
+import { TextInputProps, TextInput } from '@mantine/core';
 import { GetInputProps } from '@mantine/form/lib/types';
 import { AlertCircle, CircleCheck } from 'tabler-icons-react';
-import Text from '../Text';
+import LabelWrapper from '../LabelWrapper';
 
-type IProps<C = 'input'> = InputProps<C> &
+type IProps = TextInputProps &
   GetInputProps<'input'> & {
     label?: string;
   };
 
-const Input: React.FC<IProps> = ({ label, width, required, ...props }) => {
+const Input: React.FC<IProps> = ({ label, width, ...props }) => {
   const element = (
     <TextInput
       radius={10}
-      placeholder="0"
       size="md"
       {...props}
       rightSection={
@@ -42,26 +41,11 @@ const Input: React.FC<IProps> = ({ label, width, required, ...props }) => {
     />
   );
   return label ? (
-    <LabelWrapper label={label} required={required}>
+    <LabelWrapper label={label} required={props.required}>
       {element}
     </LabelWrapper>
   ) : (
     element
-  );
-};
-
-const LabelWrapper: React.FC<{ label: string; required?: boolean }> = (
-  props
-) => {
-  return (
-    <Group direction="column" align="start" spacing={8}>
-      <Group align={'end'} spacing={3}>
-        <Text size="sm" type="secondary">
-          {props.label} {props.required && '*'}
-        </Text>
-      </Group>
-      {props.children}
-    </Group>
   );
 };
 
