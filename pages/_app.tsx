@@ -40,7 +40,7 @@ function MyApp(props: AppProps) {
     <Provider client={web3Client}>
       <ApolloProvider client={apolloClient}>
         <VoyageProvider>
-          <NotificationsProvider position="bottom-right">
+          <NotificationsProvider position="bottom-right" zIndex={501}>
             <Layout>
               <Component {...pageProps} />
             </Layout>
