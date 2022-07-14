@@ -77,7 +77,7 @@ const BorrowPage: NextPage = () => {
               vaults={vaults}
               onUpdate={refetch}
             />
-            <YourLoansTable mt={21} loading={loading} vaults={vaults} />
+            <YourLoansTable mt={21} vaults={vaults} />
           </Card>
         </Group>
       </main>
