@@ -10,7 +10,6 @@ import RepayLoanModal from '../RepayLoanModal';
 import { useState } from 'react';
 
 type IProps = GroupProps & {
-  loading: boolean;
   vaults: VaultData[];
 };
 

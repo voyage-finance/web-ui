@@ -4,36 +4,18 @@ import { Button, Card, Text } from '@components/base';
 import Input from '@components/base/Input';
 import { useForm, yupResolver } from '@mantine/form';
 import * as Yup from 'yup';
-import { useEffect } from 'react';
-import { database } from 'firestore';
-import { ref, child, get, onValue } from 'firebase/database';
+import firestore from 'firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import Select from '@components/base/Select';
+import { useState } from 'react';
+import showNotification from 'utils/notification';
+import { useAccount } from 'wagmi';
 
 type IProps = {};
 
-const usernameValidator = Yup.string().test(
-  'Check prefix',
-  'Remove @ character from username.',
-  (value) => {
-    return !value?.startsWith('@');
-  }
-);
-const schema = Yup.object().shape({
-  guildName: Yup.string().min(2, 'Guild Name should have at least 2 letters'),
-  name: Yup.string().min(2, 'Name should have at least 2 letters'),
-  guildSize: Yup.number().min(
-    100,
-    'You must be at least 100 to create an account'
-  ),
-  relation: Yup.string().min(2, 'relation should have at least 2 letters'),
-  AUM: Yup.string().min(2, 'AUM should have at least 2 letters'),
-  email: Yup.string().email('Invalid email'),
-  twitter: usernameValidator,
-  telegram: usernameValidator,
-  discord: usernameValidator,
-});
-
 const BorrowSingupForm: React.FC<IProps> = ({}) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { data: accountData } = useAccount();
   const form = useForm({
     initialValues: {
       guildName: '',
@@ -50,25 +32,36 @@ const BorrowSingupForm: React.FC<IProps> = ({}) => {
     validate: yupResolver(schema),
   });
 
-  const onSubmit = () => undefined;
-
-  useEffect(() => {
-    const dbRef = ref(database);
-    onValue(dbRef, (snapshot) => {
-      console.log('fire', snapshot);
-    });
-    // get(child(dbRef, `borrowers`))
-    //   .then((snapshot) => {
-    //     if (snapshot.exists()) {
-    //       console.log('firebase', snapshot.val());
-    //     } else {
-    //       console.log('No data available');
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
-  }, []);
+  const onSubmit = async () => {
+    try {
+      if (accountData?.address) {
+        setIsSubmitting(true);
+        await setDoc(
+          doc(firestore, 'borrowers', accountData.address),
+          form.values
+        );
+        showNotification({
+          title: 'Submission success',
+          message: 'Form Submitted successfully',
+          type: 'success',
+        });
+        setIsSubmitting(false);
+      } else {
+        showNotification({
+          title: 'Oops....',
+          message: 'Could get wallet address',
+          type: 'error',
+        });
+      }
+    } catch (e) {
+      showNotification({
+        title: 'Oops....',
+        message: 'Could submit for, error occured',
+        type: 'error',
+      });
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <Card>
@@ -105,10 +98,10 @@ const BorrowSingupForm: React.FC<IProps> = ({}) => {
                 label="Guild Size"
                 required
                 data={[
-                  { value: 'react', label: 'React' },
-                  { value: 'ng', label: 'Angular' },
-                  { value: 'svelte', label: 'Svelte' },
-                  { value: 'vue', label: 'Vue' },
+                  { value: '10 or less', label: '10 or less' },
+                  { value: '>10', label: '>10' },
+                  { value: '>100', label: '>100' },
+                  { value: '>1000', label: '>1000' },
                 ]}
                 {...form.getInputProps('guildSize')}
                 width={440}
@@ -122,20 +115,24 @@ const BorrowSingupForm: React.FC<IProps> = ({}) => {
               />
             </Group>
             <Group align="start">
-              <Input
+              <Select
                 placeholder="Enter guild AUM"
                 label="Guild AUM"
                 required
-                onChange={() => undefined}
-                value={''}
+                {...form.getInputProps('AUM')}
+                data={[
+                  { value: '$10,000 or less ', label: '$10,000 or less ' },
+                  { value: '>$10,000', label: '>$10,000' },
+                  { value: '>$100,000', label: '>$100,000' },
+                  { value: '>$500,000', label: '>$500,000' },
+                ]}
                 width={440}
               />
               <Input
                 placeholder="Enter your email address"
                 label="Email"
                 required
-                onChange={() => undefined}
-                value={''}
+                {...form.getInputProps('email')}
                 width={440}
               />
             </Group>
@@ -172,7 +169,14 @@ const BorrowSingupForm: React.FC<IProps> = ({}) => {
               />
             </Group>
           </Group>
-          <Button style={{ width: 425 }} mt={43} fullWidth type="submit">
+          <Button
+            style={{ width: 425 }}
+            mt={43}
+            loading={isSubmitting}
+            disabled={isSubmitting}
+            fullWidth
+            type="submit"
+          >
             Sign & Submit
           </Button>
         </Group>
@@ -182,3 +186,21 @@ const BorrowSingupForm: React.FC<IProps> = ({}) => {
 };
 
 export default BorrowSingupForm;
+
+const usernameValidator = Yup.string()
+  .required('this is required field')
+  .test('Check prefix', 'Remove @ character from username.', (value) => {
+    return !value?.startsWith('@');
+  });
+
+const schema = Yup.object().shape({
+  guildName: Yup.string().min(2, 'Guild Name should have at least 2 letters'),
+  name: Yup.string().min(2, 'Name should have at least 2 letters'),
+  guildSize: Yup.string().required('Guild Size is required field'),
+  relation: Yup.string().required('Relation is required field'),
+  AUM: Yup.string().required(),
+  email: Yup.string().email('Invalid email'),
+  twitter: usernameValidator,
+  telegram: usernameValidator,
+  discord: usernameValidator,
+});
