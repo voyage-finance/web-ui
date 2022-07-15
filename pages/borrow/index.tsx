@@ -48,6 +48,7 @@ const DashboardCardsLine: React.FC = () => (
 
 const BorrowPage: NextPage = () => {
   const { loading, data: vaults, refetch } = useGetUserVaultPools();
+  const isWhitelisted = vaults.length > 0;
   const interval = useInterval(refetch, 5000);
   useEffect(() => {
     interval.start();
@@ -65,20 +66,23 @@ const BorrowPage: NextPage = () => {
       <main className={styles.main}>
         <Group direction="column" align="stretch">
           <DashboardCardsLine />
-          <BorrowSingupForm />
-          <Card
-            style={{
-              padding: 24,
-            }}
-          >
-            <LoadingOverlay visible={loading} />
-            <BorrowPoolsTable
-              loading={loading}
-              vaults={vaults}
-              onUpdate={refetch}
-            />
-            <YourLoansTable mt={21} vaults={vaults} />
-          </Card>
+          {!loading && !isWhitelisted ? (
+            <BorrowSingupForm />
+          ) : (
+            <Card
+              style={{
+                padding: 24,
+              }}
+            >
+              <LoadingOverlay visible={loading} />
+              <BorrowPoolsTable
+                loading={loading}
+                vaults={vaults}
+                onUpdate={refetch}
+              />
+              <YourLoansTable mt={21} vaults={vaults} />
+            </Card>
+          )}
         </Group>
       </main>
     </div>
