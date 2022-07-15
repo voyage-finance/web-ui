@@ -197,8 +197,8 @@ const usernameValidator = Yup.string()
   });
 
 const schema = Yup.object().shape({
-  guildName: Yup.string().min(2, 'Guild Name should have at least 2 letters'),
-  name: Yup.string().min(2, 'Name should have at least 2 letters'),
+  guildName: Yup.string().required('Guild Name is required field'),
+  name: Yup.string().required('Name is required field'),
   guildSize: Yup.string().required('Guild Size is required field'),
   relation: Yup.string().required('Relation is required field'),
   AUM: Yup.string().required(),
