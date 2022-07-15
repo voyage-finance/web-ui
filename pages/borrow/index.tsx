@@ -53,6 +53,7 @@ const BorrowPage: NextPage = () => {
   useEffect(() => {
     interval.start();
     return interval.stop;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
