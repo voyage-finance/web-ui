@@ -9,9 +9,7 @@ import SubmittedState from './SubmittedState';
 import firestore from 'firestore';
 import { doc, getDoc } from 'firebase/firestore';
 
-type IProps = {};
-
-const BorrowSingupForm: React.FC<IProps> = ({}) => {
+const BorrowSingupForm: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { data: accountData } = useAccount();
@@ -29,6 +27,7 @@ const BorrowSingupForm: React.FC<IProps> = ({}) => {
 
   useEffect(() => {
     fetchIsApplicationExists();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
