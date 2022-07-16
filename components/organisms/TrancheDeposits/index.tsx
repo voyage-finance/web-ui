@@ -5,13 +5,19 @@ import { useAllowanceApproved } from 'hooks';
 import DepositTrancheModal from '../DepositTrancheModal';
 import TrancheCard from '../TrancheCard';
 import TrancheTab from '@components/moleculas/TrancheTab';
-import { useSymbolCtx } from 'hooks/context/usePoolDataCtx';
+// import { useSymbolCtx } from 'hooks/context/usePoolDataCtx';
 import WithdrawalModal from '../WithdrawalModal';
+import { useGetContractAddress } from 'hooks/useGetContractAddress';
+import { VoyageContracts } from 'consts/addresses';
 
 const TrancheDeposits: React.FC = () => {
-  const [symbol] = useSymbolCtx();
+  // const [symbol] = useSymbolCtx();
   const [trancheType, setTrancheType] = useState(TrancheType.Senior);
-  const [isApproved, isApproving, onApprove] = useAllowanceApproved(symbol);
+  const voyagerAddress = useGetContractAddress(VoyageContracts.Voyager);
+  const [isApproved, isApproving, , onApprove] = useAllowanceApproved(
+    voyagerAddress,
+    'You can now start depositing'
+  );
   const [depositModalOpen, setDepositModalOpened] = useState(false);
   const [withdrawModalOpen, setWithdrawModalOpened] = useState(false);
 

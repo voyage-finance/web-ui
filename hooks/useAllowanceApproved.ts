@@ -6,14 +6,16 @@ import { fromBigNumber, toHexString } from 'utils/bn';
 import { useContractWrite } from 'wagmi';
 import { useGetAllowance } from './useGetAllowance';
 import TusAbi from 'abi/ERC20.json';
-import { VoyageContracts } from '../consts/addresses';
-import { useGetContractAddress } from './useGetContractAddress';
 import { useSupportedTokensCtx } from './context/useSupportedTokensCtx';
 
-export const useAllowanceApproved = (symbol: string) => {
-  const { data: allowanceAmount } = useGetAllowance(symbol);
+export const useAllowanceApproved = (
+  forAddress: string,
+  successMessage: string
+) => {
+  // TODO: make TUS dynamic
+  const symbol = 'TUS';
+  const { data: allowanceAmount, isLoading } = useGetAllowance(symbol);
   const [tokens] = useSupportedTokensCtx();
-  const voyager = useGetContractAddress(VoyageContracts.Voyager);
   const {
     isLoading: isApproving,
     error: errorApprove,
@@ -44,7 +46,7 @@ export const useAllowanceApproved = (symbol: string) => {
     );
 
     await approveTx({
-      args: [voyager, toHexString(amountNeeded)],
+      args: [forAddress, toHexString(amountNeeded)],
     });
 
     if (errorApprove)
@@ -56,12 +58,12 @@ export const useAllowanceApproved = (symbol: string) => {
     else {
       showNotification({
         title: 'Allowance increased',
-        message: 'You can now start depositing',
+        message: successMessage,
         type: 'success',
       });
       setIsApproved(true);
     }
   };
 
-  return [isApproved, isApproving, onApprove] as const;
+  return [isApproved, isLoading, isApproving, onApprove] as const;
 };
