@@ -23,7 +23,7 @@ export const useGetUserVaultPools = () => {
 };
 
 const resultToVaults = (res: any): VaultData[] => {
-  const vaults = res.userData.vaults;
+  const vaults = res.userData ? res.userData.vaults : [];
 
   return vaults.map((vault: any) => {
     const decimals = vault.pool ? Number(vault.pool.decimals) : 0;

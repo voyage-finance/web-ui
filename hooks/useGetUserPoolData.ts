@@ -27,16 +27,17 @@ export const useGetUserPoolData = (tokenSmb: string) => {
 };
 
 const resultToUserPoolData = (res: any): UserPoolData => {
-  const poolData = res.userData.depositData
+  const poolData = res.userData?.depositData
     ? res.userData.depositData[0]
     : null;
-  const unbondings = res.userData.unbondings || [];
+
+  const unbondings = res.userData?.unbondings || [];
   const decimals = poolData ? Number(poolData.decimals) : 0;
   return {
-    juniorTrancheBalance: poolData
+    juniorTrancheBalance: poolData?.juniorTrancheBalance
       ? shiftDecimals(poolData.juniorTrancheBalance, decimals)
       : Zero,
-    seniorTrancheBalance: poolData
+    seniorTrancheBalance: poolData?.seniorTrancheBalance
       ? shiftDecimals(poolData.seniorTrancheBalance, decimals)
       : Zero,
     unbondings: unbondings.map((v: any) => ({
@@ -50,13 +51,11 @@ const resultToUserPoolData = (res: any): UserPoolData => {
     withdrawableSeniorBalance: poolData
       ? shiftDecimals(poolData.withdrawableSeniorBalance, decimals)
       : Zero,
-    juniorTranchePnl: shiftDecimals(
-      poolData.juniorTranchePnl,
-      Number(decimals)
-    ),
-    seniorTranchePnl: shiftDecimals(
-      poolData.seniorTranchePnl,
-      Number(decimals)
-    ),
+    juniorTranchePnl: poolData?.juniorTranchePnl
+      ? shiftDecimals(poolData.juniorTranchePnl, Number(decimals))
+      : Zero,
+    seniorTranchePnl: poolData?.juniorTranchePnl
+      ? shiftDecimals(poolData.seniorTranchePnl, Number(decimals))
+      : Zero,
   };
 };
