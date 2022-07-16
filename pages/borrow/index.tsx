@@ -9,7 +9,7 @@ import { useInterval } from '@mantine/hooks';
 import { useGetUserVaultPools } from 'hooks/useGetUserVaultPools';
 import { NextPage } from 'next';
 import Head from 'next/head';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styles from 'styles/Home.module.scss';
 
 const DashboardCardsLine: React.FC = () => (
@@ -48,13 +48,19 @@ const DashboardCardsLine: React.FC = () => (
 
 const BorrowPage: NextPage = () => {
   const { loading, data: vaults, refetch } = useGetUserVaultPools();
-  const isWhitelisted = vaults.length > 0;
+  const [isWhitelisted, setIsWhitelisted] = useState(vaults.length > 0);
   const interval = useInterval(refetch, 5000);
   useEffect(() => {
-    interval.start();
+    if (isWhitelisted) {
+      interval.start();
+    }
     return interval.stop;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isWhitelisted]);
+
+  useEffect(() => {
+    setIsWhitelisted(vaults.length > 0);
+  }, [vaults]);
 
   return (
     <div>
