@@ -16,6 +16,7 @@ import { getTxExpolerLink } from 'utils/env';
 import { VaultData } from 'types';
 import { usdValue } from 'utils/price';
 import { ReserveAssets } from 'consts';
+import AllowanceWrapper from './AllowanceWrapper';
 
 type IProps = {
   vault?: VaultData;
@@ -132,61 +133,63 @@ const EnterAmountStep: React.FC<IProps> = ({ vault, onSuccess }) => {
           )}`}</Text>
         </Group>
       </Group>
-      <Divider my={16} orientation="horizontal" />
-      <Group position="apart" mt={16}>
-        <Text type="secondary">Loan Amount</Text>
-      </Group>
-      <AmountInput
-        mt={12}
-        {...form.getInputProps('amount')}
-        onChange={handleAmountChange}
-        symbol={symbol}
-        maximum={balance}
-      />
-      <Group position="apart" mt={16}>
-        <Text type="secondary">Margin Required</Text>
-        <Text type="secondary" size="xs">
-          {'Balance: '}
-          <Text
-            underline
-            component="span"
-            type="secondary"
-            size="xs"
-            weight={700}
-          >
-            {`${formatAmount(balance)} ${symbol}`}
-          </Text>{' '}
-        </Text>
-      </Group>
-      <AmountInput
-        mt={12}
-        value={margin}
-        onChange={() => undefined}
-        symbol={symbol}
-        showMaxBtn={false}
-        disabled
-      />
-      {errorMsg && (
-        <Text mt={16} type="danger" align="center">
-          Error: {errorMsg}
-        </Text>
-      )}
-      <PaymentRoadmap
-        mt={28}
-        amount={form.values.amount}
-        interest={vault?.marginRequirement || Zero}
-        symbol={symbol}
-        assetAddress={vault?.assetAddress}
-      />
-      <Button
-        fullWidth
-        mt={16}
-        loading={isLoading || isConfirming}
-        type="submit"
-        disabled={!form.values.amount}
-      >
-        {form.values.amount ? 'Confirm Loan' : 'Enter Loan Amount'}
-      </Button>
+      <AllowanceWrapper vaultAddress={vault?.id}>
+        <Divider my={16} orientation="horizontal" />
+        <Group position="apart" mt={16}>
+          <Text type="secondary">Loan Amount</Text>
+        </Group>
+        <AmountInput
+          mt={12}
+          {...form.getInputProps('amount')}
+          onChange={handleAmountChange}
+          symbol={symbol}
+          maximum={balance}
+        />
+        <Group position="apart" mt={16}>
+          <Text type="secondary">Margin Required</Text>
+          <Text type="secondary" size="xs">
+            {'Balance: '}
+            <Text
+              underline
+              component="span"
+              type="secondary"
+              size="xs"
+              weight={700}
+            >
+              {`${formatAmount(balance)} ${symbol}`}
+            </Text>{' '}
+          </Text>
+        </Group>
+        <AmountInput
+          mt={12}
+          value={margin}
+          onChange={() => undefined}
+          symbol={symbol}
+          showMaxBtn={false}
+          disabled
+        />
+        {errorMsg && (
+          <Text mt={16} type="danger" align="center">
+            Error: {errorMsg}
+          </Text>
+        )}
+        <PaymentRoadmap
+          mt={28}
+          amount={form.values.amount}
+          interest={vault?.marginRequirement || Zero}
+          symbol={symbol}
+          assetAddress={vault?.assetAddress}
+        />
+        <Button
+          fullWidth
+          mt={16}
+          loading={isLoading || isConfirming}
+          type="submit"
+          disabled={!form.values.amount}
+        >
+          {form.values.amount ? 'Confirm Loan' : 'Enter Loan Amount'}
+        </Button>
+      </AllowanceWrapper>
     </form>
   );
 };
