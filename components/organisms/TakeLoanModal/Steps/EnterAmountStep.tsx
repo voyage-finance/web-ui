@@ -143,7 +143,7 @@ const EnterAmountStep: React.FC<IProps> = ({ vault, onSuccess }) => {
           {...form.getInputProps('amount')}
           onChange={handleAmountChange}
           symbol={symbol}
-          maximum={balance}
+          maximum={vault.spendableBalance}
         />
         <Group position="apart" mt={16}>
           <Text type="secondary">Margin Required</Text>
