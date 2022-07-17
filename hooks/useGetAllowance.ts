@@ -1,12 +1,9 @@
-import { useAccount } from 'wagmi';
 import ERC20 from 'abi/ERC20.json';
-import { VoyageContracts } from '../consts/addresses';
-import { useGetContractAddress } from './useGetContractAddress';
 import { useContractRead } from 'hooks';
 import { useSupportedTokensCtx } from './context/useSupportedTokensCtx';
+import { useAccount } from 'wagmi';
 
-export const useGetAllowance = (tokenSmb: string) => {
-  const voyager = useGetContractAddress(VoyageContracts.Voyager);
+export const useGetAllowance = (tokenSmb: string, forAddress: string) => {
   const account = useAccount();
   const [tokens] = useSupportedTokensCtx();
   return useContractRead(
@@ -16,7 +13,7 @@ export const useGetAllowance = (tokenSmb: string) => {
     },
     'allowance',
     {
-      args: [account.data?.address, voyager],
+      args: [account.data?.address, forAddress],
     }
   );
 };
