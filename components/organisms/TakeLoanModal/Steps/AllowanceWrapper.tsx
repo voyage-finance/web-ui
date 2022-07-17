@@ -1,15 +1,16 @@
 import { Button, Text } from '@components/base';
 import { useAllowanceApproved } from 'hooks';
 import { Box } from '@mantine/core';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 type IProps = {
-  vaultAddress?: string;
+  vaultAddress: string;
 };
 
 const AllowanceWrapper: React.FC<IProps> = ({ vaultAddress, children }) => {
+  const [isFirstLoading, setIsFirstLoading] = useState(true);
   const [isApproved, isApproving, isLoading, onApprove] = useAllowanceApproved(
-    vaultAddress || '',
+    vaultAddress,
     'You can now start borrowing'
   );
 
@@ -19,14 +20,18 @@ const AllowanceWrapper: React.FC<IProps> = ({ vaultAddress, children }) => {
   };
 
   useEffect(() => {
-    console.log('[AllowanceWrapper] vaultAddress', vaultAddress);
-  }, []);
+    if (!isLoading) {
+      setIsFirstLoading(false);
+    }
+  }, [isLoading]);
 
-  return isApproved ? (
+  return isApproved || isFirstLoading ? (
     <Box sx={{ position: 'relative' }}>{children}</Box>
   ) : (
     <>
-      <Text>Approve your vault before borrowing loan</Text>
+      <Text align="center" my={24}>
+        Approve your vault before borrowing loan
+      </Text>
       <Button
         fullWidth
         mt={16}

@@ -4,7 +4,7 @@ import EnterAmountStep from './Steps/EnterAmountStep';
 import { VaultData } from 'types';
 
 type IProps = ModalProps & {
-  vault?: VaultData;
+  vault: VaultData;
   onUpdate: () => void;
 };
 

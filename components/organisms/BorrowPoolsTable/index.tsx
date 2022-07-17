@@ -25,6 +25,11 @@ const BorrowPoolsTable: React.FC<IProps> = ({ vaults, onUpdate }) => {
     setIsBorrowModalOpened(true);
   };
 
+  const onModalClosed = () => {
+    setClickedVault(undefined);
+    setIsBorrowModalOpened(false);
+  };
+
   const columns = [
     'Project',
     'Chain',
@@ -69,12 +74,15 @@ const BorrowPoolsTable: React.FC<IProps> = ({ vaults, onUpdate }) => {
               ))}
           </tbody>
         </Table>
-        <TakeLoanModal
-          opened={isBorrowModalOpened}
-          vault={clickedVault}
-          onClose={() => setIsBorrowModalOpened(false)}
-          onUpdate={onUpdate}
-        />
+        {clickedVault && (
+          <TakeLoanModal
+            opened={isBorrowModalOpened}
+            vault={clickedVault}
+            key={clickedVault.id}
+            onClose={onModalClosed}
+            onUpdate={onUpdate}
+          />
+        )}
       </WalletConnectionFence>
     </Group>
   );

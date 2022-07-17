@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import { MAX_UINT_AMOUNT } from 'consts';
 import { useEffect, useState } from 'react';
 import { fromBigNumber, toHexString } from 'utils/bn';
-import { useContractWrite } from 'wagmi';
+import { useContractWrite, useSigner } from 'wagmi';
 import { useGetAllowance } from './useGetAllowance';
 import TusAbi from 'abi/ERC20.json';
 import { useSupportedTokensCtx } from './context/useSupportedTokensCtx';
@@ -14,16 +14,18 @@ export const useAllowanceApproved = (
 ) => {
   // TODO: make TUS dynamic
   const symbol = 'TUS';
-  const { data: allowanceAmount, isLoading } = useGetAllowance(symbol);
+  const { data: signer } = useSigner();
+  const { data: allowanceAmount, isLoading } = useGetAllowance(
+    symbol,
+    forAddress
+  );
+  const [isApproving, setIsApproving] = useState(false);
   const [tokens] = useSupportedTokensCtx();
-  const {
-    isLoading: isApproving,
-    error: errorApprove,
-    writeAsync: approveTx,
-  } = useContractWrite(
+  const { error: errorApprove, writeAsync: approveTx } = useContractWrite(
     {
       addressOrName: tokens[symbol],
       contractInterface: TusAbi,
+      signerOrProvider: signer,
     },
     'increaseAllowance'
   );
@@ -31,7 +33,6 @@ export const useAllowanceApproved = (
     allowanceAmount &&
       fromBigNumber(allowanceAmount).isEqualTo(new BigNumber(MAX_UINT_AMOUNT))
   );
-
   useEffect(() => {
     if (allowanceAmount) {
       setIsApproved(
@@ -41,21 +42,21 @@ export const useAllowanceApproved = (
   }, [allowanceAmount]);
 
   const onApprove = async () => {
+    setIsApproving(true);
     const amountNeeded = new BigNumber(MAX_UINT_AMOUNT).minus(
       fromBigNumber(allowanceAmount)
     );
-
-    await approveTx({
+    const tx = await approveTx({
       args: [forAddress, toHexString(amountNeeded)],
     });
-
-    if (errorApprove)
+    await tx.wait();
+    if (errorApprove) {
       showNotification({
         title: 'Transaction error',
         message: errorApprove.message,
         type: 'error',
       });
-    else {
+    } else {
       showNotification({
         title: 'Allowance increased',
         message: successMessage,
@@ -63,6 +64,7 @@ export const useAllowanceApproved = (
       });
       setIsApproved(true);
     }
+    setIsApproving(true);
   };
 
   return [isApproved, isLoading, isApproving, onApprove] as const;

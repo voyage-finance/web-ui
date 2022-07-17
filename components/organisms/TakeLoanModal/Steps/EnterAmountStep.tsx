@@ -19,7 +19,7 @@ import { ReserveAssets } from 'consts';
 import AllowanceWrapper from './AllowanceWrapper';
 
 type IProps = {
-  vault?: VaultData;
+  vault: VaultData;
   onSuccess: () => void;
 };
 
@@ -27,7 +27,7 @@ const EnterAmountStep: React.FC<IProps> = ({ vault, onSuccess }) => {
   const { data: signer } = useSigner();
   const [tokens] = useSupportedTokensCtx();
   // TODO: get from current asset context
-  const symbol = vault?.symbol || '';
+  const symbol = vault.symbol;
   const [errorMsg, setErrorMsg] = useState('');
   const [margin, setMargin] = useState(0);
   const balance = useGetUserErc20Balance(symbol);
@@ -117,7 +117,7 @@ const EnterAmountStep: React.FC<IProps> = ({ vault, onSuccess }) => {
           <Text type="secondary">
             <strong>Interest</strong>
           </Text>
-          <Title order={4}>{vault?.marginRequirement.toString()}%</Title>
+          <Title order={4}>{vault.marginRequirement.toString()}%</Title>
         </Group>
         <Group spacing={0} direction="column" align={'end'}>
           <Text type="secondary">Available for Loan</Text>
