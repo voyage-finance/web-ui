@@ -27,7 +27,7 @@ export const useAllowanceApproved = (
       contractInterface: TusAbi,
       signerOrProvider: signer,
     },
-    'increaseAllowance'
+    'approve'
   );
   const [isApproved, setIsApproved] = useState(
     allowanceAmount &&
@@ -43,13 +43,9 @@ export const useAllowanceApproved = (
 
   const onApprove = async () => {
     setIsApproving(true);
-    const amountNeeded = new BigNumber(MAX_UINT_AMOUNT).minus(
-      fromBigNumber(allowanceAmount)
-    );
-    const tx = await approveTx({
-      args: [forAddress, toHexString(amountNeeded)],
-    });
-    await tx.wait();
+    await approveTx({
+      args: [forAddress, toHexString(new BigNumber(MAX_UINT_AMOUNT))],
+    }).then((tx) => tx.wait());
     if (errorApprove) {
       showNotification({
         title: 'Transaction error',
