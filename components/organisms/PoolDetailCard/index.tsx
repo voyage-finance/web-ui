@@ -3,7 +3,7 @@ import { Group, LoadingOverlay } from '@mantine/core';
 import Image from 'next/image';
 import { BrandDiscord, BrandTelegram, BrandTwitter } from 'tabler-icons-react';
 import { useAssetPrice } from '../../../hooks/useAssetPrice';
-import { ReserveAssets } from '../../../consts';
+import { ReserveAssets, RESERVE_NAME_MAP } from '../../../consts';
 import { usdValue } from '../../../utils/price';
 import { formatAmount, formatPercent, Zero } from '../../../utils/bn';
 import { usePoolDataCtx, useSymbolCtx } from 'hooks/context/usePoolDataCtx';
@@ -22,7 +22,7 @@ const PoolDetailCard: React.FC = () => {
   return (
     <Card style={{ height: '100%' }} px={27}>
       <LoadingOverlay visible={loading} />
-      <Title>Crabada</Title>
+      <Title>{RESERVE_NAME_MAP[symbol.toLowerCase() as ReserveAssets]}</Title>
       <Group direction="column" mt={8} spacing={15} align="stretch">
         <Image
           src="/crabada-cover.png"

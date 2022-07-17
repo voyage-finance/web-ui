@@ -7,6 +7,7 @@ import LoanInfoPopover from '@components/moleculas/LoanInfoPopover';
 import { Drawdown, VaultData } from 'types';
 import DrawdownRow from './DrawdownRow';
 import { Zero } from 'utils/bn';
+import { ReserveAssets, RESERVE_NAME_MAP } from 'consts';
 
 type IProps = {
   vault: VaultData;
@@ -51,8 +52,7 @@ const TableRow: React.FC<IProps> = ({ vault, onRepayClick }) => {
             <Group direction="column" spacing={0}>
               <Title order={5}>
                 <Text inherit transform="uppercase">
-                  {/* TODO: make it dynamic */}
-                  CRABADA
+                  {RESERVE_NAME_MAP[symbol.toLowerCase() as ReserveAssets]}
                 </Text>
               </Title>
               <Text type="accent" weight="bold">

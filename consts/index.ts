@@ -13,3 +13,7 @@ export const COINGECKO_BASE_URL = 'https://api.coingecko.com/api/v3';
 export const COINGECKO_ASSET_MAP: Record<ReserveAssets, string> = {
   [ReserveAssets.TUS]: 'treasure-under-sea',
 };
+
+export const RESERVE_NAME_MAP: Record<ReserveAssets, string> = {
+  [ReserveAssets.TUS]: 'Crabada',
+};

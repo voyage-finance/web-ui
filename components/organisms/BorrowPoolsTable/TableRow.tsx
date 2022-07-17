@@ -4,6 +4,7 @@ import Image from 'next/image';
 import AvalanchePng from '@assets/icons/avalanche.png';
 import { VaultData } from 'types';
 import AmountWithUSD from '@components/moleculas/AmountWithUSD';
+import { ReserveAssets, RESERVE_NAME_MAP } from 'consts';
 // import AmountWithUSD from '@components/moleculas/AmountWithUSD';
 
 type IProps = { vault: VaultData; onBorrow: () => void };
@@ -23,8 +24,7 @@ const TableRow: React.FC<IProps> = ({ onBorrow, vault }) => {
           <Group direction="column" spacing={0}>
             <Title order={5}>
               <Text inherit transform="uppercase">
-                {/* TODO: make it dynamic */}
-                Crabada
+                {RESERVE_NAME_MAP[symbol.toLowerCase() as ReserveAssets]}
               </Text>
             </Title>
             <Text type="accent" weight="bold">

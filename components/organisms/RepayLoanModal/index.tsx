@@ -16,7 +16,7 @@ import showNotification from 'utils/notification';
 import { getTxExpolerLink } from 'utils/env';
 import { Drawdown, VaultData } from 'types';
 import { usdValue } from 'utils/price';
-import { ReserveAssets } from 'consts';
+import { ReserveAssets, RESERVE_NAME_MAP } from 'consts';
 import moment from 'moment';
 
 type IProps = ModalProps & {
@@ -98,7 +98,14 @@ const RepayLoanModal: React.FC<IProps> = ({
   };
 
   return (
-    <Modal title={`Repay Loan | Crabada`} centered onClose={onClose} {...props}>
+    <Modal
+      title={`Repay Loan | ${
+        RESERVE_NAME_MAP[symbol.toLowerCase() as ReserveAssets]
+      }`}
+      centered
+      onClose={onClose}
+      {...props}
+    >
       <div>
         <Group position="apart" mt={16} align="start">
           <Group spacing={0} direction="column" align={'start'}>

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { formatPercent, Zero } from 'utils/bn';
 import { PoolData } from 'types';
 import AmountWithUSD from '@components/moleculas/AmountWithUSD';
+import { ReserveAssets, RESERVE_NAME_MAP } from 'consts';
 
 const PoolRow: React.FC<PoolData> = ({
   symbol,
@@ -27,8 +28,7 @@ const PoolRow: React.FC<PoolData> = ({
           <Group direction="column" spacing={0}>
             <Title order={5}>
               <Text inherit transform="uppercase">
-                {/* TODO: make this dynamic */}
-                Crabada
+                {RESERVE_NAME_MAP[symbol.toLowerCase() as ReserveAssets]}
               </Text>
             </Title>
             <Text type="accent" weight="bold">
