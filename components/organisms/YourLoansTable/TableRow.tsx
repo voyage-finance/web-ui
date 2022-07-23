@@ -4,34 +4,33 @@ import { Group } from '@mantine/core';
 import Image from 'next/image';
 import AmountWithUSD from '@components/moleculas/AmountWithUSD';
 import LoanInfoPopover from '@components/moleculas/LoanInfoPopover';
-import { Drawdown, VaultData } from 'types';
+import { CreditLine, Loan } from 'types';
 import DrawdownRow from './DrawdownRow';
 import { Zero } from 'utils/bn';
 
 type IProps = {
-  vault: VaultData;
-  onRepayClick: (vault: VaultData, drawdown: Drawdown) => void;
+  creditLine: CreditLine;
+  loans: Loan[];
+  onRepayClick: (creditLine: CreditLine, loan: Loan) => void;
 };
 
-const TableRow: React.FC<IProps> = ({ vault, onRepayClick }) => {
-  // TODO: fetch it from gql
-  const symbol = 'TUS';
+const TableRow: React.FC<IProps> = ({ creditLine, loans, onRepayClick }) => {
+  const symbol = creditLine.symbol;
 
-  const totalPrincipal = vault.drawdowns.reduce(
-    (prev: BigNumber, drawdown) => prev.plus(drawdown.principal),
+  const totalPrincipal = loans.reduce(
+    (prev: BigNumber, loan) => prev.plus(loan.principal),
     Zero
   );
   // sum(interestPerPayment*paymentCount)
-  const totalInterest = vault.drawdowns.reduce(
-    (prev: BigNumber, drawdown) =>
-      prev.plus(drawdown.pmt_interest.multipliedBy(3)),
+  const totalInterest = loans.reduce(
+    (prev: BigNumber, loan) => prev.plus(loan.pmt_interest.multipliedBy(3)),
     Zero
   );
   const totalLoanAmount = totalPrincipal.plus(totalInterest);
 
-  const totalRapayedAmount = vault.drawdowns.reduce(
-    (prev: BigNumber, drawdown) =>
-      prev.plus(drawdown.totalPrincipalPaid.plus(drawdown.totalInterestPaid)),
+  const totalRapayedAmount = loans.reduce(
+    (prev: BigNumber, loan) =>
+      prev.plus(loan.totalPrincipalPaid.plus(loan.totalInterestPaid)),
     Zero
   );
 
@@ -98,12 +97,12 @@ const TableRow: React.FC<IProps> = ({ vault, onRepayClick }) => {
         </td>
         <td></td>
       </tr>
-      {vault.drawdowns.map((drawdown, index) => (
+      {loans.map((loan, index) => (
         <DrawdownRow
           key={index}
-          drawdown={drawdown}
-          borderBottom={index === vault.drawdowns.length - 1}
-          onRepayClick={() => onRepayClick(vault, drawdown)}
+          loan={loan}
+          borderBottom={index === loans.length - 1}
+          onRepayClick={() => onRepayClick(creditLine, loan)}
         />
       ))}
     </>

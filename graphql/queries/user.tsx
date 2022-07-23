@@ -21,28 +21,36 @@ export const GET_USER_DATA = gql`
   }
 `;
 
-export const GET_USER_VAULT_POOLS = gql`
+export const GET_USER_VAULT = gql`
   query getUserPoolData($address: Bytes) {
     userData(id: $address) {
-      vaults {
+      vault {
         id
-        borrowRate
-        totalDebt
-        pool {
+        creditLines {
           id
-          symbol
-          decimals
+          borrowRate
+          totalDebt
+          pool {
+            id
+            symbol
+            decimals
+          }
+          totalMargin
+          marginRequirement
+          withdrawableSecurityDeposit
+          creditLimit
+          spendableBalance
+          gav
+          ltv
+          healthFactor
         }
-        totalMargin
-        marginRequirement
-        withdrawableSecurityDeposit
-        creditLimit
-        spendableBalance
-        gav
-        ltv
-        healthFactor
-        drawdowns {
+        loans {
           id
+          pool {
+            id
+            symbol
+            decimals
+          }
           pmt_principal
           pmt_interest
           pmt_payment

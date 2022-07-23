@@ -14,27 +14,27 @@ import { useGetDeployment } from 'hooks/useGetDeployment';
 import { useSupportedTokensCtx } from 'hooks/context/useSupportedTokensCtx';
 import showNotification from 'utils/notification';
 import { getTxExpolerLink } from 'utils/env';
-import { Drawdown, VaultData } from 'types';
+import { Loan, CreditLine } from 'types';
 import { usdValue } from 'utils/price';
 import { ReserveAssets } from 'consts';
 import moment from 'moment';
 
 type IProps = ModalProps & {
-  drawdown?: Drawdown;
-  vault?: VaultData;
+  loan: Loan;
+  creditLine: CreditLine;
   onUpdate: () => void;
 };
 
 const RepayLoanModal: React.FC<IProps> = ({
   onClose,
   onUpdate,
-  drawdown,
-  vault,
+  loan,
+  creditLine,
   ...props
 }) => {
   const { data: signer } = useSigner();
   const [tokens] = useSupportedTokensCtx();
-  const symbol = vault?.symbol || '';
+  const symbol = loan.symbol;
   const [errorMsg, setErrorMsg] = useState('');
   const balance = useGetUserErc20Balance(symbol);
 
@@ -43,8 +43,8 @@ const RepayLoanModal: React.FC<IProps> = ({
     VoyageContracts.Voyager
   );
 
-  const paymentDaysLeft = drawdown?.nextPaymentDue
-    ? moment(drawdown?.nextPaymentDue).diff(moment(), 'days')
+  const paymentDaysLeft = loan.nextPaymentDue
+    ? moment(loan.nextPaymentDue).diff(moment(), 'days')
     : 0;
   const graceDaysLeft = paymentDaysLeft < 0 ? -paymentDaysLeft : 0;
 
@@ -61,18 +61,18 @@ const RepayLoanModal: React.FC<IProps> = ({
 
   const onRepay = async () => {
     try {
-      const drawdownId = drawdown?.id.slice(-1);
-      const amount = formatAmount(drawdown?.pmt_payment);
+      const drawdownId = loan.id.slice(-1);
+      const amount = formatAmount(loan.pmt_payment);
 
       console.log(
         'voyager, drawdownId, vault',
         voyagerAddress,
         drawdownId,
-        vault?.id
+        creditLine?.id
       );
       setIsConfirming(true);
       const tx = await repay({
-        args: [tokens[symbol], drawdownId, vault?.id],
+        args: [tokens[symbol], drawdownId, creditLine?.id],
       });
       showNotification({
         title: 'Repay pending...',
@@ -104,25 +104,25 @@ const RepayLoanModal: React.FC<IProps> = ({
           <Group spacing={0} direction="column" align={'start'}>
             <Text type="secondary">Repayment Schedule</Text>
             <Title order={4}>
-              {formatAmount(drawdown?.pmt_payment)}{' '}
+              {formatAmount(loan.pmt_payment)}{' '}
               <Text component="span" inherit type="accent">
                 {symbol}
               </Text>
             </Title>
             <Text size="sm">
-              Every {drawdown?.epoch} Days | {drawdown?.nper} Repayments
+              Every {loan.epoch} Days | {loan.nper} Repayments
             </Text>
           </Group>
           <Group spacing={0} direction="column" align={'end'}>
             <Text type="secondary">Outstanding Loan</Text>
             <Title order={4}>
-              {formatAmount(drawdown?.principal)}{' '}
+              {formatAmount(loan.principal)}{' '}
               <Text component="span" inherit type="accent">
                 {symbol}
               </Text>
             </Title>
             <Text size="sm">{`~${usdValue(
-              vault?.spendableBalance || Zero,
+              creditLine.spendableBalance || Zero,
               priceData.latestPrice
             )}`}</Text>
           </Group>
@@ -130,19 +130,17 @@ const RepayLoanModal: React.FC<IProps> = ({
         <Divider my={16} orientation="horizontal" />
         <PaymentRoadmap
           mt={28}
-          amount={
-            drawdown?.pmt_payment.multipliedBy(drawdown.nper).toString() || '0'
-          }
+          amount={loan.pmt_payment.multipliedBy(loan.nper).toString() || '0'}
           interest={Zero}
           symbol={symbol}
-          startDate={drawdown?.borrowAt}
-          assetAddress={vault?.assetAddress}
+          startDate={loan.borrowAt}
+          assetAddress={creditLine.assetAddress}
         />
         <Group direction="column" align="stretch" mt={16} spacing={5}>
           <Group position="apart">
             <Text type="secondary">Repayment Due</Text>
             <Text>
-              <strong>{formatAmount(drawdown?.pmt_principal)}</strong> {symbol}
+              <strong>{formatAmount(loan.pmt_principal)}</strong> {symbol}
             </Text>
           </Group>
           <Group position="apart">
@@ -177,7 +175,7 @@ const RepayLoanModal: React.FC<IProps> = ({
         </Group>
         <AmountInput
           mt={12}
-          value={drawdown?.pmt_payment.toFixed(3, BigNumber.ROUND_UP)}
+          value={loan.pmt_payment.toFixed(3, BigNumber.ROUND_UP)}
           onChange={() => undefined}
           symbol={symbol}
           disabled

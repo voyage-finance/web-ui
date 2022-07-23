@@ -42,13 +42,12 @@ export type UserPoolData = {
   unbondings: Unbonding[];
 };
 
-export type VaultData = {
+export type CreditLine = {
   id: string;
   borrowRate: BigNumber;
   assetAddress: string;
   symbol: string;
   decimals: number;
-  drawdowns: Drawdown[];
   totalDebt: BigNumber;
   totalMargin: BigNumber;
   marginRequirement: BigNumber;
@@ -60,12 +59,14 @@ export type VaultData = {
   healthFactor: number;
 };
 
-export type Drawdown = {
+export type Loan = {
   id: string;
   pmt_principal: BigNumber;
   pmt_interest: BigNumber;
   pmt_payment: BigNumber;
   principal: BigNumber;
+  symbol: string;
+  decimals: number;
   term: number;
   epoch: number;
   nper: number;
@@ -75,6 +76,12 @@ export type Drawdown = {
   totalPrincipalPaid: BigNumber;
   totalInterestPaid: BigNumber;
   paidTimes: number;
+};
+
+export type Vault = {
+  id: string;
+  loans: Loan[];
+  creditLines: CreditLine[];
 };
 
 export type BorrowParams = {
