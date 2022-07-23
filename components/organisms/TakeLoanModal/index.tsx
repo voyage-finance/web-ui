@@ -1,17 +1,17 @@
 import { Modal } from '@components/base';
 import { ModalProps } from '@mantine/core';
 import EnterAmountStep from './Steps/EnterAmountStep';
-import { VaultData } from 'types';
+import { CreditLine } from 'types';
 
 type IProps = ModalProps & {
-  vault: VaultData;
+  creditLine: CreditLine;
   onUpdate: () => void;
 };
 
 const TakeLoanModal: React.FC<IProps> = ({
   onClose,
   onUpdate,
-  vault,
+  creditLine,
   ...props
 }) => {
   const onBorrowed = () => {
@@ -26,7 +26,7 @@ const TakeLoanModal: React.FC<IProps> = ({
       onClose={onClose}
       {...props}
     >
-      <EnterAmountStep onSuccess={onBorrowed} vault={vault} />
+      <EnterAmountStep onSuccess={onBorrowed} creditLine={creditLine} />
     </Modal>
   );
 };

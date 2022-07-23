@@ -13,21 +13,21 @@ import { useGetDeployment } from 'hooks/useGetDeployment';
 import { useSupportedTokensCtx } from 'hooks/context/useSupportedTokensCtx';
 import showNotification from 'utils/notification';
 import { getTxExpolerLink } from 'utils/env';
-import { VaultData } from 'types';
+import { CreditLine } from 'types';
 import { usdValue } from 'utils/price';
 import { ReserveAssets } from 'consts';
 import AllowanceWrapper from './AllowanceWrapper';
 
 type IProps = {
-  vault: VaultData;
+  creditLine: CreditLine;
   onSuccess: () => void;
 };
 
-const EnterAmountStep: React.FC<IProps> = ({ vault, onSuccess }) => {
+const EnterAmountStep: React.FC<IProps> = ({ creditLine, onSuccess }) => {
   const { data: signer } = useSigner();
   const [tokens] = useSupportedTokensCtx();
   // TODO: get from current asset context
-  const symbol = vault.symbol;
+  const symbol = creditLine.symbol;
   const [errorMsg, setErrorMsg] = useState('');
   const [margin, setMargin] = useState(0);
   const balance = useGetUserErc20Balance(symbol);
@@ -76,8 +76,8 @@ const EnterAmountStep: React.FC<IProps> = ({ vault, onSuccess }) => {
       const tx = await borrow({
         args: [
           tokens[symbol],
-          toHexString(addDecimals(form.values.amount, vault?.decimals || 0)),
-          vault?.id,
+          toHexString(addDecimals(form.values.amount, creditLine.decimals)),
+          creditLine.id,
         ],
       });
       showNotification({
@@ -103,9 +103,11 @@ const EnterAmountStep: React.FC<IProps> = ({ vault, onSuccess }) => {
   };
 
   const handleAmountChange = (eventOrValue: any) => {
-    if (vault) {
+    if (creditLine) {
       const value = eventOrValue?.currentTarget?.value || eventOrValue || 0;
-      setMargin(Math.round(value * vault.marginRequirement.toNumber()) / 100);
+      setMargin(
+        Math.round(value * creditLine.marginRequirement.toNumber()) / 100
+      );
       form.setFieldValue('amount', value);
     }
   };
@@ -117,23 +119,23 @@ const EnterAmountStep: React.FC<IProps> = ({ vault, onSuccess }) => {
           <Text type="secondary">
             <strong>Interest</strong>
           </Text>
-          <Title order={4}>{vault.marginRequirement.toString()}%</Title>
+          <Title order={4}>{creditLine.marginRequirement.toString()}%</Title>
         </Group>
         <Group spacing={0} direction="column" align={'end'}>
           <Text type="secondary">Available for Loan</Text>
           <Title order={4}>
-            {formatAmount(vault?.spendableBalance)}{' '}
+            {formatAmount(creditLine.spendableBalance)}{' '}
             <Text component="span" inherit type="accent">
               {symbol}
             </Text>
           </Title>
           <Text size="sm">{`~${usdValue(
-            vault?.spendableBalance || Zero,
+            creditLine.spendableBalance || Zero,
             priceData.latestPrice
           )}`}</Text>
         </Group>
       </Group>
-      <AllowanceWrapper vaultAddress={vault?.id}>
+      <AllowanceWrapper vaultAddress={creditLine.id}>
         <Divider my={16} orientation="horizontal" />
         <Group position="apart" mt={16}>
           <Text type="secondary">Loan Amount</Text>
@@ -176,9 +178,9 @@ const EnterAmountStep: React.FC<IProps> = ({ vault, onSuccess }) => {
         <PaymentRoadmap
           mt={28}
           amount={form.values.amount}
-          interest={vault?.marginRequirement || Zero}
+          interest={creditLine.marginRequirement || Zero}
           symbol={symbol}
-          assetAddress={vault?.assetAddress}
+          assetAddress={creditLine.assetAddress}
         />
         <Button
           fullWidth

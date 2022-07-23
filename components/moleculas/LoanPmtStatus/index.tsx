@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { Text } from '@components/base';
-import { Drawdown } from 'types';
+import { Loan } from 'types';
 import moment from 'moment';
 
 interface ILoanPmtStatusProps {
-  drawdown: Drawdown;
+  loan: Loan;
 }
 
 const LoanPmtStatus: React.FunctionComponent<ILoanPmtStatusProps> = ({
-  drawdown,
+  loan,
 }) => {
   const now = moment().valueOf();
-  const nextPaymentDate = drawdown.nextPaymentDue * 1000;
+  const nextPaymentDate = loan.nextPaymentDue * 1000;
   const isPaymentLate = now < nextPaymentDate;
   return (
     <Text

@@ -77,7 +77,7 @@ const BorrowPoolsTable: React.FC<IProps> = ({ creditLines, onUpdate }) => {
         {clickedCreditLine && (
           <TakeLoanModal
             opened={isBorrowModalOpened}
-            vault={clickedCreditLine}
+            creditLine={clickedCreditLine}
             key={clickedCreditLine.id}
             onClose={onModalClosed}
             onUpdate={onUpdate}
