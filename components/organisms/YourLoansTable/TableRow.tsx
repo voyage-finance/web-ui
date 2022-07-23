@@ -5,7 +5,7 @@ import Image from 'next/image';
 import AmountWithUSD from '@components/moleculas/AmountWithUSD';
 import LoanInfoPopover from '@components/moleculas/LoanInfoPopover';
 import { CreditLine, Loan } from 'types';
-import DrawdownRow from './DrawdownRow';
+import LoanRow from './LoanRow';
 import { Zero } from 'utils/bn';
 
 type IProps = {
@@ -98,7 +98,7 @@ const TableRow: React.FC<IProps> = ({ creditLine, loans, onRepayClick }) => {
         <td></td>
       </tr>
       {loans.map((loan, index) => (
-        <DrawdownRow
+        <LoanRow
           key={index}
           loan={loan}
           borderBottom={index === loans.length - 1}

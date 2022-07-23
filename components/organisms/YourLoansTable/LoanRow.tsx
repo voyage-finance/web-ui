@@ -71,7 +71,7 @@ const PaymentRow: React.FC<IProps> = ({ loan, borderBottom, onRepayClick }) => {
         <Text align="right">{nextDate}</Text>
       </td>
       <td>
-        <LoanPmtStatus drawdown={loan} />
+        <LoanPmtStatus loan={loan} />
       </td>
       <td>
         <Group position="right">

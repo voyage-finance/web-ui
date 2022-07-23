@@ -61,18 +61,18 @@ const RepayLoanModal: React.FC<IProps> = ({
 
   const onRepay = async () => {
     try {
-      const drawdownId = loan.id.slice(-1);
+      const loanId = loan.id.slice(-1);
       const amount = formatAmount(loan.pmt_payment);
 
       console.log(
-        'voyager, drawdownId, vault',
+        'voyager, loanId, vault',
         voyagerAddress,
-        drawdownId,
+        loanId,
         creditLine?.id
       );
       setIsConfirming(true);
       const tx = await repay({
-        args: [tokens[symbol], drawdownId, creditLine?.id],
+        args: [tokens[symbol], loanId, creditLine?.id],
       });
       showNotification({
         title: 'Repay pending...',
