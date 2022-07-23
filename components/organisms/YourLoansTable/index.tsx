@@ -3,22 +3,23 @@ import { Group, GroupProps, Table } from '@mantine/core';
 import styles from './index.module.scss';
 import { Text, Title } from '@components/base';
 import TableRow from './TableRow';
-import { Drawdown, VaultData } from 'types';
+import { Loan, CreditLine } from 'types';
 import WalletConnectionFence from '@components/moleculas/WalletConnectionFence';
 import { useIsMounted } from 'utils/hooks';
 import RepayLoanModal from '../RepayLoanModal';
 import { useState } from 'react';
 
 type IProps = GroupProps & {
-  vaults: VaultData[];
+  creditLines: CreditLine[];
+  loans: Loan[];
 };
 
-const YourLoansTable: React.FC<IProps> = ({ vaults, ...props }) => {
+const YourLoansTable: React.FC<IProps> = ({ creditLines, loans, ...props }) => {
   const isMounted = useIsMounted();
   const [isRepayModalOpened, setIsRepayModalOpened] = useState(false);
-  const [clickedVaultNDrawdown, setClickedVaultNDrawdown] = useState<{
-    vault: VaultData;
-    drawdown: Drawdown;
+  const [clickedLoanNCreditLine, setClickedLoanNCreditLine] = useState<{
+    loan: Loan;
+    creditLine: CreditLine;
   }>();
 
   const columns = [
@@ -33,8 +34,8 @@ const YourLoansTable: React.FC<IProps> = ({ vaults, ...props }) => {
     'Actions',
   ];
 
-  const onRepayClick = (vault: VaultData, drawdown: Drawdown) => {
-    setClickedVaultNDrawdown({ vault, drawdown });
+  const onRepayClick = (creditLine: CreditLine, loan: Loan) => {
+    setClickedLoanNCreditLine({ creditLine, loan });
     setIsRepayModalOpened(true);
   };
 
@@ -63,22 +64,27 @@ const YourLoansTable: React.FC<IProps> = ({ vaults, ...props }) => {
           </thead>
           <tbody>
             {isMounted &&
-              vaults.map((vault: VaultData) => (
+              creditLines.map((creditLine: CreditLine) => (
                 <TableRow
-                  key={vault.id}
-                  vault={vault}
+                  key={creditLine.id}
+                  creditLine={creditLine}
+                  loans={loans.filter(
+                    (loan: Loan) => loan.symbol === creditLine.symbol
+                  )}
                   onRepayClick={onRepayClick}
                 />
               ))}
           </tbody>
         </Table>
-        <RepayLoanModal
-          opened={isRepayModalOpened}
-          onClose={() => setIsRepayModalOpened(false)}
-          onUpdate={() => undefined}
-          vault={clickedVaultNDrawdown?.vault}
-          drawdown={clickedVaultNDrawdown?.drawdown}
-        />
+        {clickedLoanNCreditLine && (
+          <RepayLoanModal
+            opened={isRepayModalOpened}
+            onClose={() => setIsRepayModalOpened(false)}
+            onUpdate={() => undefined}
+            creditLine={clickedLoanNCreditLine.creditLine}
+            loan={clickedLoanNCreditLine.loan}
+          />
+        )}
       </WalletConnectionFence>
     </Group>
   );

@@ -6,7 +6,7 @@ import BorrowSingupForm from '@components/organisms/BorrowSignupForm';
 import YourLoansTable from '@components/organisms/YourLoansTable';
 import { Card, Grid, Group, LoadingOverlay } from '@mantine/core';
 import { useInterval } from '@mantine/hooks';
-import { useGetUserVaultPools } from 'hooks/useGetUserVaultPools';
+import { useGetUserVault } from 'hooks/useGetUserVault';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
@@ -47,8 +47,8 @@ const DashboardCardsLine: React.FC = () => (
 );
 
 const BorrowPage: NextPage = () => {
-  const { loading, data: vaults, refetch } = useGetUserVaultPools();
-  const [isWhitelisted, setIsWhitelisted] = useState(vaults.length > 0);
+  const { loading, data: vault, refetch } = useGetUserVault();
+  const [isWhitelisted, setIsWhitelisted] = useState(vault !== null);
   const interval = useInterval(refetch, 5000);
   useEffect(() => {
     if (isWhitelisted) {
@@ -59,8 +59,8 @@ const BorrowPage: NextPage = () => {
   }, [isWhitelisted]);
 
   useEffect(() => {
-    setIsWhitelisted(vaults.length > 0);
-  }, [vaults]);
+    setIsWhitelisted(vault !== null);
+  }, [vault]);
 
   return (
     <div>
@@ -84,10 +84,14 @@ const BorrowPage: NextPage = () => {
               <LoadingOverlay visible={loading} />
               <BorrowPoolsTable
                 loading={loading}
-                vaults={vaults}
+                creditLines={vault?.creditLines || []}
                 onUpdate={refetch}
               />
-              <YourLoansTable mt={21} vaults={vaults} />
+              <YourLoansTable
+                mt={21}
+                creditLines={vault?.creditLines || []}
+                loans={vault?.loans || []}
+              />
             </Card>
           )}
         </Group>

@@ -3,7 +3,7 @@ import { Group, Table } from '@mantine/core';
 import styles from './index.module.scss';
 import { Text, Title } from '@components/base';
 import TableRow from './TableRow';
-import { VaultData } from 'types';
+import { CreditLine } from 'types';
 import WalletConnectionFence from '@components/moleculas/WalletConnectionFence';
 import { useIsMounted } from 'utils/hooks';
 import TakeLoanModal from '../TakeLoanModal';
@@ -11,22 +11,22 @@ import { useState } from 'react';
 
 type IProps = {
   loading: boolean;
-  vaults: VaultData[];
+  creditLines: CreditLine[];
   onUpdate: () => void;
 };
 
-const BorrowPoolsTable: React.FC<IProps> = ({ vaults, onUpdate }) => {
+const BorrowPoolsTable: React.FC<IProps> = ({ creditLines, onUpdate }) => {
   const isMounted = useIsMounted();
   const [isBorrowModalOpened, setIsBorrowModalOpened] = useState(false);
-  const [clickedVault, setClickedVault] = useState<VaultData>();
+  const [clickedCreditLine, setClickedCreditLine] = useState<CreditLine>();
 
-  const onBorrowClick = (vault: VaultData) => {
-    setClickedVault(vault);
+  const onCreditLineClick = (vault: CreditLine) => {
+    setClickedCreditLine(vault);
     setIsBorrowModalOpened(true);
   };
 
   const onModalClosed = () => {
-    setClickedVault(undefined);
+    setClickedCreditLine(undefined);
     setIsBorrowModalOpened(false);
   };
 
@@ -65,20 +65,20 @@ const BorrowPoolsTable: React.FC<IProps> = ({ vaults, onUpdate }) => {
           </thead>
           <tbody>
             {isMounted &&
-              vaults.map((vault: VaultData) => (
+              creditLines.map((creditLine: CreditLine) => (
                 <TableRow
-                  key={vault.id}
-                  vault={vault}
-                  onBorrow={() => onBorrowClick(vault)}
+                  key={creditLine.id}
+                  creditLine={creditLine}
+                  onBorrow={() => onCreditLineClick(creditLine)}
                 />
               ))}
           </tbody>
         </Table>
-        {clickedVault && (
+        {clickedCreditLine && (
           <TakeLoanModal
             opened={isBorrowModalOpened}
-            vault={clickedVault}
-            key={clickedVault.id}
+            vault={clickedCreditLine}
+            key={clickedCreditLine.id}
             onClose={onModalClosed}
             onUpdate={onUpdate}
           />

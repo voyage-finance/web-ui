@@ -4,7 +4,7 @@ import LoanInfoPopover from '@components/moleculas/LoanInfoPopover';
 import LoanPmtStatus from '@components/moleculas/LoanPmtStatus';
 import { createStyles, Group } from '@mantine/core';
 import moment from 'moment';
-import { Drawdown } from 'types';
+import { Loan } from 'types';
 import { formatAmount } from 'utils/bn';
 
 const useStyles = createStyles(() => ({
@@ -14,27 +14,22 @@ const useStyles = createStyles(() => ({
 }));
 
 type IProps = {
-  drawdown: Drawdown;
+  loan: Loan;
   borderBottom?: boolean;
   onRepayClick: () => void;
 };
 
-const PaymentRow: React.FC<IProps> = ({
-  drawdown,
-  borderBottom,
-  onRepayClick,
-}) => {
+const PaymentRow: React.FC<IProps> = ({ loan, borderBottom, onRepayClick }) => {
   const { classes } = useStyles();
-  // TODO: make it dynamic
-  const symbol = 'TUS';
-  const totalInterest = drawdown.pmt_interest.multipliedBy(3);
-  const totalLoan = drawdown.principal.plus(totalInterest);
+  const symbol = loan.symbol;
+  const totalInterest = loan.pmt_interest.multipliedBy(3);
+  const totalLoan = loan.principal.plus(totalInterest);
   const remainingLoan = totalLoan.minus(
-    drawdown.totalInterestPaid.plus(drawdown.totalPrincipalPaid)
+    loan.totalInterestPaid.plus(loan.totalPrincipalPaid)
   );
 
-  const nextDate = moment(drawdown.nextPaymentDue * 1000).format('DD MMM');
-  const borrowDate = moment(drawdown.borrowAt * 1000).format('DD MMM');
+  const nextDate = moment(loan.nextPaymentDue * 1000).format('DD MMM');
+  const borrowDate = moment(loan.borrowAt * 1000).format('DD MMM');
 
   return (
     <tr className={borderBottom ? classes.borderedRow : undefined}>
@@ -48,7 +43,7 @@ const PaymentRow: React.FC<IProps> = ({
       <td>
         <LoanInfoPopover
           position="right"
-          loan={drawdown.principal}
+          loan={loan.principal}
           interest={totalInterest}
         >
           <AmountWithUSD symbol={symbol} amount={totalLoan} />
@@ -57,7 +52,7 @@ const PaymentRow: React.FC<IProps> = ({
       <td>
         <AmountWithUSD
           symbol={symbol}
-          amount={drawdown.totalPrincipalPaid}
+          amount={loan.totalPrincipalPaid}
           kind="success"
         />
       </td>
@@ -65,18 +60,18 @@ const PaymentRow: React.FC<IProps> = ({
         <AmountWithUSD symbol={symbol} amount={remainingLoan} kind="danger" />
       </td>
       <td>
-        <Text align="right">{drawdown.paidTimes.toString()} of 3</Text>
+        <Text align="right">{loan.paidTimes.toString()} of 3</Text>
       </td>
       <td>
         <Text align="right">
-          {formatAmount(drawdown.pmt_payment)} {symbol}
+          {formatAmount(loan.pmt_payment)} {symbol}
         </Text>
       </td>
       <td>
         <Text align="right">{nextDate}</Text>
       </td>
       <td>
-        <LoanPmtStatus drawdown={drawdown} />
+        <LoanPmtStatus drawdown={loan} />
       </td>
       <td>
         <Group position="right">

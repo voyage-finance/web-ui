@@ -2,14 +2,14 @@ import { CTAButton, Text, Title } from '@components/base';
 import { Avatar, Group } from '@mantine/core';
 import Image from 'next/image';
 import AvalanchePng from '@assets/icons/avalanche.png';
-import { VaultData } from 'types';
+import { CreditLine } from 'types';
 import AmountWithUSD from '@components/moleculas/AmountWithUSD';
 // import AmountWithUSD from '@components/moleculas/AmountWithUSD';
 
-type IProps = { vault: VaultData; onBorrow: () => void };
+type IProps = { creditLine: CreditLine; onBorrow: () => void };
 
-const TableRow: React.FC<IProps> = ({ onBorrow, vault }) => {
-  const symbol = vault.symbol;
+const TableRow: React.FC<IProps> = ({ onBorrow, creditLine }) => {
+  const symbol = creditLine.symbol;
   return (
     <tr>
       <td style={{ paddingLeft: 0 }}>
@@ -40,7 +40,7 @@ const TableRow: React.FC<IProps> = ({ onBorrow, vault }) => {
         </Group>
       </td>
       <td>
-        <AmountWithUSD symbol={symbol} amount={vault.totalDebt} />
+        <AmountWithUSD symbol={symbol} amount={creditLine.totalDebt} />
       </td>
       <td>
         <Text type="success" align="right">
