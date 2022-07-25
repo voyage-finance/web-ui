@@ -27,8 +27,11 @@ const Input: React.FC<IProps> = ({ label, width, ...props }) => {
           color: theme.fn.rgba('#fff', 0.35),
           '&::placeholder': {
             color: theme.fn.rgba('#fff', 0.35),
+            textAlign: 'center',
           },
           width,
+          height: 50,
+          textAlign: 'center',
         },
         disabled: {
           color: 'rgba(255, 255, 255, 0.35) !important',

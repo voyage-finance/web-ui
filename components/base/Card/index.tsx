@@ -6,7 +6,13 @@ const Card: React.FC<CardProps<'div'>> = ({ style, ...props }) => {
     <MantineCard
       withBorder
       radius={10}
-      style={{ borderColor: '#575B79', ...style }}
+      style={{
+        border: '1px solid',
+        background: 'rgba(27, 29, 44, 0.6)',
+        borderImageSource:
+          'linear-gradient(180deg, #575B79 0%, rgba(27, 29, 44, 0) 100%)',
+        ...style,
+      }}
       {...props}
     />
   );
