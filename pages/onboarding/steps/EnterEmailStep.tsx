@@ -59,7 +59,7 @@ const EnterEmailStep: React.FC = () => {
           />
           <Text mt={12}>Supercharge your collection.</Text>
           <Input
-            placeholder="Enter Your Email"
+            placeholder="Enter Yar Email"
             {...form.getInputProps('email')}
             required
             width={300}
