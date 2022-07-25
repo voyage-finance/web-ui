@@ -6,9 +6,15 @@ import LabelWrapper from '../LabelWrapper';
 type IProps = TextInputProps &
   GetInputProps<'input'> & {
     label?: string;
+    liveValidation?: boolean;
   };
 
-const Input: React.FC<IProps> = ({ label, width, ...props }) => {
+const Input: React.FC<IProps> = ({
+  label,
+  width,
+  liveValidation,
+  ...props
+}) => {
   const element = (
     <TextInput
       radius={10}
@@ -18,6 +24,7 @@ const Input: React.FC<IProps> = ({ label, width, ...props }) => {
         props.error ? (
           <AlertCircle size={24} color="#F4501B" />
         ) : (
+          liveValidation &&
           props.value && <CircleCheck size={24} color="#0CCDAA" />
         )
       }
