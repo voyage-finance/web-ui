@@ -12,10 +12,10 @@ const nextConfig = {
     if (dev && isServer) {
       config.plugins.push(new ForkTsCheckerWebpackPlugin());
     }
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ['@svgr/webpack'],
-    });
+    // config.module.rules.push({
+    //   test: /\.svg$/,
+    //   use: ['@svgr/webpack'],
+    // });
     return config;
   },
   async rewrites() {

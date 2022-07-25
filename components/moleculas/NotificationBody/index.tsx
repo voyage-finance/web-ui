@@ -1,5 +1,5 @@
 import { useIsMounted } from 'utils/hooks';
-import { Box, createStyles, Group, Transition } from '@mantine/core';
+import { Avatar, Box, createStyles, Group, Transition } from '@mantine/core';
 import ArrowUpRightSvg from '@assets/icons/arrow-up-right.svg';
 
 const scaleY = {
@@ -44,7 +44,7 @@ const NotificationBody: React.FC<{
           }}
         >
           View on explorer
-          <ArrowUpRightSvg className="arrowIcon" />
+          <Avatar src={ArrowUpRightSvg.src} />
         </Group>
       )}
       <Transition
