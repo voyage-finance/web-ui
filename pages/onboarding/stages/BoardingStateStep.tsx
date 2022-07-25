@@ -4,7 +4,7 @@ import Image from 'next/image';
 import * as React from 'react';
 import LogoLoadingSvg from 'assets/logo-loading.svg';
 
-const Boarding: React.FC = () => {
+const BoardingStateStep: React.FC = () => {
   return (
     <Card
       style={{
@@ -32,4 +32,4 @@ const Boarding: React.FC = () => {
   );
 };
 
-export default Boarding;
+export default BoardingStateStep;
