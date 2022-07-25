@@ -1,9 +1,12 @@
 import { AppShell, MantineProvider } from '@mantine/core';
 import React from 'react';
 import Navigation from './Navigation';
+import { useRouter } from 'next/router';
 
 const Layout: React.FC = (props) => {
   const { children } = props;
+  const router = useRouter();
+  const isOnboardingFlow = router.pathname === '/onboarding';
 
   return (
     <MantineProvider
@@ -90,11 +93,15 @@ const Layout: React.FC = (props) => {
       }}
     >
       <AppShell
-        header={<Navigation />}
+        header={!isOnboardingFlow ? <Navigation /> : undefined}
         styles={(theme) => ({
           main: {
-            background: theme.fn.linearGradient(180, '#333c62', '#25283d'),
+            background: isOnboardingFlow
+              ? `url('./onboarding-bg.png')`
+              : theme.fn.linearGradient(180, '#333c62', '#25283d'),
             padding: 20,
+            minHeight: isOnboardingFlow ? '100vh' : undefined,
+            backgroundSize: 'cover',
           },
         })}
       >
