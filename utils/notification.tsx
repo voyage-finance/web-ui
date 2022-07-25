@@ -6,6 +6,7 @@ import InfoSvg from '@assets/icons/info.svg';
 import CheckSvg from '@assets/icons/check.svg';
 import React from 'react';
 import NotificationBody from '@components/moleculas/NotificationBody';
+import { Avatar } from '@mantine/core';
 
 type IProps = NotificationProps & {
   type: 'success' | 'info' | 'error';
@@ -16,11 +17,11 @@ export const showNotification = ({ type, link, ...props }: IProps) => {
   const icon = (function () {
     switch (type) {
       case 'success':
-        return <CheckSvg size={24} />;
+        return <Avatar src={CheckSvg.src} size={24} />;
       case 'info':
-        return <InfoSvg size={24} />;
+        return <Avatar src={InfoSvg.src} size={24} />;
       case 'error':
-        return <InfoSvg className="redStroke" size={24} />;
+        return <Avatar src={InfoSvg.src} size={24} />;
     }
   })();
 
