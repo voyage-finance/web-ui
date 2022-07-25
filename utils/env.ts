@@ -9,13 +9,13 @@ export enum VoyageEnvironment {
 export enum Network {
   Hardhat = 'Hardhat',
   Voyage = 'Voyage POA',
-  Fuji = ' Avalanche FUJI C-Chain',
+  Rinkeby = 'Rinkeby Testnet',
   Avalanche = 'Avalanche C-Chain',
 }
 
 export enum ChainID {
   Hardhat = 31337,
-  Fuji = 43113,
+  Rinkeby = 4,
   Avalanche = 43114,
 }
 
@@ -59,13 +59,14 @@ const ProviderConfigurationMap: Record<VoyageEnvironment, ProviderConfig> = {
     },
   },
   [VoyageEnvironment.Testnet]: {
-    chainId: ChainID.Fuji,
-    endpoint: 'https://api.avax-test.network/ext/bc/C/rpc',
-    explorer: 'https://testnet.snowtrace.io/',
-    name: Network.Fuji,
+    chainId: ChainID.Rinkeby,
+    endpoint:
+      'https://eth-rinkeby.alchemyapi.io/v2/2rkHcv3Pdg7j3iHPWUu9cDsEOtSoXtoB',
+    explorer: 'https://etherscan.io/',
+    name: Network.Rinkeby,
     currency: {
-      name: 'Avalanche',
-      symbol: 'AVAX',
+      name: 'Ethereum',
+      symbol: 'ETH',
       decimals: 18,
     },
   },

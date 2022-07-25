@@ -17,11 +17,11 @@ export const Deployments: Record<
       address: '0xF62e0575e562B84610587828Cd51278D38C39e6F',
     },
   },
-  [ChainID.Fuji]: {
+  [ChainID.Rinkeby]: {
     [VoyageContracts.Voyager]: {
-      network: Network.Fuji,
+      network: Network.Rinkeby,
       abi: Voyage,
-      address: '0x4Dea4A295581a2A7C3347684137A92924348E127',
+      address: '0xE273C1D2716374391A9B12d4066215CaAc26beC5',
     },
   },
   // TODO: after mainnet deployment
