@@ -1,8 +1,9 @@
 import { Group } from '@mantine/core';
 import type { NextPage } from 'next';
-import BoardingStateStep from './stages/BoardingStateStep';
-import CheckEmailStep from './stages/CheckEmailStep';
-import EnterEmailStep from './stages/EnterEmailStep';
+import BoardingStateStep from './steps/BoardingStateStep';
+import CheckEmailStep from './steps/CheckEmailStep';
+import ConfirmStep from './steps/ConfirmStep';
+import EnterEmailStep from './steps/EnterEmailStep';
 
 const OnboardingPage: NextPage = () => {
   return (
@@ -10,6 +11,7 @@ const OnboardingPage: NextPage = () => {
       <EnterEmailStep />
       <BoardingStateStep />
       <CheckEmailStep />
+      <ConfirmStep />
     </Group>
   );
 };
