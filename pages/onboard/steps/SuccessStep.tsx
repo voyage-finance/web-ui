@@ -4,7 +4,7 @@ import Image from 'next/image';
 import * as React from 'react';
 import LogoLoadingSvg from 'assets/logo-loading.svg';
 
-const BoardingStateStep: React.FC = () => {
+const SuccessStep: React.FC = () => {
   return (
     <Card
       style={{
@@ -21,15 +21,15 @@ const BoardingStateStep: React.FC = () => {
           width={87}
         />
         <Text sx={{ fontSize: 24 }} mt={36} weight={'bold'} type="gradient">
-          Boarding...
+          Yarr Logged in!
         </Text>
         <Text mt={16} align="center">
-          Getting you on board the Voyage. This may take a minute or two so keep
-          this window opened!
+          Go back to your original tab
         </Text>
+        <Text align="center">You can close this window</Text>
       </Group>
     </Card>
   );
 };
 
-export default BoardingStateStep;
+export default SuccessStep;
