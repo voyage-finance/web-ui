@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 const Layout: React.FC = (props) => {
   const { children } = props;
   const router = useRouter();
-  const isOnboardingFlow = router.pathname === '/onboarding';
+  const isOnboardingFlow = router.pathname === '/onboard';
 
   return (
     <MantineProvider
@@ -100,8 +100,15 @@ const Layout: React.FC = (props) => {
               ? `url('./onboarding-bg.png')`
               : theme.fn.linearGradient(180, '#333c62', '#25283d'),
             padding: 20,
-            minHeight: isOnboardingFlow ? '100vh' : undefined,
             backgroundSize: 'cover',
+            ...(isOnboardingFlow
+              ? {
+                  minHeight: '100vh',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }
+              : {}),
           },
         })}
       >

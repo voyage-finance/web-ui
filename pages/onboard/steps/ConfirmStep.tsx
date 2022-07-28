@@ -3,8 +3,34 @@ import { Card, Text, Button } from '@components/base';
 import { Box, Group } from '@mantine/core';
 import Image from 'next/image';
 import SwordImg from 'assets/sword.png';
+import { isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
+import { auth } from 'firestore';
 
-const ConfirmStep: React.FC = () => {
+const ConfirmStep: React.FC<{
+  email: string;
+  fingerPrint: string;
+  onConfirmed: (jwt: string) => void;
+}> = ({ email, fingerPrint, onConfirmed }) => {
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const onConfirm = () => {
+    if (isSignInWithEmailLink(auth, window.location.href)) {
+      setIsLoading(true);
+      signInWithEmailLink(auth, email, window.location.href)
+        .then(async (result) => {
+          onConfirmed(await result.user.getIdToken());
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } else {
+      alert('this is not valid signing link');
+    }
+  };
+
   return (
     <Card
       style={{
@@ -28,7 +54,7 @@ const ConfirmStep: React.FC = () => {
             marginTop: 18,
           }}
         >
-          <Text type="gradient">supermanbatmanspiderman@gmail.com</Text>
+          <Text type="gradient">{email}</Text>
         </Box>
         <Text weight={'bold'} mt={20}>
           Your Session Emojis
@@ -50,13 +76,11 @@ const ConfirmStep: React.FC = () => {
             fontSize: 25,
           }}
         >
-          <Box>😀</Box>
-          <Box>😇</Box>
-          <Box>😭</Box>
-          <Box>😤</Box>
-          <Box>👦🏻</Box>
+          {[...fingerPrint].map((emoji, index) => (
+            <Box key={index}>{emoji}</Box>
+          ))}
         </Group>
-        <Button mt={20} fullWidth>
+        <Button mt={20} fullWidth onClick={onConfirm} loading={isLoading}>
           Confirm
         </Button>
       </Group>
