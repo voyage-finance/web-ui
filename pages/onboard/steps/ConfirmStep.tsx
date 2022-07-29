@@ -8,7 +8,7 @@ import { auth } from 'firestore';
 
 const ConfirmStep: React.FC<{
   email: string;
-  fingerPrint: string;
+  fingerPrint: string[];
   onConfirmed: (jwt: string) => void;
 }> = ({ email, fingerPrint, onConfirmed }) => {
   const [isLoading, setIsLoading] = React.useState(false);
@@ -76,7 +76,7 @@ const ConfirmStep: React.FC<{
             fontSize: 25,
           }}
         >
-          {[...fingerPrint].map((emoji, index) => (
+          {fingerPrint.map((emoji, index) => (
             <Box key={index}>{emoji}</Box>
           ))}
         </Group>
