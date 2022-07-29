@@ -3,6 +3,7 @@ export const shortenHash = (hash: string) =>
 
 export const decodeEmailNFingerprint = (encoded: string) => {
   // TODO: decode encoded into email and fingerprint
-  encoded;
-  return ['daulet.issatayev@gmail.com', '😀😀😀😀😀'];
+  const decodedObj = JSON.parse(encoded);
+  console.log('decodedObj', decodedObj);
+  return [decodedObj.email, decodedObj.fingerprint || ''];
 };
