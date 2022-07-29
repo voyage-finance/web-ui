@@ -76,7 +76,7 @@ const ConfirmStep: React.FC<{
             fontSize: 25,
           }}
         >
-          {fingerPrint.map((emoji, index) => (
+          {(fingerPrint || []).map((emoji, index) => (
             <Box key={index}>{emoji}</Box>
           ))}
         </Group>
