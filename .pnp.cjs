@@ -43,6 +43,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@mantine/notifications", "virtual:38b3b070c23a9c5dbc07ec866e7649f722342eea653befc64de8f13bf435dbd65fd35c1cf7b784a30574bb302fb600892732c014edec4b7b74d9d3906eda0230#npm:4.1.2"],\
             ["@next/eslint-plugin-next", "npm:12.1.6"],\
             ["@svgr/webpack", "npm:6.2.1"],\
+            ["@types/chrome", "npm:0.0.193"],\
             ["@types/node", "npm:17.0.23"],\
             ["@types/numeral", "npm:2.0.2"],\
             ["@types/react", "npm:17.0.43"],\
@@ -5776,6 +5777,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@types/chrome", [\
+        ["npm:0.0.193", {\
+          "packageLocation": "./.yarn/cache/@types-chrome-npm-0.0.193-fdfa566161-f01205376b.zip/node_modules/@types/chrome/",\
+          "packageDependencies": [\
+            ["@types/chrome", "npm:0.0.193"],\
+            ["@types/filesystem", "npm:0.0.32"],\
+            ["@types/har-format", "npm:1.2.8"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@types/d3-color", [\
         ["npm:2.0.3", {\
           "packageLocation": "./.yarn/cache/@types-d3-color-npm-2.0.3-b3df41bc27-b4a963b15f.zip/node_modules/@types/d3-color/",\
@@ -5829,6 +5841,34 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-d3-time-npm-2.1.1-e062b58f80-115048d0cd.zip/node_modules/@types/d3-time/",\
           "packageDependencies": [\
             ["@types/d3-time", "npm:2.1.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/filesystem", [\
+        ["npm:0.0.32", {\
+          "packageLocation": "./.yarn/cache/@types-filesystem-npm-0.0.32-f9e6035fd6-4b9079d200.zip/node_modules/@types/filesystem/",\
+          "packageDependencies": [\
+            ["@types/filesystem", "npm:0.0.32"],\
+            ["@types/filewriter", "npm:0.0.29"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/filewriter", [\
+        ["npm:0.0.29", {\
+          "packageLocation": "./.yarn/cache/@types-filewriter-npm-0.0.29-08151cd903-0c58aa875c.zip/node_modules/@types/filewriter/",\
+          "packageDependencies": [\
+            ["@types/filewriter", "npm:0.0.29"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/har-format", [\
+        ["npm:1.2.8", {\
+          "packageLocation": "./.yarn/cache/@types-har-format-npm-1.2.8-87dbad66b0-a14c6f31fb.zip/node_modules/@types/har-format/",\
+          "packageDependencies": [\
+            ["@types/har-format", "npm:1.2.8"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -13683,6 +13723,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@mantine/notifications", "virtual:38b3b070c23a9c5dbc07ec866e7649f722342eea653befc64de8f13bf435dbd65fd35c1cf7b784a30574bb302fb600892732c014edec4b7b74d9d3906eda0230#npm:4.1.2"],\
             ["@next/eslint-plugin-next", "npm:12.1.6"],\
             ["@svgr/webpack", "npm:6.2.1"],\
+            ["@types/chrome", "npm:0.0.193"],\
             ["@types/node", "npm:17.0.23"],\
             ["@types/numeral", "npm:2.0.2"],\
             ["@types/react", "npm:17.0.43"],\
