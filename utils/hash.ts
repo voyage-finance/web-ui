@@ -6,5 +6,6 @@ export const decodeEmailNFingerprint = (encoded: string) => {
   const decodedObj = JSON.parse(
     decodeURIComponent(escape(atob(whitespaceReplaced)))
   );
-  return [decodedObj.email, [...(decodedObj.fingerprint || [])]];
+  const fingerprintArray: string[] = [...(decodedObj.fingerprint || [])];
+  return [decodedObj.email, fingerprintArray] as const;
 };
