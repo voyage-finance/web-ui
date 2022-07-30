@@ -67,6 +67,7 @@ const ConfirmStep: React.FC<{
           spacing={19}
           mt={20}
           position="center"
+          noWrap={true}
           sx={{
             borderRadius: 10,
             background: 'rgba(27, 29, 44, 0.6)',

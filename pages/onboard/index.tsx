@@ -2,6 +2,7 @@
 import { Group } from '@mantine/core';
 import type { GetServerSideProps, NextPage } from 'next';
 import { useState } from 'react';
+import { EXTENSION_ID } from 'utils/env';
 import { decodeEmailNFingerprint } from 'utils/hash';
 import ConfirmStep from './steps/ConfirmStep';
 import SuccessStep from './steps/SuccessStep';
@@ -15,7 +16,7 @@ const OnboardingPage: NextPage<IProps> = ({ encoded }) => {
   const [isConfirmed, setIsConfirmed] = useState(false);
   const onConfirmed = (jwt: string) => {
     console.log('---- onConfirmed ----', jwt);
-    chrome.runtime.sendMessage('ajhbpbfgomfnocldchjlagpcbhlkoohc', {
+    chrome.runtime.sendMessage(EXTENSION_ID, {
       action: 'auth_success',
       jwt: jwt,
       email,

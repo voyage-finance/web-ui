@@ -104,3 +104,5 @@ export const getTxExpolerLink = (hash: string) => {
   const { explorer: explorerUrl } = getProviderConfiguration();
   return `${explorerUrl}tx/${hash}`;
 };
+
+export const EXTENSION_ID = process.env.NEXT_PUBLIC_EXTENSION_ID || '';
