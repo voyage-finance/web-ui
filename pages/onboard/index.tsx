@@ -1,11 +1,12 @@
-/*global chrome*/
 import { Group } from '@mantine/core';
 import type { GetServerSideProps, NextPage } from 'next';
-import { useState } from 'react';
-import { EXTENSION_ID } from 'utils/env';
+import { useEffect, useState } from 'react';
+import { MessageAction } from 'types';
+import { sendExtensionMessage } from 'utils/extension';
 import { decodeEmailNFingerprint } from 'utils/hash';
 import ConfirmStep from './steps/ConfirmStep';
 import SuccessStep from './steps/SuccessStep';
+import WrongSessionStep from './steps/WrongSessionStep';
 
 type IProps = {
   encoded: string;
@@ -13,27 +14,49 @@ type IProps = {
 
 const OnboardingPage: NextPage<IProps> = ({ encoded }) => {
   const [email, fingerPrint] = decodeEmailNFingerprint(encoded);
+  const [isSessionVerified, setIsSessionVerified] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
+
   const onConfirmed = (jwt: string) => {
     console.log('---- onConfirmed ----', jwt);
-    chrome.runtime.sendMessage(EXTENSION_ID, {
-      action: 'auth_success',
-      jwt: jwt,
-      email,
+    sendExtensionMessage({
+      action: MessageAction.AUTH_SUCCESS,
+      params: {
+        jwt: jwt,
+        email,
+      },
     });
     setIsConfirmed(true);
   };
 
+  useEffect(() => {
+    const checkSessionFingerprint = () => {
+      sendExtensionMessage(
+        {
+          action: MessageAction.GET_FINGERPRINT,
+        },
+        (sessionFingerPrint: string) => {
+          setIsSessionVerified(sessionFingerPrint == fingerPrint.join(''));
+        }
+      );
+    };
+    checkSessionFingerprint();
+  }, []);
+
   return (
     <Group direction="column" align={'center'}>
-      {!isConfirmed ? (
-        <ConfirmStep
-          email={email}
-          fingerPrint={fingerPrint}
-          onConfirmed={onConfirmed}
-        />
+      {isSessionVerified ? (
+        !isConfirmed ? (
+          <ConfirmStep
+            email={email}
+            fingerPrint={fingerPrint}
+            onConfirmed={onConfirmed}
+          />
+        ) : (
+          <SuccessStep />
+        )
       ) : (
-        <SuccessStep />
+        <WrongSessionStep />
       )}
     </Group>
   );

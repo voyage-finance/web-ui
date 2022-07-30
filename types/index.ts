@@ -90,3 +90,13 @@ export type BorrowParams = {
 };
 
 export type VoyagePoolTokenMap = Record<string, string>;
+
+export enum MessageAction {
+  AUTH_SUCCESS = 'auth_success',
+  GET_FINGERPRINT = 'get_fingerprint',
+}
+
+export interface RuntimeMessage {
+  action: MessageAction;
+  params?: any;
+}
