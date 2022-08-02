@@ -17,14 +17,11 @@ const OnboardingPage: NextPage<IProps> = ({ encoded }) => {
   const [isSessionVerified, setIsSessionVerified] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
 
-  const onConfirmed = (jwt: string) => {
-    console.log('---- onConfirmed ----', jwt);
+  const onConfirmed = (sessionInfo: any) => {
+    console.log('---- onConfirmed ----', sessionInfo);
     sendExtensionMessage({
       action: MessageAction.AUTH_SUCCESS,
-      params: {
-        jwt: jwt,
-        email,
-      },
+      params: { ...sessionInfo, email },
     });
     setIsConfirmed(true);
   };

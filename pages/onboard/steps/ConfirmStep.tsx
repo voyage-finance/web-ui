@@ -9,7 +9,7 @@ import { auth } from 'firestore';
 const ConfirmStep: React.FC<{
   email: string;
   fingerPrint: string[];
-  onConfirmed: (jwt: string) => void;
+  onConfirmed: (sessionInfo: any) => void;
 }> = ({ email, fingerPrint, onConfirmed }) => {
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -18,7 +18,13 @@ const ConfirmStep: React.FC<{
       setIsLoading(true);
       signInWithEmailLink(auth, email, window.location.href)
         .then(async (result) => {
-          onConfirmed(await result.user.getIdToken());
+          console.log('----- result -----', result);
+          const sessionInfo = {
+            jwt: await result.user.getIdToken(),
+            accessToken: (result.user as any).accessToken || '',
+            uid: result.user.uid,
+          };
+          onConfirmed(sessionInfo);
         })
         .catch((error) => {
           console.log(error);
