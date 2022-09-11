@@ -4,7 +4,7 @@ import { VoyageContracts } from '../consts/addresses';
 import { useGetDeployment } from './useGetDeployment';
 
 export const useFetchPoolTokens = () => {
-  const { address, abi } = useGetDeployment(VoyageContracts.Voyager);
+  const { address, abi } = useGetDeployment(VoyageContracts.Voyage);
   const { data: tokens } = useContractRead(
     {
       addressOrName: address,

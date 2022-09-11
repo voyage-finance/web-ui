@@ -6,7 +6,7 @@ import { VoyageContracts } from '../consts/addresses';
 import { useGetDeployment } from './useGetDeployment';
 
 export const useGetBorrowParams = (assetAddress?: string) => {
-  const { address, abi } = useGetDeployment(VoyageContracts.Voyager);
+  const { address, abi } = useGetDeployment(VoyageContracts.Voyage);
   const { data, refetch } = useContractRead(
     {
       addressOrName: address,

@@ -6,7 +6,7 @@ import { useAccount } from 'wagmi';
 
 export const useGetUserVault = () => {
   const account = useAccount();
-  const accountAddress = account.data?.address?.toLowerCase();
+  const accountAddress = account.address?.toLowerCase();
 
   const { loading, data, error, refetch } = useQuery(GET_USER_VAULT, {
     variables: {

@@ -1,49 +1,29 @@
 // noinspection HtmlUnknownTarget
 
+import DepositInfoCard from '@components/organisms/DepositInfoCard';
+import PoolsTable from '@components/organisms/PoolsTable';
+import { Grid, Group } from '@mantine/core';
+import { useReserves } from 'hooks';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { Grid, Group } from '@mantine/core';
 import styles from 'styles/Home.module.scss';
-import PoolsTable from '@components/organisms/PoolsTable';
-import { Card, Title } from '@components/base';
-import DepositInfoCard from '@components/organisms/DepositInfoCard';
-import LineChart, { generateTimeSeries } from '@components/base/LineChart';
+import { ReserveData } from 'types';
 
-const DashboardCardsLine: React.FC = () => (
+interface Props {
+  loading: boolean;
+  reserves: ReserveData[];
+}
+
+const DashboardCardsLine: React.FC<Props> = (props) => (
   <Grid>
-    <Grid.Col span={3}>
-      <DepositInfoCard />
-    </Grid.Col>
-    <Grid.Col span={3}>
-      <Card style={{ height: 256, padding: '20px 24px' }}>
-        <Title order={3}>TVL</Title>
-        <LineChart
-          data={generateTimeSeries(30, [0, 500_000_000], 10000, 0.01)}
-        />
-      </Card>
-    </Grid.Col>
-    <Grid.Col span={3}>
-      <Card style={{ height: 256, padding: '20px 24px' }}>
-        <Title order={3}>Utilization rate</Title>
-        <LineChart
-          name="Utilization Rate"
-          data={generateTimeSeries(30, [0, 1], 0.05, 0.01)}
-        />
-      </Card>
-    </Grid.Col>
-    <Grid.Col span={3}>
-      <Card style={{ height: 256, padding: '20px 24px' }}>
-        <Title order={3}>Deposit APY</Title>
-        <LineChart
-          name="APY"
-          data={generateTimeSeries(30, [0, 0.3], 0.05, 0.01)}
-        />
-      </Card>
+    <Grid.Col>
+      <DepositInfoCard {...props} />
     </Grid.Col>
   </Grid>
 );
 
 const Home: NextPage = () => {
+  const { loading, data } = useReserves();
   return (
     <div>
       <Head>
@@ -54,8 +34,8 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <Group direction="column" align="stretch">
-          <DashboardCardsLine />
-          <PoolsTable />
+          <DashboardCardsLine loading={loading} reserves={data} />
+          <PoolsTable loading={loading} reserves={data} />
         </Group>
       </main>
     </div>

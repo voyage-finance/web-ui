@@ -6,10 +6,5 @@ export const useContractRead = <TConfig>(
   functionName: string,
   args?: TConfig
 ) => {
-  return useContractReadWagmi(contractConfig, functionName, {
-    ...args,
-    onError(error) {
-      console.log(`useContractRead Error [${functionName}]`, error);
-    },
-  });
+  return useContractReadWagmi({ ...contractConfig, functionName, args });
 };

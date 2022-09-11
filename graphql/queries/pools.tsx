@@ -1,21 +1,40 @@
 import { gql } from '@apollo/client';
 
-export const GET_POOLS = gql`
-  {
-    pools {
+export const GET_RESERVES = gql`
+  query Reserves($user: Bytes) {
+    reserves {
       id
-      isActive
-      underlyingAsset
-      symbol
-      decimals
-      juniorTrancheTotalLiquidity
-      juniorTrancheLiquidityRate
-      seniorTrancheTotalLiquidity
-      seniorTrancheAvailableLiquidity
-      seniorTrancheLiquidityRate
-      totalLiquidity
+      collection
+      currency {
+        symbol
+        decimals
+      }
+
       totalBorrow
-      trancheRatio
+      totalLiquidity
+      utilizationRate
+
+      depositRate
+      borrowRate
+
+      seniorTrancheVToken {
+        totalAssets
+        totalShares
+      }
+      seniorTrancheLiquidity
+      seniorTrancheDepositRate
+
+      juniorTrancheVToken {
+        totalAssets
+        totalShares
+      }
+      juniorTrancheLiquidity
+      juniorTrancheDepositRate
+
+      userDeposits(where: { user: $user }) {
+        juniorTrancheShares
+        seniorTrancheShares
+      }
     }
   }
 `;

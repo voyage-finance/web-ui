@@ -13,9 +13,9 @@ import { VoyageContracts } from 'consts/addresses';
 const TrancheDeposits: React.FC = () => {
   // const [symbol] = useSymbolCtx();
   const [trancheType, setTrancheType] = useState(TrancheType.Senior);
-  const voyagerAddress = useGetContractAddress(VoyageContracts.Voyager);
+  const voyageAddress = useGetContractAddress(VoyageContracts.Voyage);
   const [isApproved, isApproving, , onApprove] = useAllowanceApproved(
-    voyagerAddress,
+    voyageAddress,
     'You can now start depositing'
   );
   const [depositModalOpen, setDepositModalOpened] = useState(false);

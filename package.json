@@ -45,7 +45,7 @@
     "react-dom": "18.0.0",
     "recharts": "^2.1.9",
     "tabler-icons-react": "^1.44.0",
-    "wagmi": "^0.3.2",
+    "wagmi": "^0.6.6",
     "yup": "^0.32.11"
   },
   "devDependencies": {
