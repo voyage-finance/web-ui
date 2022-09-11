@@ -1,34 +1,47 @@
 import { CTAButton, Text, Title } from '@components/base';
-import { Group } from '@mantine/core';
-import Link from 'next/link';
-import Image from 'next/image';
-import { formatPercent, Zero } from 'utils/bn';
-import { PoolData } from 'types';
 import AmountWithUSD from '@components/moleculas/AmountWithUSD';
+import { Group, Image, Skeleton } from '@mantine/core';
+import { useCollectionMetadata } from 'hooks/useCollectionMetadata';
+import Link from 'next/link';
+import { ReserveData } from 'types';
+import { formatPercent, rayToPercent } from 'utils/bn';
+import { useAccount } from 'wagmi';
+import SquashedPepe from '@assets/squashed-pepe.png';
 
-const PoolRow: React.FC<PoolData> = ({
-  symbol,
-  juniorTrancheTotalLiquidity,
-  juniorTrancheLiquidityRate,
-  seniorTrancheTotalLiquidity,
-  seniorTrancheLiquidityRate,
+const Placeholder = () => <Image alt="placeholder" src={SquashedPepe.src} />;
+
+const PoolRow: React.FC<ReserveData> = ({
+  collection,
+  currency: { symbol },
+  juniorTrancheLiquidity,
+  juniorTrancheDepositRate,
+  seniorTrancheLiquidity,
+  seniorTrancheDepositRate,
+  userDepositData,
   totalLiquidity,
 }) => {
+  const { loading, data } = useCollectionMetadata(collection);
+  const { isDisconnected } = useAccount();
+  const userDepositDataAvailable = !isDisconnected && !!userDepositData;
   return (
     <tr>
       <td style={{ paddingLeft: 0 }}>
         <Group>
-          <Image
-            src="/crabada-cover.png"
-            alt="crabada"
-            width={130}
-            height={39}
-          />
+          <Group>
+            <Skeleton visible={loading} style={{ display: 'flex' }}>
+              <Image
+                alt={data?.name}
+                src={data?.image_url}
+                width={130}
+                height={39}
+                placeholder={<Placeholder />}
+              />
+            </Skeleton>
+          </Group>
           <Group direction="column" spacing={0}>
             <Title order={5}>
               <Text inherit transform="uppercase">
-                {/* TODO: make this dynamic */}
-                Crabada
+                {data?.name}
               </Text>
             </Title>
             <Text type="accent" weight="bold">
@@ -41,29 +54,47 @@ const PoolRow: React.FC<PoolData> = ({
         <AmountWithUSD symbol={symbol} amount={totalLiquidity} />
       </td>
       <td>
-        <AmountWithUSD symbol={symbol} amount={seniorTrancheTotalLiquidity} />
+        <AmountWithUSD symbol={symbol} amount={seniorTrancheLiquidity} />
       </td>
       <td>
         <Title order={6} align="right">
-          {formatPercent(seniorTrancheLiquidityRate)}
+          {formatPercent(rayToPercent(seniorTrancheDepositRate))}
         </Title>
       </td>
       <td>
-        <AmountWithUSD symbol={symbol} amount={Zero} />
+        {userDepositDataAvailable ? (
+          <AmountWithUSD
+            symbol={symbol}
+            amount={userDepositData?.senior.assets}
+          />
+        ) : (
+          <Text inherit align="right">
+            -
+          </Text>
+        )}
       </td>
       <td>
-        <AmountWithUSD symbol={symbol} amount={juniorTrancheTotalLiquidity} />
+        <AmountWithUSD symbol={symbol} amount={juniorTrancheLiquidity} />
       </td>
       <td align="right">
-        <Title order={6}>{formatPercent(juniorTrancheLiquidityRate)}</Title>
+        <Title order={6}>
+          {formatPercent(rayToPercent(juniorTrancheDepositRate))}
+        </Title>
       </td>
       <td>
-        <AmountWithUSD symbol={symbol} amount={Zero} />
+        {userDepositDataAvailable ? (
+          <AmountWithUSD
+            symbol={symbol}
+            amount={userDepositData?.junior.assets}
+          />
+        ) : (
+          <Text inherit align="right">
+            -
+          </Text>
+        )}
       </td>
       <td>
         <Group position="right">
-          <CTAButton>Deposit</CTAButton>
-          <CTAButton>Withdraw</CTAButton>
           <CTAButton>
             <Link href={`/pools/TUS`}>{'More >'}</Link>
           </CTAButton>

@@ -13,7 +13,7 @@ export const useGetAllowance = (tokenSmb: string, forAddress: string) => {
     },
     'allowance',
     {
-      args: [account.data?.address, forAddress],
+      args: [account?.address, forAddress],
     }
   );
 };

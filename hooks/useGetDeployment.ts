@@ -1,19 +1,17 @@
 import { Deployment, Deployments, VoyageContracts } from '../consts/addresses';
-import { ChainID, getProviderConfiguration, Network } from '../utils/env';
+import { ChainID, resolveProviderConfiguration, Network } from '../utils/env';
 import { useNetwork } from 'wagmi';
 
 const EMPTY_DEPLOYMENT: Deployment = {
   abi: [],
   address: '0x0',
-  network: Network.Avalanche,
+  network: Network.Mainnet,
 };
 
 export const useGetDeployment = (contract: VoyageContracts): Deployment => {
-  const { activeChain } = useNetwork();
+  const { chain } = useNetwork();
 
-  const chainId = activeChain
-    ? activeChain.id
-    : getProviderConfiguration().chainId;
+  const chainId = chain ? chain.id : resolveProviderConfiguration().chainId;
 
   const deploymentMap = Deployments[chainId as ChainID];
 

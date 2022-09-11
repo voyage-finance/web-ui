@@ -12,19 +12,19 @@ const nextConfig = {
     if (dev && isServer) {
       config.plugins.push(new ForkTsCheckerWebpackPlugin());
     }
-    // config.module.rules.push({
-    //   test: /\.svg$/,
-    //   use: ['@svgr/webpack'],
-    // });
     return config;
   },
   async rewrites() {
     return [
+      process.env.NODE_ENV === 'development' && {
+        source: '/v1/:path*',
+        destination: `${process.env.NEXT_PUBLIC_API}/v1/:path*`,
+      },
       {
         source: '/graphql',
-        destination: process.env.NEXT_PUBLIC_GQL_URL,
+        destination: process.env.NEXT_PUBLIC_GRAPH_URL,
       },
-    ];
+    ].filter(Boolean);
   },
 };
 

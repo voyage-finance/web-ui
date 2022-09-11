@@ -1,7 +1,7 @@
 import { Button, Card, Divider, Text, Title } from '@components/base';
 import { Box, Group, LoadingOverlay } from '@mantine/core';
 import React from 'react';
-import { PoolData, TrancheTextMap, TrancheType } from 'types';
+import { ReserveData, TrancheTextMap, TrancheType } from 'types';
 import CoinsImg from 'assets/two-coins.png';
 import CoinStackImg from 'assets/coin-stack.png';
 import Image from 'next/image';
@@ -26,7 +26,7 @@ type IProps = {
 };
 
 const getLiqiuidityByTranche = (
-  poolData: PoolData | undefined,
+  poolData: ReserveData | undefined,
   tranche: TrancheType
 ) => {
   if (!poolData) {
@@ -34,8 +34,8 @@ const getLiqiuidityByTranche = (
   }
 
   return tranche === TrancheType.Senior
-    ? poolData.seniorTrancheTotalLiquidity
-    : poolData.juniorTrancheTotalLiquidity;
+    ? poolData.seniorTrancheLiquidity
+    : poolData.juniorTrancheLiquidity;
 };
 
 const TrancheCard: React.FC<IProps> = ({
@@ -46,7 +46,7 @@ const TrancheCard: React.FC<IProps> = ({
   isApproving,
   onApproveClick,
 }) => {
-  const [priceData] = useAssetPrice(ReserveAssets.TUS);
+  const [priceData] = useAssetPrice(ReserveAssets.ETH);
   const [symbol] = useSymbolCtx();
   const [poolData, isPoolLoading] = usePoolDataCtx();
   const [userData, isUserLoading] = useUserDataCtx();
@@ -54,8 +54,8 @@ const TrancheCard: React.FC<IProps> = ({
   const liquidity = getLiqiuidityByTranche(poolData, type);
   const currentAPY =
     (type === TrancheType.Senior
-      ? poolData?.seniorTrancheLiquidityRate
-      : poolData?.juniorTrancheLiquidityRate) || Zero;
+      ? poolData?.seniorTrancheDepositRate
+      : poolData?.juniorTrancheDepositRate) || Zero;
   const balance =
     (type === TrancheType.Junior
       ? userData?.juniorTrancheBalance

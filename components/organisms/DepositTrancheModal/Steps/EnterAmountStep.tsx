@@ -1,8 +1,22 @@
 import { Button, Divider, Text, Title } from '@components/base';
 import AmountInput from '@components/moleculas/AmountInput';
 import { Box, Group } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import DangerImg from 'assets/danger.png';
+import BigNumber from 'bignumber.js';
+import { ReserveAssets } from 'consts';
+import { VoyageContracts } from 'consts/addresses';
+import { useAssetPrice, useGetUserErc20Balance } from 'hooks';
+import {
+  usePoolDataCtx,
+  useSymbolCtx,
+  useUserDataCtx,
+} from 'hooks/context/usePoolDataCtx';
+import { useSupportedTokensCtx } from 'hooks/context/useSupportedTokensCtx';
+import { useGetDeployment } from 'hooks/useGetDeployment';
 import Image from 'next/image';
-import { useAccount, useContractWrite, useSigner } from 'wagmi';
+import { useState } from 'react';
+import { TrancheTextMap, TrancheType } from 'types';
 import {
   addDecimals,
   formatAmount,
@@ -10,24 +24,10 @@ import {
   toHexString,
   Zero,
 } from 'utils/bn';
-import BigNumber from 'bignumber.js';
-import { useForm } from '@mantine/form';
-import { TrancheTextMap, TrancheType } from 'types';
-import { useAssetPrice, useGetUserErc20Balance } from 'hooks';
-import { ReserveAssets } from 'consts';
-import { usdValue } from 'utils/price';
-import { VoyageContracts } from 'consts/addresses';
-import { useGetDeployment } from 'hooks/useGetDeployment';
-import { useState } from 'react';
+import { getTxExplorerLink } from 'utils/env';
 import { showNotification } from 'utils/notification';
-import { getTxExpolerLink } from 'utils/env';
-import DangerImg from 'assets/danger.png';
-import { useSupportedTokensCtx } from 'hooks/context/useSupportedTokensCtx';
-import {
-  usePoolDataCtx,
-  useSymbolCtx,
-  useUserDataCtx,
-} from 'hooks/context/usePoolDataCtx';
+import { usdValue } from 'utils/price';
+import { useAccount, useContractWrite, usePrepareContractWrite } from 'wagmi';
 
 type IProps = {
   type: TrancheType;
@@ -37,42 +37,32 @@ type IProps = {
 
 const EnterAmountStep: React.FC<IProps> = ({ type, onDeposited, onError }) => {
   const [symbol] = useSymbolCtx();
-  const { data: signer } = useSigner();
-  const { data: account } = useAccount();
+  const account = useAccount();
   const [tokens] = useSupportedTokensCtx();
   const [poolData] = usePoolDataCtx();
   const [userData] = useUserDataCtx();
-  const [priceData] = useAssetPrice(ReserveAssets.TUS);
+  const [priceData] = useAssetPrice(ReserveAssets.ETH);
   const userHoldings = useGetUserErc20Balance(symbol);
   const APY = poolData
     ? type == TrancheType.Senior
-      ? poolData.seniorTrancheLiquidityRate
-      : poolData.juniorTrancheLiquidityRate
+      ? poolData.seniorTrancheDepositRate
+      : poolData.juniorTrancheDepositRate
     : Zero;
   const totalDeposit = poolData
     ? type == TrancheType.Senior
-      ? poolData.seniorTrancheTotalLiquidity
-      : poolData.juniorTrancheTotalLiquidity
+      ? poolData.seniorTrancheLiquidity
+      : poolData.juniorTrancheLiquidity
     : Zero;
   const balance = userData
     ? type === TrancheType.Junior
       ? userData.juniorTrancheBalance
       : userData.seniorTrancheBalance
     : Zero;
-  const { address: voyagerAddress, abi: voyagerAbi } = useGetDeployment(
-    VoyageContracts.Voyager
+  const { address: voyageAddress, abi: voyageABI } = useGetDeployment(
+    VoyageContracts.Voyage
   );
 
   const [isConfirming, setIsConfirming] = useState(false);
-  const { isLoading, writeAsync: deposit } = useContractWrite(
-    {
-      addressOrName: voyagerAddress,
-      contractInterface: voyagerAbi,
-      signerOrProvider: signer,
-    },
-    'deposit'
-  );
-
   const form = useForm({
     initialValues: { amount: '' },
     validate: {
@@ -95,33 +85,39 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onDeposited, onError }) => {
       },
     },
   });
+  const { config } = usePrepareContractWrite({
+    addressOrName: voyageAddress,
+    contractInterface: voyageABI,
+    // signerOrProvider: signer,
+    functionName: 'deposit',
+    args: [
+      tokens[symbol],
+      type == TrancheType.Senior ? '1' : '0',
+      toHexString(addDecimals(form.values.amount, poolData!.currency.decimals)),
+      account?.address,
+    ],
+  });
+  const { isLoading, writeAsync: deposit } = useContractWrite(config);
 
   const onDeposit = async () => {
     if (poolData && userData) {
       let tx;
       try {
         setIsConfirming(true);
-        tx = await deposit({
-          args: [
-            tokens[symbol],
-            type == TrancheType.Senior ? '1' : '0',
-            toHexString(addDecimals(form.values.amount, poolData.decimals)),
-            account?.address,
-          ],
-        });
+        tx = await deposit?.();
         showNotification({
           title: 'Deposit Pending',
           message: `Depositing ${form.values.amount} ${symbol}...`,
           type: 'success',
-          link: getTxExpolerLink(tx.hash),
+          link: getTxExplorerLink(tx?.hash ?? ''),
         });
-        const txReceipt = await tx.wait();
+        const txReceipt = await tx?.wait();
         console.log('deposit tx confirmed: ', txReceipt);
         showNotification({
           type: 'success',
           title: 'Deposit success',
           message: `Deposited ${form.values.amount} ${symbol} successfully.`,
-          link: getTxExpolerLink(tx.hash),
+          link: getTxExplorerLink(tx?.hash ?? ''),
         });
         onDeposited(form.values.amount);
       } catch (err) {
@@ -131,7 +127,7 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onDeposited, onError }) => {
           title: 'Deposit Failed',
           message: error,
           type: 'error',
-          link: tx?.hash ? getTxExpolerLink(tx.hash) : undefined,
+          link: tx?.hash ? getTxExplorerLink(tx.hash) : undefined,
         });
       } finally {
         setIsConfirming(false);

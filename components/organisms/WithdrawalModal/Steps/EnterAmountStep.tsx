@@ -17,7 +17,7 @@ import {
   useUserDataCtx,
 } from 'hooks/context/usePoolDataCtx';
 import { showNotification } from 'utils/notification';
-import { getTxExpolerLink } from 'utils/env';
+import { getTxExplorerLink } from 'utils/env';
 
 type IProps = {
   type: TrancheType;
@@ -28,8 +28,7 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onSuccess }) => {
   const [symbol] = useSymbolCtx();
   const [userData] = useUserDataCtx();
   const [poolData] = usePoolDataCtx();
-  const [priceData] = useAssetPrice(ReserveAssets.TUS);
-  const { onWithdraw } = useWithdraw();
+  const [priceData] = useAssetPrice(ReserveAssets.ETH);
   const [isLoading, setIsLoading] = useState(false);
   const balance = userData
     ? type === TrancheType.Junior
@@ -67,23 +66,25 @@ const EnterAmountStep: React.FC<IProps> = ({ type, onSuccess }) => {
     },
   });
 
+  const { onWithdraw } = useWithdraw(
+    form.values.amount,
+    type,
+    poolData!.currency.decimals,
+    symbol
+  );
+
   const withdraw = async () => {
     if (userData && poolData) {
       try {
         setIsLoading(true);
-        const tx = await onWithdraw(
-          form.values.amount,
-          type,
-          poolData.decimals,
-          symbol
-        );
+        const tx = await onWithdraw?.();
         showNotification({
           title: 'Withdrawal pending',
           message: `Withdrawing ${form.values.amount} ${symbol}...`,
           type: 'info',
-          link: getTxExpolerLink(tx.hash),
+          link: getTxExplorerLink(tx?.hash || ''),
         });
-        const txReceipt = await tx.wait();
+        const txReceipt = await tx?.wait();
         console.log('withdrawal tx confirmed: ', txReceipt);
         onSuccess();
       } catch (err) {

@@ -1,42 +1,32 @@
-import { Chain } from '@wagmi/core';
-
-export enum VoyageEnvironment {
+export enum Environment {
   Development = 'development',
-  Testnet = 'testnet',
-  Mainnet = 'mainnet',
+  Staging = 'staging',
+  Production = 'production',
 }
 
 export enum Network {
-  Hardhat = 'Hardhat',
-  Voyage = 'Voyage POA',
-  Rinkeby = 'Rinkeby Testnet',
-  Avalanche = 'Avalanche C-Chain',
+  Mainnet = 'mainnet',
+  Goerli = 'goerli',
+  Hardhat = 'hardhat',
 }
 
 export enum ChainID {
+  Mainnet = 1,
+  Goerli = 5,
   Hardhat = 31337,
-  Rinkeby = 4,
-  Avalanche = 43114,
 }
 
-export const voyageEnvironment = (): VoyageEnvironment => {
-  const env =
-    (process.env.NEXT_PUBLIC_VYG_ENV as VoyageEnvironment) ||
-    VoyageEnvironment.Testnet;
-  console.log('env: ', process.env.NEXT_PUBLIC_VYG_ENV);
-  switch (env) {
-    case VoyageEnvironment.Development:
-    case VoyageEnvironment.Testnet:
-    case VoyageEnvironment.Mainnet:
-      return env;
-  }
+export const networkByChainID: Record<ChainID, Network> = {
+  [ChainID.Mainnet]: Network.Mainnet,
+  [ChainID.Goerli]: Network.Goerli,
+  [ChainID.Hardhat]: Network.Hardhat,
 };
 
 interface ProviderConfig {
-  chainId: number;
+  name: Network;
+  chainId: ChainID;
   endpoint: string;
   explorer: string;
-  name: Network;
   currency: Currency;
 }
 
@@ -46,62 +36,78 @@ interface Currency {
   decimals: number;
 }
 
-const ProviderConfigurationMap: Record<VoyageEnvironment, ProviderConfig> = {
-  [VoyageEnvironment.Development]: {
+export const voyageEnvironment = (): Environment => {
+  return (
+    (process.env.NEXT_PUBLIC_ENV as Environment) || Environment.Development
+  );
+};
+
+const defaultProviderConfiguration: Record<Environment, ProviderConfig> = {
+  [Environment.Development]: {
     chainId: ChainID.Hardhat,
     endpoint: 'http://localhost:8545',
-    explorer: 'https://vethtet-explorer.staging.voyage.finance/',
+    explorer: '',
     name: Network.Hardhat,
     currency: {
-      name: 'Voyage',
-      symbol: 'VYG',
-      decimals: 18,
-    },
-  },
-  [VoyageEnvironment.Testnet]: {
-    chainId: ChainID.Rinkeby,
-    endpoint:
-      'https://eth-rinkeby.alchemyapi.io/v2/2rkHcv3Pdg7j3iHPWUu9cDsEOtSoXtoB',
-    explorer: 'https://etherscan.io/',
-    name: Network.Rinkeby,
-    currency: {
-      name: 'Ethereum',
+      name: 'Ether',
       symbol: 'ETH',
       decimals: 18,
     },
   },
-  [VoyageEnvironment.Mainnet]: {
-    chainId: ChainID.Avalanche,
-    endpoint: 'https://avax-c.staging.voyage.finance/rpc',
-    explorer: 'https://snowtrace.io/',
-    name: Network.Avalanche,
+  [Environment.Staging]: {
+    chainId: ChainID.Goerli,
+    endpoint:
+      'https://eth-goerli.g.alchemy.com/v2/IG5Is2xWE1WkB-h0cN1NX58xw_74WEZj',
+    explorer: 'https://goerli.etherscan.io/',
+    name: Network.Goerli,
     currency: {
-      name: 'Avalanche',
-      symbol: 'AVAX',
+      name: 'Ether',
+      symbol: 'GoerliETH',
+      decimals: 18,
+    },
+  },
+  [Environment.Production]: {
+    chainId: ChainID.Mainnet,
+    endpoint:
+      'https://eth-mainnet.g.alchemy.com/v2/_ugyedYRT9AOVAGTuXNVKSgFuauulnkC',
+    explorer: 'https://etherscan.io/',
+    name: Network.Mainnet,
+    currency: {
+      name: 'Ether',
+      symbol: 'ETH',
       decimals: 18,
     },
   },
 };
 
-export const voyageChains: Chain[] = Object.values(
-  ProviderConfigurationMap
-).map(({ chainId, endpoint, name, explorer, currency }) => ({
-  id: chainId,
-  name,
-  nativeCurrency: currency,
-  blockExplorers: {
-    etherscan: { name: 'default', url: explorer },
-    default: { name: 'default', url: explorer },
-  },
-  rpcUrls: { default: endpoint },
-}));
+function resolveChainId(defaultChainId: ChainID): ChainID {
+  return process.env.NEXT_PUBLIC_CHAIN_ID
+    ? (parseInt(process.env.NEXT_PUBLIC_CHAIN_ID) as ChainID)
+    : defaultChainId;
+}
 
-export const getProviderConfiguration = () => {
-  return ProviderConfigurationMap[voyageEnvironment()];
-};
+function resolveNodeUrl(defaultNodeUrl: string): string {
+  return process.env.NEXT_PUBLIC_PROVIDER_URL ?? defaultNodeUrl;
+}
 
-export const getTxExpolerLink = (hash: string) => {
-  const { explorer: explorerUrl } = getProviderConfiguration();
+function resolveNetwork(chainID: ChainID): Network {
+  return networkByChainID[chainID] ?? Network.Goerli;
+}
+
+export function resolveProviderConfiguration(): ProviderConfig {
+  const defaults = defaultProviderConfiguration[voyageEnvironment()];
+  const chainId = resolveChainId(defaults.chainId);
+  const name = resolveNetwork(chainId);
+  return {
+    ...defaults,
+    name,
+    chainId,
+    endpoint: resolveNodeUrl(defaults.endpoint),
+  };
+}
+
+export const getTxExplorerLink = (hash: string) => {
+  const { explorer: explorerUrl } = resolveProviderConfiguration();
   return `${explorerUrl}tx/${hash}`;
 };
 

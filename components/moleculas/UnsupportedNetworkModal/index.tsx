@@ -1,17 +1,18 @@
 import { Button, Modal, Text, Title } from '@components/base';
 import { Group } from '@mantine/core';
-import { getProviderConfiguration } from 'utils/env';
-import { useAccount, useNetwork } from 'wagmi';
+import { resolveProviderConfiguration } from 'utils/env';
+import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
 
 const noop = () => undefined;
 
 const UnsupportedNetworkModal: React.FC = () => {
-  const { activeChain, switchNetwork } = useNetwork();
-  const { data: accountData } = useAccount();
-  const currentConf = getProviderConfiguration();
+  const { chain } = useNetwork();
+  const { switchNetwork } = useSwitchNetwork();
+  const account = useAccount();
+  const currentConf = resolveProviderConfiguration();
   return (
     <Modal
-      opened={accountData !== null && activeChain?.id !== currentConf.chainId}
+      opened={account !== null && chain?.id !== currentConf.chainId}
       onClose={noop}
       withCloseButton={false}
     >

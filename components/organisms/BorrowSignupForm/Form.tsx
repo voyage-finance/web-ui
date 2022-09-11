@@ -17,7 +17,7 @@ type IProps = {
 
 const Form: React.FC<IProps> = ({ onSubmitted }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { data: accountData } = useAccount();
+  const accountData = useAccount();
   const form = useForm({
     initialValues: {
       guildName: '',

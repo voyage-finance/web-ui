@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { UserDepositData } from 'hooks/useGetPoolData';
 
 export enum TrancheType {
   Senior,
@@ -10,21 +11,27 @@ export const TrancheTextMap = {
   [TrancheType.Junior]: 'Junior',
 };
 
-export type PoolData = {
-  id: string;
-  isActive: boolean;
-  underlyingAsset: string;
+export interface Currency {
+  id: string; // ERC20 address
   symbol: string;
   decimals: number;
-  juniorTrancheTotalLiquidity: BigNumber;
-  juniorTrancheLiquidityRate: BigNumber;
-  seniorTrancheTotalLiquidity: BigNumber;
-  seniorTrancheAvailableLiquidity: BigNumber;
-  seniorTrancheLiquidityRate: BigNumber;
+}
+
+export interface ReserveData {
+  id: string;
+  collection: string;
+  currency: Currency;
+  isActive: boolean;
   totalLiquidity: BigNumber;
+  seniorTrancheLiquidity: BigNumber;
+  seniorTrancheDepositRate: BigNumber;
+  juniorTrancheLiquidity: BigNumber;
+  juniorTrancheDepositRate: BigNumber;
   totalBorrow: BigNumber;
-  trancheRatio: BigNumber;
-};
+  depositRate: BigNumber;
+  borrowRate: BigNumber;
+  userDepositData: UserDepositData;
+}
 
 export type Unbonding = {
   time: BigNumber;

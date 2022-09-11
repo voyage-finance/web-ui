@@ -1,19 +1,23 @@
-import Image from 'next/image';
-import { Box, createStyles, Group, Header } from '@mantine/core';
 import WalletNavItem from '@components/moleculas/WalletNavItem';
-import Divider from '@components/base/Divider';
-import { NavLink } from '@components/base';
+import { Box, createStyles, Group, Header } from '@mantine/core';
 import { useIsWrongNetwork } from 'hooks';
-import WrongNetworkBanner from './WrongNetworkBanner';
+import Image from 'next/image';
 import { useIsMounted } from 'utils/hooks';
+import WrongNetworkBanner from './WrongNetworkBanner';
 
 const HEADER_HEIGHT = 48;
 
 const useStyles = createStyles(() => ({
   logo: {
     display: 'flex',
+    flex: '1 0 auto',
     alignItems: 'center',
     marginRight: 50,
+  },
+  wallet: {
+    display: 'flex',
+    flex: '0 0 auto',
+    alignItems: 'center',
   },
 }));
 
@@ -32,7 +36,7 @@ const Navigation: React.FC = () => {
           border: 'none',
         })}
       >
-        <Group sx={{ height: '100%' }}>
+        <Group sx={{ height: '100%', justifyContent: 'space-between' }}>
           <Box className={classes.logo}>
             <Image
               src="/logo-voyage-light.svg"
@@ -42,27 +46,9 @@ const Navigation: React.FC = () => {
               style={{ marginRight: 50 }}
             />
           </Box>
-          <Group sx={{ height: '100%' }}>
-            <NavLink href="/" exact>
-              Lend
-            </NavLink>
-            <NavLink href="/borrow" exact>
-              Borrow
-            </NavLink>
-            <NavLink href="/sponsor" exact>
-              Sponsor
-            </NavLink>
-          </Group>
-          <Divider
-            sx={{
-              marginLeft: 'auto',
-            }}
-            size="sm"
-            orientation="vertical"
-          />
-          <Group sx={{ height: '100%' }}>
+          <Box className={classes.wallet}>
             <WalletNavItem />
-          </Group>
+          </Box>
         </Group>
       </Header>
     </>
