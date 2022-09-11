@@ -6,7 +6,7 @@ import { useContractRead } from 'hooks';
 import { useSupportedTokensCtx } from './context/useSupportedTokensCtx';
 
 export const useGetUserErc20Balance = (tokenSym: string, decimals = 18) => {
-  const { data: account } = useAccount();
+  const account = useAccount();
   const [tokens] = useSupportedTokensCtx();
   const targetAddress = tokens[tokenSym];
   const { data: balanceOf } = useContractRead(

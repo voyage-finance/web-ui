@@ -1,22 +1,22 @@
-import { useAccount, useDisconnect } from 'wagmi';
+import MetamaskSvg from '@assets/icons/metamask.svg';
+import Divider from '@components/base/Divider';
+import Menu, { MenuItem } from '@components/base/Menu';
+import { Avatar, Group, Text } from '@mantine/core';
 import { useEffect, useState } from 'react';
-import { Group, Avatar, Text } from '@mantine/core';
 import {
   ArrowUpRight,
   ChevronDown,
-  Power,
   Copy,
-  Wallet,
   History,
+  Power,
   Settings,
+  Wallet,
 } from 'tabler-icons-react';
+import { useAccount, useDisconnect } from 'wagmi';
 import ConnectBtn from './ConnectBtn';
-import MetamaskSvg from '@assets/icons/metamask.svg';
-import Menu, { MenuItem } from '@components/base/Menu';
-import Divider from '@components/base/Divider';
 
 const ConnectWallet: React.FC = () => {
-  const { data: accountData } = useAccount();
+  const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
 
   const [mounted, setMounted] = useState(false);
@@ -29,7 +29,7 @@ const ConnectWallet: React.FC = () => {
   };
 
   return mounted ? (
-    accountData ? (
+    isConnected ? (
       <Menu
         control={
           <Group
@@ -41,7 +41,7 @@ const ConnectWallet: React.FC = () => {
           >
             <Avatar src={MetamaskSvg.src} radius="xl" size={20} />
             <Text size="sm" color={'white'}>
-              {getShortenedAddress(accountData.address || '')}
+              {getShortenedAddress(address || '')}
             </Text>
             <ChevronDown size={12} color={'white'} />
           </Group>

@@ -1,10 +1,10 @@
 import { useGetPool, useGetUserPoolData } from 'hooks';
 import * as React from 'react';
-import { PoolData, UserPoolData } from 'types';
+import { ReserveData, UserPoolData } from 'types';
 import { useIsMounted } from '../../../utils/hooks';
 
 interface PoolPageContextInterface {
-  poolData?: PoolData;
+  poolData?: ReserveData;
   isPoolDataLoading: boolean;
   userData?: UserPoolData;
   isUserDataLoading: boolean;

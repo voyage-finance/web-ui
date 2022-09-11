@@ -13,7 +13,7 @@ const LOADING_COPY = 'Loading...';
 const PoolDetailCard: React.FC = () => {
   const [poolData, loading] = usePoolDataCtx();
   const [symbol] = useSymbolCtx();
-  const [priceData, priceDataLoading] = useAssetPrice(ReserveAssets.TUS);
+  const [priceData, priceDataLoading] = useAssetPrice(ReserveAssets.ETH);
   const isLoadingData = loading || priceDataLoading;
   const availableLiquidity = poolData
     ? poolData.totalLiquidity.minus(poolData.totalBorrow)
@@ -93,13 +93,13 @@ const PoolDetailCard: React.FC = () => {
         <Group spacing={0} direction="column">
           <Text type="secondary">Senior APY</Text>
           <Title order={4}>
-            {formatPercent(poolData?.seniorTrancheLiquidityRate)}
+            {formatPercent(poolData?.seniorTrancheDepositRate)}
           </Title>
         </Group>
         <Group spacing={0} direction="column">
           <Text type="secondary">Junior APY</Text>
           <Title order={4}>
-            {formatPercent(poolData?.juniorTrancheLiquidityRate)}
+            {formatPercent(poolData?.juniorTrancheDepositRate)}
           </Title>
         </Group>
       </Group>

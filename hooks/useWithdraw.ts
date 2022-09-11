@@ -1,39 +1,35 @@
 import { VoyageContracts } from 'consts/addresses';
 import { TrancheType } from 'types';
 import { addDecimals, toHexString } from 'utils/bn';
-import { useContractWrite, useSigner } from 'wagmi';
+import { useAccount, useContractWrite, usePrepareContractWrite } from 'wagmi';
 import { useSupportedTokensCtx } from './context/useSupportedTokensCtx';
 import { useGetDeployment } from './useGetDeployment';
 
-export const useWithdraw = () => {
+export const useWithdraw = (
+  value: string,
+  type: TrancheType,
+  decimals: number,
+  symbol: string
+) => {
   const [tokens] = useSupportedTokensCtx();
-  const { data: signer } = useSigner();
-  const { address: voyagerAddress, abi: voyagerAbi } = useGetDeployment(
-    VoyageContracts.Voyager
+  const amountHex = toHexString(addDecimals(value, decimals));
+  // const { data: signer } = useSigner();
+  const { address: user } = useAccount();
+  const { address: voyageAddress, abi: voyageABI } = useGetDeployment(
+    VoyageContracts.Voyage
   );
-  const { isLoading, writeAsync: withdraw } = useContractWrite(
-    {
-      addressOrName: voyagerAddress,
-      contractInterface: voyagerAbi,
-      signerOrProvider: signer,
-    },
-    'withdraw'
-  );
+  const { config } = usePrepareContractWrite({
+    addressOrName: voyageAddress,
+    contractInterface: voyageABI,
+    functionName: 'withdraw',
+    args: [
+      tokens[symbol],
+      type == TrancheType.Senior ? '1' : '0',
+      amountHex,
+      user,
+    ],
+  });
+  const { isLoading, writeAsync } = useContractWrite(config);
 
-  const onWithdraw = async (
-    value: string,
-    type: TrancheType,
-    decimals: number,
-    symbol: string
-  ) => {
-    const amountHex = toHexString(addDecimals(value, decimals));
-    const user = await signer?.getAddress();
-    const tx = await withdraw({
-      args: [tokens[symbol], type == TrancheType.Senior ? '1' : '0', amountHex, user],
-    });
-
-    return tx;
-  };
-
-  return { isLoading, onWithdraw } as const;
+  return { isLoading, onWithdraw: writeAsync } as const;
 };

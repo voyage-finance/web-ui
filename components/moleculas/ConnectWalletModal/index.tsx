@@ -1,8 +1,7 @@
-import { Modal, Text } from '@components/base';
-import { Avatar, Group, Button } from '@mantine/core';
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-import { useConnect } from 'wagmi';
 import MetamaskSvg from '@assets/icons/metamask.svg';
+import { Modal, Text } from '@components/base';
+import { Avatar, Button, Group } from '@mantine/core';
+import { useConnect } from 'wagmi';
 
 const PRIVACY_POLICY_URL = 'https://www.voyage.finance/privacy-policy';
 
@@ -10,8 +9,10 @@ const ConnectWalletModal: React.FC<{
   opened: boolean;
   onClose: () => void;
 }> = ({ opened, onClose }) => {
-  const { connect } = useConnect();
-  const metamaskConnector = new MetaMaskConnector();
+  const {
+    connect,
+    connectors: [mm],
+  } = useConnect();
 
   return (
     <Modal opened={opened} onClose={onClose} title="Select a Wallet">
@@ -24,9 +25,9 @@ const ConnectWalletModal: React.FC<{
           .
         </Text>
         <Button
-          disabled={!metamaskConnector.ready}
+          disabled={!mm.ready}
           onClick={() => {
-            connect(metamaskConnector);
+            connect({ connector: mm });
             onClose();
           }}
           style={{ margin: 'auto' }}
@@ -54,7 +55,7 @@ const ConnectWalletModal: React.FC<{
             <Text weight={400}>Metamask</Text>
           </Group>
         </Button>
-        {!metamaskConnector.ready && (
+        {!mm.ready && (
           <Text size="sm" align="center" type="danger">
             Error: Metamask extension not found. Download Metamask to use
             Voyage.

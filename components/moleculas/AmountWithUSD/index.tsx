@@ -3,7 +3,7 @@ import { Group } from '@mantine/core';
 import BigNumber from 'bignumber.js';
 import { ReserveAssets } from 'consts';
 import { useAssetPrice } from 'hooks';
-import { formatAmount, Zero } from 'utils/bn';
+import { normalize, Zero } from 'utils/bn';
 import { usdValue } from 'utils/price';
 
 type IProps = {
@@ -17,7 +17,7 @@ const AmountWithUSD: React.FC<IProps> = ({
   kind = 'regular',
   symbol,
 }) => {
-  const [priceData, priceDataLoading] = useAssetPrice(ReserveAssets.TUS);
+  const [priceData, priceDataLoading] = useAssetPrice(ReserveAssets.ETH);
   const amountUSD = priceDataLoading
     ? 'Loading...'
     : usdValue(amount ?? Zero, priceData.latestPrice);
@@ -36,7 +36,7 @@ const AmountWithUSD: React.FC<IProps> = ({
     <Group direction="column" spacing={0} align="end">
       <Title order={5} style={{ color }}>
         {kind === 'success' && '+'}
-        {formatAmount(amount)}{' '}
+        {normalize(amount, 18)}{' '}
         <Text weight={400} component="span" style={{ color }}>
           {symbol}
         </Text>

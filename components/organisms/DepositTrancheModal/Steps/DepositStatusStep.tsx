@@ -29,11 +29,11 @@ const DepositStatusStep: React.FC<IProps2> = ({
   const [symbol] = useSymbolCtx();
   const [poolData] = usePoolDataCtx();
   const [userData] = useUserDataCtx();
-  const [priceData] = useAssetPrice(ReserveAssets.TUS);
+  const [priceData] = useAssetPrice(ReserveAssets.ETH);
   const totalLiquidity =
     (type == TrancheType.Senior
-      ? poolData?.seniorTrancheTotalLiquidity
-      : poolData?.juniorTrancheTotalLiquidity) || Zero;
+      ? poolData?.seniorTrancheLiquidity
+      : poolData?.juniorTrancheLiquidity) || Zero;
   const balance =
     (type === TrancheType.Junior
       ? userData?.juniorTrancheBalance

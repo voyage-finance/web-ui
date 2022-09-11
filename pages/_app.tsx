@@ -1,43 +1,35 @@
-import type { AppProps } from 'next/app';
-import Layout from '../components/moleculas/Layout';
-import { createClient, defaultChains, Provider } from 'wagmi';
-import { InjectedConnector } from 'wagmi/connectors/injected';
-import { providers } from 'ethers';
 import { ApolloProvider } from '@apollo/client';
+import { VoyageProvider } from '@components/base/VoyageProvider';
 import apolloClient from '@graph/client';
 import { NotificationsProvider } from '@mantine/notifications';
-import { VoyageProvider } from '@components/base/VoyageProvider';
-import { getProviderConfiguration, voyageChains } from '../utils/env';
+import type { AppProps } from 'next/app';
+import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
+import { publicProvider } from 'wagmi/providers/public';
+import { alchemyProvider } from 'wagmi/providers/alchemy';
+import Layout from '../components/moleculas/Layout';
 
-const connectors = () => {
-  return [
-    new InjectedConnector({
-      chains: [...defaultChains, ...voyageChains],
-      options: { shimDisconnect: true },
-    }),
-  ];
-};
+const { chains, provider, webSocketProvider } = configureChains(
+  [chain.mainnet, chain.goerli, chain.hardhat],
+  [
+    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY }),
+    publicProvider(),
+  ]
+);
 
-const web3Client = createClient({
+const mm = new MetaMaskConnector({ chains });
+
+const client = createClient({
   autoConnect: true,
-  connectors,
-  provider: ({ chainId }) => {
-    const {
-      endpoint,
-      name,
-      chainId: defaultChainId,
-    } = getProviderConfiguration();
-    return new providers.JsonRpcProvider(endpoint, {
-      chainId: chainId ?? defaultChainId,
-      name,
-    });
-  },
+  connectors: [mm],
+  provider,
+  webSocketProvider,
 });
 
 function MyApp(props: AppProps) {
   const { Component, pageProps } = props;
   return (
-    <Provider client={web3Client}>
+    <WagmiConfig client={client}>
       <ApolloProvider client={apolloClient}>
         <VoyageProvider>
           <NotificationsProvider position="bottom-right" zIndex={501}>
@@ -47,7 +39,7 @@ function MyApp(props: AppProps) {
           </NotificationsProvider>
         </VoyageProvider>
       </ApolloProvider>
-    </Provider>
+    </WagmiConfig>
   );
 }
 

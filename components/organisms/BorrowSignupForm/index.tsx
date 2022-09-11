@@ -12,7 +12,7 @@ import { doc, getDoc } from 'firebase/firestore';
 const BorrowSingupForm: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { data: accountData } = useAccount();
+  const accountData = useAccount();
 
   const fetchIsApplicationExists = async () => {
     if (accountData?.address) {

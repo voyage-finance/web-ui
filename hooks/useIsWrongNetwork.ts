@@ -1,15 +1,12 @@
-import { getProviderConfiguration } from 'utils/env';
-import { useAccount, useNetwork } from 'wagmi';
+import { resolveProviderConfiguration } from 'utils/env';
+import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
 
 export const useIsWrongNetwork = () => {
-  const { activeChain, switchNetwork } = useNetwork();
-  const currentConf = getProviderConfiguration();
-  const { data: accountData } = useAccount();
-  const switchFn = () => {
-    switchNetwork?.(currentConf.chainId);
-  };
-  return [
-    accountData !== null && activeChain?.id !== currentConf.chainId,
-    switchFn,
-  ] as const;
+  const { chain } = useNetwork();
+  const { address } = useAccount();
+  const { switchNetwork } = useSwitchNetwork();
+  const currentConf = resolveProviderConfiguration();
+  const handleSwitch = () => switchNetwork?.(currentConf.chainId);
+
+  return [address && chain?.id !== currentConf.chainId, handleSwitch] as const;
 };

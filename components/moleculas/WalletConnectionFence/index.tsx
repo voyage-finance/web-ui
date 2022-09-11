@@ -9,7 +9,7 @@ const WalletConnectionFence: React.FC<BoxProps<'div'>> = ({
   ...props
 }) => {
   const isMounted = useIsMounted();
-  const { data } = useAccount();
+  const data = useAccount();
   if (data && isMounted) return <>{children}</>;
   else
     return (

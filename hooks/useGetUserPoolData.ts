@@ -6,10 +6,24 @@ import { shiftDecimals, Zero } from 'utils/bn';
 import { useAccount } from 'wagmi';
 import { useSupportedTokensCtx } from './context/useSupportedTokensCtx';
 
+export const useUserDepositData = (userAddress: string) => {
+  const { loading, data, error, refetch } = useQuery(GET_USER_DATA, {
+    variables: {
+      id: userAddress.toLowerCase(),
+    },
+  });
+  return {
+    data,
+    loading,
+    error,
+    refetch,
+  };
+};
+
 export const useGetUserPoolData = (tokenSmb: string) => {
   const [tokens] = useSupportedTokensCtx();
   const account = useAccount();
-  const accountAddress = account.data?.address?.toLowerCase();
+  const accountAddress = account.address?.toLowerCase();
 
   const { loading, data, error, refetch } = useQuery(GET_USER_DATA, {
     variables: {

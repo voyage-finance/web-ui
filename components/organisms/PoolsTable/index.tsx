@@ -1,16 +1,20 @@
 // noinspection HtmlUnknownTarget
-import { Loader, Table } from '@mantine/core';
-import styles from './index.module.scss';
 import { Card, Text, Title } from '@components/base';
-import PoolRow from './PoolRow';
-import { PoolData } from 'types';
-import { useGetPools } from 'hooks';
 import WalletConnectionFence from '@components/moleculas/WalletConnectionFence';
+import { Loader, Table } from '@mantine/core';
+import { ReserveData } from 'types';
 import { useIsMounted } from 'utils/hooks';
+import styles from './index.module.scss';
+import PoolRow from './PoolRow';
 
-const PoolsTable: React.FC = () => {
-  const { loading, data } = useGetPools();
+interface Props {
+  loading: boolean;
+  reserves: ReserveData[];
+}
+
+const PoolsTable: React.FC<Props> = (props) => {
   const isMounted = useIsMounted();
+  const { loading, reserves } = props;
 
   const columns = [
     'Project',
@@ -58,8 +62,8 @@ const PoolsTable: React.FC = () => {
                   <Loader />
                 </td>
               ) : (
-                data.map((pool: PoolData) => (
-                  <PoolRow key={pool.id} {...pool} />
+                reserves.map((reserve: ReserveData) => (
+                  <PoolRow key={reserve.id} {...reserve} />
                 ))
               ))}
           </tbody>
