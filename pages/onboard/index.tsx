@@ -10,19 +10,23 @@ import WrongSessionStep from './steps/WrongSessionStep';
 
 type IProps = {
   encoded: string;
+  extension_id: string;
 };
 
-const OnboardingPage: NextPage<IProps> = ({ encoded }) => {
+const OnboardingPage: NextPage<IProps> = ({ encoded, extension_id }) => {
   const [email, fingerPrint] = decodeEmailNFingerprint(encoded);
   const [isSessionVerified, setIsSessionVerified] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
 
   const onConfirmed = (sessionInfo: any) => {
     console.log('---- onConfirmed ----', sessionInfo);
-    sendExtensionMessage({
-      action: MessageAction.AUTH_SUCCESS,
-      params: { ...sessionInfo, email },
-    });
+    sendExtensionMessage(
+      {
+        action: MessageAction.AUTH_SUCCESS,
+        params: { ...sessionInfo, email },
+      },
+      extension_id
+    );
     setIsConfirmed(true);
   };
 
@@ -32,6 +36,7 @@ const OnboardingPage: NextPage<IProps> = ({ encoded }) => {
         {
           action: MessageAction.GET_FINGERPRINT,
         },
+        extension_id,
         (sessionFingerPrint: string) => {
           setIsSessionVerified(sessionFingerPrint == fingerPrint.join(''));
         }
@@ -60,10 +65,11 @@ const OnboardingPage: NextPage<IProps> = ({ encoded }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { encoded } = context.query;
+  const { encoded, extension_id } = context.query;
   return {
     props: {
       encoded,
+      extension_id,
     },
   };
 };
