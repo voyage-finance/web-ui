@@ -3,8 +3,7 @@ import { Card, Text, Button } from '@components/base';
 import { Box, Group } from '@mantine/core';
 import Image from 'next/image';
 import SwordImg from 'assets/sword.png';
-import { isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
-import { auth } from 'firestore';
+import auth0 from 'auth0-js';
 
 const ConfirmStep: React.FC<{
   email: string;
@@ -13,27 +12,53 @@ const ConfirmStep: React.FC<{
 }> = ({ email, fingerPrint, onConfirmed }) => {
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const onConfirm = () => {
-    if (isSignInWithEmailLink(auth, window.location.href)) {
+  const onConfirm = async () => {
+    try {
+      const state = fingerPrint.join('');
+      const webAuth = new auth0.WebAuth({
+        domain: process.env.NEXT_PUBLIC_AUTH0_DOMAIN,
+        clientID: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
+        responseType: 'token id_token',
+        state,
+      });
       setIsLoading(true);
-      signInWithEmailLink(auth, email, window.location.href)
-        .then(async (result) => {
-          console.log('----- result -----', result);
-          const sessionInfo = {
-            jwt: await result.user.getIdToken(),
-            accessToken: (result.user as any).accessToken || '',
-            uid: result.user.uid,
-          };
-          onConfirmed(sessionInfo);
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          setIsLoading(false);
+      const sessionInfo = await new Promise((resolve, reject) => {
+        webAuth.parseHash({ hash: window.location.hash, state }, (err, res) => {
+          if (err) {
+            console.error(err);
+            return reject(err);
+          }
+
+          if (!res) {
+            return reject(new Error('Unable to parse id token hash.'));
+          }
+
+          if (!res.accessToken) {
+            return reject(new Error('No access token found.'));
+          }
+
+          webAuth.client.userInfo(res.accessToken, (err, user) => {
+            if (err) {
+              return reject(err);
+            }
+
+            if (!res.idToken) {
+              return reject(new Error('No id token found.'));
+            }
+
+            resolve({
+              jwt: res.idToken,
+              accessToken: res.accessToken,
+              uid: user.sub,
+            });
+          });
         });
-    } else {
-      alert('this is not valid signing link');
+      });
+      onConfirmed(sessionInfo);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
