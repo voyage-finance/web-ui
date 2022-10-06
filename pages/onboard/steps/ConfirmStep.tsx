@@ -49,25 +49,15 @@ const ConfirmStep: React.FC<{
       <Group direction="column" align={'center'} spacing={0}>
         <Image src={SwordImg.src} alt="Envolope" height={84} width={111} />
         <Text sx={{ fontSize: 24 }} mt={19} weight={'bold'} type="gradient">
-          Embark on your Voyage!
+          Ready for Your Voyage?
         </Text>
-        <Text mt={17}>Click on the magic link we’ve sent to</Text>
-        <Box
-          sx={{
-            borderRadius: 10,
-            background: 'rgba(27, 29, 44, 0.6)',
-            padding: '17px 25px',
-            marginTop: 18,
-          }}
-        >
-          <Text type="gradient">{email}</Text>
-        </Box>
+        <Text mt={17} align="center">
+          Cross-check if the session emojis below matches those on the login
+          window. Once verified, click <strong>Confirm</strong> to begin your
+          voyage.
+        </Text>
         <Text weight={'bold'} mt={20}>
           Your Session Emojis
-        </Text>
-        <Text align="center" mt={18}>
-          We want you to be safe on your voyage, so make sure the session emojis
-          in your mail line up with these guys below:
         </Text>
         <Group
           spacing={19}
