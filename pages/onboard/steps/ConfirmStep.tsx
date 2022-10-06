@@ -9,7 +9,7 @@ const ConfirmStep: React.FC<{
   email: string;
   fingerPrint: string[];
   onConfirmed: (sessionInfo: any) => void;
-}> = ({ email, fingerPrint, onConfirmed }) => {
+}> = ({ fingerPrint, onConfirmed }) => {
   const [isLoading, setIsLoading] = React.useState(false);
 
   const onConfirm = async () => {
