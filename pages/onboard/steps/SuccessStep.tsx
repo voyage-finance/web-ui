@@ -1,4 +1,4 @@
-import { Card, Text } from '@components/base';
+import { Button, Card, Text } from '@components/base';
 import { Group } from '@mantine/core';
 import Image from 'next/image';
 import * as React from 'react';
