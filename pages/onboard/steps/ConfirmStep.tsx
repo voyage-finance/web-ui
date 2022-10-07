@@ -3,7 +3,8 @@ import { Card, Text, Button } from '@components/base';
 import { Box, Group } from '@mantine/core';
 import Image from 'next/image';
 import SwordImg from 'assets/sword.png';
-import auth0 from 'auth0-js';
+import { isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
+import { auth } from 'firestore';
 
 const ConfirmStep: React.FC<{
   email: string;
@@ -12,53 +13,27 @@ const ConfirmStep: React.FC<{
 }> = ({ fingerPrint, onConfirmed }) => {
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const onConfirm = async () => {
-    try {
-      const state = fingerPrint.join('');
-      const webAuth = new auth0.WebAuth({
-        domain: process.env.NEXT_PUBLIC_AUTH0_DOMAIN,
-        clientID: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
-        responseType: 'token id_token',
-        state,
-      });
+  const onConfirm = () => {
+    if (isSignInWithEmailLink(auth, window.location.href)) {
       setIsLoading(true);
-      const sessionInfo = await new Promise((resolve, reject) => {
-        webAuth.parseHash({ hash: window.location.hash, state }, (err, res) => {
-          if (err) {
-            console.error(err);
-            return reject(err);
-          }
-
-          if (!res) {
-            return reject(new Error('Unable to parse id token hash.'));
-          }
-
-          if (!res.accessToken) {
-            return reject(new Error('No access token found.'));
-          }
-
-          webAuth.client.userInfo(res.accessToken, (err, user) => {
-            if (err) {
-              return reject(err);
-            }
-
-            if (!res.idToken) {
-              return reject(new Error('No id token found.'));
-            }
-
-            resolve({
-              jwt: res.idToken,
-              accessToken: res.accessToken,
-              uid: user.sub,
-            });
-          });
+      signInWithEmailLink(auth, email, window.location.href)
+        .then(async (result) => {
+          console.log('----- result -----', result);
+          const sessionInfo = {
+            jwt: await result.user.getIdToken(),
+            accessToken: (result.user as any).accessToken || '',
+            uid: result.user.uid,
+          };
+          onConfirmed(sessionInfo);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
-      });
-      onConfirmed(sessionInfo);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
+    } else {
+      alert('this is not valid signing link');
     }
   };
 

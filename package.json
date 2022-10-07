@@ -32,7 +32,6 @@
     "@types/chrome": "^0.0.193",
     "@types/numeral": "^2.0.2",
     "@wagmi/core": "^0.2.2",
-    "auth0-js": "^9.19.1",
     "bignumber.js": "^9.0.2",
     "date-fns": "^2.28.0",
     "dayjs": "^1.11.2",
@@ -51,7 +50,6 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^12.1.6",
-    "@types/auth0-js": "^9.14.6",
     "@types/node": "17.0.23",
     "@types/react": "17.0.43",
     "@types/react-dom": "17.0.14",
