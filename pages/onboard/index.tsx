@@ -7,6 +7,7 @@ import { decodeEmailNFingerprint } from 'utils/hash';
 import ConfirmStep from './steps/ConfirmStep';
 import SuccessStep from './steps/SuccessStep';
 import WrongSessionStep from './steps/WrongSessionStep';
+import Head from 'next/head';
 
 type IProps = {
   encoded: string;
@@ -47,6 +48,9 @@ const OnboardingPage: NextPage<IProps> = ({ encoded, extension_id }) => {
 
   return (
     <Group direction="column" align={'center'}>
+      <Head>
+        <title>Voyage Confirmation</title>
+      </Head>
       {isSessionVerified ? (
         !isConfirmed ? (
           <ConfirmStep
