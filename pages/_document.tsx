@@ -4,7 +4,7 @@ class Doc extends Document {
   render() {
     return (
       <Html>
-        <Head title="Voyage Protocol">
+        <Head title="Voyage Lend">
           <link
             href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;700&display=swap"
             rel="stylesheet"
