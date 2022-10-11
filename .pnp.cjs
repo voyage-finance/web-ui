@@ -35,6 +35,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@apollo/client", "virtual:38b3b070c23a9c5dbc07ec866e7649f722342eea653befc64de8f13bf435dbd65fd35c1cf7b784a30574bb302fb600892732c014edec4b7b74d9d3906eda0230#npm:3.5.10"],\
             ["@faker-js/faker", "npm:6.3.1"],\
+            ["@firebase/app", "npm:0.8.0"],\
             ["@mantine/core", "virtual:38b3b070c23a9c5dbc07ec866e7649f722342eea653befc64de8f13bf435dbd65fd35c1cf7b784a30574bb302fb600892732c014edec4b7b74d9d3906eda0230#npm:4.1.2"],\
             ["@mantine/dates", "virtual:38b3b070c23a9c5dbc07ec866e7649f722342eea653befc64de8f13bf435dbd65fd35c1cf7b784a30574bb302fb600892732c014edec4b7b74d9d3906eda0230#npm:4.1.2"],\
             ["@mantine/form", "virtual:38b3b070c23a9c5dbc07ec866e7649f722342eea653befc64de8f13bf435dbd65fd35c1cf7b784a30574bb302fb600892732c014edec4b7b74d9d3906eda0230#npm:4.2.2"],\
@@ -3510,6 +3511,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tslib", "npm:2.3.1"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:0.8.0", {\
+          "packageLocation": "./.yarn/cache/@firebase-app-npm-0.8.0-28b1522ecc-2cd21cdc93.zip/node_modules/@firebase/app/",\
+          "packageDependencies": [\
+            ["@firebase/app", "npm:0.8.0"],\
+            ["@firebase/component", "npm:0.5.18"],\
+            ["@firebase/logger", "npm:0.3.3"],\
+            ["@firebase/util", "npm:1.7.0"],\
+            ["idb", "npm:7.0.1"],\
+            ["tslib", "npm:2.3.1"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["@firebase/app-check", [\
@@ -3775,6 +3788,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@firebase/component", "npm:0.5.17"],\
             ["@firebase/util", "npm:1.6.3"],\
+            ["tslib", "npm:2.3.1"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:0.5.18", {\
+          "packageLocation": "./.yarn/cache/@firebase-component-npm-0.5.18-439c686e20-c8eddff1e6.zip/node_modules/@firebase/component/",\
+          "packageDependencies": [\
+            ["@firebase/component", "npm:0.5.18"],\
+            ["@firebase/util", "npm:1.7.0"],\
             ["tslib", "npm:2.3.1"]\
           ],\
           "linkType": "HARD"\
@@ -4511,6 +4533,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@firebase-util-npm-1.6.3-845d8eecf6-ccdbb1993f.zip/node_modules/@firebase/util/",\
           "packageDependencies": [\
             ["@firebase/util", "npm:1.6.3"],\
+            ["tslib", "npm:2.3.1"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:1.7.0", {\
+          "packageLocation": "./.yarn/cache/@firebase-util-npm-1.7.0-80a751c442-ed4cca3177.zip/node_modules/@firebase/util/",\
+          "packageDependencies": [\
+            ["@firebase/util", "npm:1.7.0"],\
             ["tslib", "npm:2.3.1"]\
           ],\
           "linkType": "HARD"\
@@ -14298,6 +14328,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["voyage-web-ui", "workspace:."],\
             ["@apollo/client", "virtual:38b3b070c23a9c5dbc07ec866e7649f722342eea653befc64de8f13bf435dbd65fd35c1cf7b784a30574bb302fb600892732c014edec4b7b74d9d3906eda0230#npm:3.5.10"],\
             ["@faker-js/faker", "npm:6.3.1"],\
+            ["@firebase/app", "npm:0.8.0"],\
             ["@mantine/core", "virtual:38b3b070c23a9c5dbc07ec866e7649f722342eea653befc64de8f13bf435dbd65fd35c1cf7b784a30574bb302fb600892732c014edec4b7b74d9d3906eda0230#npm:4.1.2"],\
             ["@mantine/dates", "virtual:38b3b070c23a9c5dbc07ec866e7649f722342eea653befc64de8f13bf435dbd65fd35c1cf7b784a30574bb302fb600892732c014edec4b7b74d9d3906eda0230#npm:4.1.2"],\
             ["@mantine/form", "virtual:38b3b070c23a9c5dbc07ec866e7649f722342eea653befc64de8f13bf435dbd65fd35c1cf7b784a30574bb302fb600892732c014edec4b7b74d9d3906eda0230#npm:4.2.2"],\

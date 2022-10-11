@@ -1,8 +1,8 @@
-import { Button, Card, Text } from '@components/base';
+import { Card, Text } from '@components/base';
 import { Group } from '@mantine/core';
+import LogoLoadingSvg from 'assets/flag.svg';
 import Image from 'next/image';
 import * as React from 'react';
-import LogoLoadingSvg from 'assets/flag.svg';
 
 const SuccessStep: React.FC = () => {
   return (

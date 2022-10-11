@@ -2307,6 +2307,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@firebase/app@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "@firebase/app@npm:0.8.0"
+  dependencies:
+    "@firebase/component": 0.5.18
+    "@firebase/logger": 0.3.3
+    "@firebase/util": 1.7.0
+    idb: 7.0.1
+    tslib: ^2.1.0
+  checksum: 2cd21cdc931c69a1ef44ef2763786a6d840be6de281d546bf3f7b3cd3dead186769b198169492e22c5c4039e4edc5d5839e19dde7ef92184712502c4fecaa7bb
+  languageName: node
+  linkType: hard
+
 "@firebase/auth-compat@npm:0.2.18":
   version: 0.2.18
   resolution: "@firebase/auth-compat@npm:0.2.18"
@@ -2367,6 +2380,16 @@ __metadata:
     "@firebase/util": 1.6.3
     tslib: ^2.1.0
   checksum: 5f9a98bb2bd795fd7a211c9c3b95b893e0e4e83fbae6678995dc730f750fb5c2e76b730dd60790c6fafe4c8323dc8da8d885bf69f99da6cbda5ab28c3a005eef
+  languageName: node
+  linkType: hard
+
+"@firebase/component@npm:0.5.18":
+  version: 0.5.18
+  resolution: "@firebase/component@npm:0.5.18"
+  dependencies:
+    "@firebase/util": 1.7.0
+    tslib: ^2.1.0
+  checksum: c8eddff1e6eb874c39b98c58ad9b4f7f9a782529cbfb481fe7eff43fe5266c9c1248e93bc2fe1f7977ea6324fd5e7f1fc1b116d6b22132265e95035ed6eb2e7c
   languageName: node
   linkType: hard
 
@@ -2706,6 +2729,15 @@ __metadata:
   dependencies:
     tslib: ^2.1.0
   checksum: ccdbb1993f0316c511672025fde5d2d0b52dd4d209040e8d375eda673b8a7ec21ebaa231b05a8663c53daec2c9a65174c6c2615d7ff18a9e8577be958906abb6
+  languageName: node
+  linkType: hard
+
+"@firebase/util@npm:1.7.0":
+  version: 1.7.0
+  resolution: "@firebase/util@npm:1.7.0"
+  dependencies:
+    tslib: ^2.1.0
+  checksum: ed4cca31776983c9ef1554e0103e1dfa87f769f028136a1bfc3e68c2a487d177328f1aac251e34b40bd176f66b785100009d6843e804cadf7fbb8bb39a251aaf
   languageName: node
   linkType: hard
 
@@ -10553,6 +10585,7 @@ __metadata:
   dependencies:
     "@apollo/client": ^3.5.10
     "@faker-js/faker": ^6.3.1
+    "@firebase/app": ^0.8.0
     "@mantine/core": ^4.1.2
     "@mantine/dates": ^4.1.2
     "@mantine/form": ^4.2.2
