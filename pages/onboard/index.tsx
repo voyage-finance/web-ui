@@ -52,9 +52,17 @@ const OnboardingPage: NextPage<IProps> = ({ encoded, extension_id }) => {
         },
         extension_id,
         (sessionFingerPrint: string) => {
-          const isFIngerprintValid = sessionFingerPrint == fingerPrint.join('');
-          setIsSessionVerified(isFIngerprintValid);
-          setError(ErrorType.WRONG_FINGERPRINT);
+          if (!chrome.runtime.lastError) {
+            const isFIngerprintValid =
+              sessionFingerPrint == fingerPrint.join('');
+            setIsSessionVerified(isFIngerprintValid);
+          } else {
+            console.error(
+              "couldn't send message",
+              chrome.runtime.lastError.message
+            );
+            setError(ErrorType.WRONG_FINGERPRINT);
+          }
         }
       );
     } catch (e: any) {
