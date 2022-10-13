@@ -13,12 +13,13 @@ interface Props {
 
 const DepositInfoCard: React.FC<Props> = (props) => {
   const { loading, reserves = [] } = props;
+
   const totalDeposits = reserves.reduce((total, reserve) => {
     const { userDepositData } = reserve;
-    const position = userDepositData.junior.assets.plus(
-      userDepositData.senior.assets
-    );
-    return position.plus(total);
+    const position =
+      userDepositData?.junior.assets.plus(userDepositData.senior.assets) ??
+      Zero;
+    return total.plus(position);
   }, new BigNumber(0));
   const [weightedAverageAPR] = reserves.reduce(
     ([rate, liquidity], reserve) => {
