@@ -61,9 +61,11 @@ const PoolsTable: React.FC<Props> = (props) => {
           <tbody>
             {isMounted &&
               (loading ? (
-                <td colSpan={9} align="center" style={{ padding: 20 }}>
-                  <Loader />
-                </td>
+                <tr>
+                  <td colSpan={9} align="center" style={{ padding: 20 }}>
+                    <Loader />
+                  </td>
+                </tr>
               ) : (
                 reserves.map((reserve: ReserveData) => (
                   <PoolRow key={reserve.id} {...reserve} />

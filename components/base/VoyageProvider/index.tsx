@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { VoyagePoolTokenMap } from '../../../types';
-import { useFetchPoolTokens } from '../../../hooks/useFetchPoolTokens';
 import { useIsMounted } from '../../../utils/hooks';
 
 interface AppContextInterface {
@@ -14,7 +13,7 @@ export const VoyageCtx = React.createContext<AppContextInterface>({
 });
 
 const Provider: React.FC = ({ children }) => {
-  const tokens = useFetchPoolTokens();
+  const tokens = {};
   return <VoyageCtx.Provider value={{ tokens }}>{children}</VoyageCtx.Provider>;
 };
 
