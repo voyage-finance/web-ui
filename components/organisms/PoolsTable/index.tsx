@@ -31,7 +31,10 @@ const PoolsTable: React.FC<Props> = (props) => {
   return (
     <Card
       style={{
+        display: 'flex',
+        flex: '1 0',
         padding: 24,
+        flexDirection: 'column',
       }}
     >
       <Title order={5}>Pools</Title>

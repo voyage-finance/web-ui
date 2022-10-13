@@ -1,7 +1,16 @@
-.main {
-  min-height: 100vh;
-  flex: 1;
+.root {
   display: flex;
   flex-direction: column;
-  color: white;
+  .main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    color: white;
+
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      flex: 1 0;
+    }
+  }
 }

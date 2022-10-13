@@ -31,6 +31,7 @@ const Navigation: React.FC = () => {
       <Header
         height={HEADER_HEIGHT}
         sx={(theme) => ({
+          flex: '1 0 auto',
           padding: '0 16px',
           backgroundColor: theme.colors.dark[6],
           border: 'none',

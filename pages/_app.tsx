@@ -8,6 +8,7 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { publicProvider } from 'wagmi/providers/public';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import Layout from '../components/moleculas/Layout';
+import '../styles/global.scss';
 
 const { chains, provider, webSocketProvider } = configureChains(
   [chain.mainnet, chain.goerli, chain.hardhat],
