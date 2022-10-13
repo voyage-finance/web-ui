@@ -29,10 +29,10 @@ const RetryStep: React.FC<{ extension_id: string }> = ({ extension_id }) => {
           Oops, something went wrong!
         </Text>
         <Text mt={16} align="center" weight={'bold'}>
-          We could not verify your session or something went wrong
+          We were unable to verify your session.
         </Text>
         <Text align="center" mt={14}>
-          Please try again
+          Please try logging in again.
         </Text>
         <Button mt={20} fullWidth onClick={onTryClicked}>
           Try Again
