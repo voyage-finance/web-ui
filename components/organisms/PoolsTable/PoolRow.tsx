@@ -96,7 +96,7 @@ const PoolRow: React.FC<ReserveData> = ({
       <td>
         <Group position="right">
           <CTAButton>
-            <Link href={`/pools/TUS`}>{'More >'}</Link>
+            <Link href={`/pools/${collection}`}>{'More >'}</Link>
           </CTAButton>
         </Group>
       </td>
