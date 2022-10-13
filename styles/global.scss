@@ -1,1 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;700&display=swap');
+html,
+body {
+  height: 100%;
+  overflow-y: hidden;
+}
+
+#__next {
+  display: flex;
+  height: 100%;
+}
