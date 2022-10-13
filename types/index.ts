@@ -30,7 +30,7 @@ export interface ReserveData {
   totalBorrow: BigNumber;
   depositRate: BigNumber;
   borrowRate: BigNumber;
-  userDepositData: UserDepositData;
+  userDepositData?: UserDepositData;
 }
 
 export type Unbonding = {
