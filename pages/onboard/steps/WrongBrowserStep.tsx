@@ -25,11 +25,11 @@ const WrongBrowserStep: React.FC = () => {
           Oops, something went wrong!
         </Text>
         <Text mt={16} align="center" weight={'bold'}>
-          It seems like you’ve opened the magic link on a different browser from
-          the Voyage App.
+          It seems like you{"'"}ve opened the magic link on a different browser
+          from the Voyage App.
         </Text>
         <Text align="center" mt={14}>
-          Please access the magic link on the same browser to log in.
+          Please log in again and access the magic link on the same browser.
         </Text>
       </Group>
     </Card>
