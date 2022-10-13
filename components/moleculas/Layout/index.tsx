@@ -95,16 +95,29 @@ const Layout: React.FC = (props) => {
       <AppShell
         header={!isOnboardingFlow ? <Navigation /> : undefined}
         styles={(theme) => ({
-          main: {
+          root: {
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: '100%',
+            width: '100%',
+          },
+          body: {
+            display: 'flex',
+            flexDirection: 'column',
+            flex: '1 0',
+            width: '100%',
+            overflowY: 'auto',
             background: isOnboardingFlow
               ? `url('./onboarding-bg.png')`
               : theme.fn.linearGradient(180, '#333c62', '#25283d'),
-            padding: 20,
             backgroundSize: 'cover',
+          },
+          main: {
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
             ...(isOnboardingFlow
               ? {
-                  minHeight: '100vh',
-                  display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
                 }
