@@ -8,9 +8,10 @@ const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
 const SENTRY_RELEASE =
   process.env.SENTRY_RELEASE || process.env.NEXT_PUBLIC_SENTRY_RELEASE;
 
-Sentry.init({
-  dsn: SENTRY_DSN,
-  tracesSampleRate: 1.0,
-  tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.2 : 1.0,
-  release: SENTRY_RELEASE,
-});
+if (process.env.DISABLE_SENTRY_LOGGING != 'true')
+  Sentry.init({
+    dsn: SENTRY_DSN,
+    tracesSampleRate: 1.0,
+    tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.2 : 1.0,
+    release: SENTRY_RELEASE,
+  });
