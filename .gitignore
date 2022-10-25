@@ -50,3 +50,4 @@ deployments/
 
 # dynamically generated environment variables
 public/__ENV.js
+.env.development.local
