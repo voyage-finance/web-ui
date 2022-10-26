@@ -9,8 +9,10 @@ const ConfirmStep: React.FC<{
   email: string;
   fingerPrint: string[];
   onConfirmed: (sessionInfo: any) => void;
-}> = ({ fingerPrint, onConfirmed }) => {
+  extension_id: string;
+}> = ({ fingerPrint, onConfirmed, extension_id }) => {
   const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState('');
 
   const onConfirm = async () => {
     try {
@@ -55,14 +57,23 @@ const ConfirmStep: React.FC<{
         });
       });
       onConfirmed(sessionInfo);
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      console.error('[confirm click]', err);
+      setError(
+        err.message ||
+          err.errorDescription ||
+          'We were unable to verify your session.'
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
-  return (
+  const onTryClicked = () => {
+    window.location.href = `chrome-extension://${extension_id}/reset.html`;
+  };
+
+  return !error ? (
     <Card
       style={{
         width: 420,
@@ -104,6 +115,36 @@ const ConfirmStep: React.FC<{
         </Group>
         <Button mt={20} fullWidth onClick={onConfirm} loading={isLoading}>
           Confirm
+        </Button>
+      </Group>
+    </Card>
+  ) : (
+    <Card
+      style={{
+        width: 420,
+        margin: 'auto',
+        padding: '40px 53px',
+      }}
+    >
+      <Group direction="column" align={'center'} spacing={0}>
+        <Image src={SwordImg.src} alt="Voyage logo" height={84} width={111} />
+        <Text
+          sx={{ fontSize: 24 }}
+          mt={18}
+          weight={'bold'}
+          type="gradient"
+          align="center"
+        >
+          Oops, something went wrong!
+        </Text>
+        <Text mt={16} align="center" type="danger">
+          {error}
+        </Text>
+        <Text align="center" mt={14}>
+          Please try logging in again.
+        </Text>
+        <Button mt={20} fullWidth onClick={onTryClicked}>
+          Try Again
         </Button>
       </Group>
     </Card>

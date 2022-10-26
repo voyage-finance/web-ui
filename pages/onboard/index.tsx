@@ -87,6 +87,7 @@ const OnboardingPage: NextPage<IProps> = ({ encoded, extension_id }) => {
             email={email}
             fingerPrint={fingerPrint}
             onConfirmed={onConfirmed}
+            extension_id={extension_id}
           />
         ) : (
           <SuccessStep />
