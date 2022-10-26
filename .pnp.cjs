@@ -42,6 +42,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@mantine/next", "virtual:38b3b070c23a9c5dbc07ec866e7649f722342eea653befc64de8f13bf435dbd65fd35c1cf7b784a30574bb302fb600892732c014edec4b7b74d9d3906eda0230#npm:4.1.2"],\
             ["@mantine/notifications", "virtual:38b3b070c23a9c5dbc07ec866e7649f722342eea653befc64de8f13bf435dbd65fd35c1cf7b784a30574bb302fb600892732c014edec4b7b74d9d3906eda0230#npm:4.1.2"],\
             ["@next/eslint-plugin-next", "npm:12.1.6"],\
+            ["@sentry/integrations", "npm:7.16.0"],\
             ["@sentry/nextjs", "virtual:38b3b070c23a9c5dbc07ec866e7649f722342eea653befc64de8f13bf435dbd65fd35c1cf7b784a30574bb302fb600892732c014edec4b7b74d9d3906eda0230#npm:7.16.0"],\
             ["@svgr/webpack", "npm:6.2.1"],\
             ["@types/auth0-js", "npm:9.14.6"],\
@@ -15027,6 +15028,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@mantine/next", "virtual:38b3b070c23a9c5dbc07ec866e7649f722342eea653befc64de8f13bf435dbd65fd35c1cf7b784a30574bb302fb600892732c014edec4b7b74d9d3906eda0230#npm:4.1.2"],\
             ["@mantine/notifications", "virtual:38b3b070c23a9c5dbc07ec866e7649f722342eea653befc64de8f13bf435dbd65fd35c1cf7b784a30574bb302fb600892732c014edec4b7b74d9d3906eda0230#npm:4.1.2"],\
             ["@next/eslint-plugin-next", "npm:12.1.6"],\
+            ["@sentry/integrations", "npm:7.16.0"],\
             ["@sentry/nextjs", "virtual:38b3b070c23a9c5dbc07ec866e7649f722342eea653befc64de8f13bf435dbd65fd35c1cf7b784a30574bb302fb600892732c014edec4b7b74d9d3906eda0230#npm:7.16.0"],\
             ["@svgr/webpack", "npm:6.2.1"],\
             ["@types/auth0-js", "npm:9.14.6"],\
