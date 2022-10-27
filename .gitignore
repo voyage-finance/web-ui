@@ -1,9 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# build artifacts
+.graphclient
+
 # dependencies
 /node_modules
-/.pnp
-.pnp.js
 
 # testing
 /coverage
@@ -38,8 +39,6 @@ yarn-error.log*
 /.idea/
 deployments/
 
-# yarn zero-install
-.yarn/*
 .vscode
 !.yarn/cache
 !.yarn/patches
@@ -49,5 +48,4 @@ deployments/
 !.yarn/versions
 
 # dynamically generated environment variables
-public/__ENV.js
 .env.development.local

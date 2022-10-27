@@ -17,28 +17,20 @@ const nextConfig = {
     }
     return config;
   },
-  async rewrites() {
-    return [
-      {
-        source: '/v1/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API}/v1/:path*`,
-      },
-      {
-        source: '/graphql',
-        destination: process.env.NEXT_PUBLIC_GRAPH_URL,
-      },
-    ];
+  sentry: {
+    disableServerWebpackPlugin: process.env.NODE_ENV !== 'production',
+    disableClientWebpackPlugin: process.env.NODE_ENV !== 'production',
   },
 };
 
+/**
+ * @type {import('@sentry/cli').SentryCliOptions}
+ */
 const sentryWebpackPluginOptions = {
-  // Additional config options for the Sentry Webpack plugin. Keep in mind that
-  // the following options are set automatically, and overriding them is not
-  // recommended:
-  //   release, url, org, project, authToken, configFile, stripPrefix,
-  //   urlPrefix, include, ignore
-  // For all available options, see:
-  // https://github.com/getsentry/sentry-webpack-plugin#options.
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  org: 'voyage-finance-49',
+  project: process.env.SENTRY_PROJECT,
+  release: process.env.VERCEL_GIT_COMMIT_SHA.slice(0, 6),
 };
 
 module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);

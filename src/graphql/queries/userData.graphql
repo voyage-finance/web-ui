@@ -1,0 +1,6 @@
+query getUserUnbondings($id: ID) {
+  userUnbondingDatas(where: { id: $id }) {
+    shares
+    maxUnderlying
+  }
+}
