@@ -1,0 +1,68 @@
+fragment commonFields on Reserve {
+  id
+  collection
+  currency {
+    symbol
+    decimals
+  }
+
+  totalBorrow
+  totalLiquidity
+  totalUnbonding
+  totalMaxUnderlying
+  utilizationRate
+
+  depositRate
+  borrowRate
+
+  seniorTrancheVToken {
+    id
+    totalAssets
+    totalShares
+  }
+  seniorTrancheLiquidity
+  seniorTrancheDepositRate
+
+  juniorTrancheVToken {
+    id
+    totalAssets
+    totalShares
+  }
+  juniorTrancheLiquidity
+  juniorTrancheDepositRate
+}
+
+fragment userDeposits on UserDepositData {
+  juniorTrancheShares
+  juniorTrancheCumulativeDeposits
+  juniorTrancheCumulativeWithdrawals
+  seniorTrancheShares
+  seniorTrancheCumulativeDeposits
+  seniorTrancheCumulativeWithdrawals
+}
+
+query Reserve($id: ID!, $user: String) {
+  reserve(id: $id) {
+    ...commonFields
+    userDeposits(where: { user: $user }) {
+      ...userDeposits
+    }
+    userUnbondings(where: { user: $user }) {
+      shares
+      maxUnderlying
+    }
+  }
+}
+
+query Reserves($user: String) {
+  reserves {
+    ...commonFields
+    userDeposits(where: { user: $user }) {
+      ...userDeposits
+    }
+    userUnbondings(where: { user: $user }) {
+      shares
+      maxUnderlying
+    }
+  }
+}

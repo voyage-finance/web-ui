@@ -14,13 +14,19 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
+      "@abi/*": ["abi/*"],
       "@assets/*": ["assets/*"],
       "@components/*": ["components/*"],
-      "@graph/*": ["graphql/*"]
+      "@constants": ["consts"],
+      "@hooks/*": ["hooks/*"],
+      "@graph": ["../.graphclient/index.ts"],
+      "@utils/*": ["utils/*"],
+      "@queries/*": ["graphql/queries/*"],
+      "@types": ["types"]
     }
   },
-  "include": ["next-env.d.ts", "typings/*.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "src/typings/*.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
