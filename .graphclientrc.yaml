@@ -1,0 +1,10 @@
+sources:
+  - name: voyagev1
+    handler:
+      graphql:
+        endpoint: https://api.thegraph.com/subgraphs/name/voyage-finance/{context.subgraph:protocol-v1-goerli}
+documents:
+  - ./src/graphql/queries/reserve.graphql
+  - ./src/graphql/queries/user.graphql
+codegen:
+  contextType: 'MeshContext & { subgraph: string }'

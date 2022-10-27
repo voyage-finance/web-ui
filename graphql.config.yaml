@@ -1,0 +1,2 @@
+schema: .graphclient/schema.graphql
+include: src/graphql/**/*.{ts,graphql}
