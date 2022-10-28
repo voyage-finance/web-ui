@@ -182,7 +182,7 @@ const PoolDetailCard: React.FC<Props> = ({ collection }) => {
               <Group spacing={2}>
                 <Avatar size={24} src={EthereumSvg.src} />
                 <Text className={styles.metadataText}>
-                  {normalize(totalLiquidity, currency.decimals)}
+                  {normalize(totalLiquidity, currency.decimals, 5)}
                 </Text>
               </Group>
             </Stack>

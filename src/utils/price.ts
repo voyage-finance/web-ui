@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { normalizeBN } from './bn';
 
-export const usdValue = (amount: BigNumber, priceInUSD: number, dp = 4) => {
+export const usdValue = (amount: BigNumber, priceInUSD: number, dp = 2) => {
   if (amount.isZero()) {
     return 'US$0';
   }
