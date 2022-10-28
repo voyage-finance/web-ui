@@ -25,16 +25,17 @@ const PoolRow: React.FC<Reserve> = ({
   const { isLoading, data } = useCollectionMetadata(collection);
   const { isDisconnected } = useAccount();
   const userDepositDataAvailable = !isDisconnected && !!userDepositData;
+
   return (
     <tr>
       <td style={{ paddingLeft: 0 }}>
         <Group>
           <Group>
             <Skeleton visible={isLoading} style={{ display: 'flex' }}>
-              {!isLoading && data?.image_url ? (
+              {!isLoading && data?.image ? (
                 <Image
                   alt={data?.name}
-                  src={data?.image_url}
+                  src={data?.image}
                   width={130}
                   height={40}
                   placeholder={<Placeholder />}

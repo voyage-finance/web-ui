@@ -5,14 +5,14 @@ import { TrancheType } from '@types';
 import c from '@utils/config';
 import { useAllowanceApproved } from 'hooks';
 import React, { useState } from 'react';
-import { Address, useAccount } from 'wagmi';
+import { useAccount } from 'wagmi';
 import DepositModal from '../DepositTrancheModal';
 import TrancheCard from '../TrancheCard';
 import UnbondingModal from '../UnbondingModal';
 import WithdrawalModal from '../WithdrawalModal';
 
 interface Props {
-  collection: Address;
+  collection: string;
 }
 
 const TrancheDeposits: React.FC<Props> = ({ collection }) => {

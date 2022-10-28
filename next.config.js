@@ -30,7 +30,7 @@ const sentryWebpackPluginOptions = {
   authToken: process.env.SENTRY_AUTH_TOKEN,
   org: 'voyage-finance-49',
   project: process.env.SENTRY_PROJECT,
-  release: process.env.VERCEL_GIT_COMMIT_SHA.slice(0, 6),
+  release: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 6) ?? '',
 };
 
 module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);
