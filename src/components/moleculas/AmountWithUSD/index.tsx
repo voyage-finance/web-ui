@@ -36,7 +36,7 @@ const AmountWithUSD: React.FC<IProps> = ({
     <Stack spacing={0} align="end">
       <Title order={5} style={{ color }}>
         {kind === 'success' && '+'}
-        {normalize(amount, 18)}{' '}
+        {normalize(amount, 18, 5)}{' '}
         <Text weight={400} span style={{ color }}>
           {symbol}
         </Text>

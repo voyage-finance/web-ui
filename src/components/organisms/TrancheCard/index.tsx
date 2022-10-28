@@ -143,7 +143,7 @@ const TrancheCard: React.FC<IProps> = ({
               <Group sx={{ gap: '4px' }}>
                 <Avatar size={24} src={EthereumSvg.src} />
                 <Text className={styles.data}>
-                  {normalize(liquidity, currency.decimals)}{' '}
+                  {normalize(liquidity, currency.decimals, 5)}
                 </Text>
               </Group>
             </Grid.Col>
@@ -171,7 +171,7 @@ const TrancheCard: React.FC<IProps> = ({
                 <Group mt={4} sx={{ gap: '4px' }}>
                   <Avatar size={24} src={EthereumSvg.src} />
                   <Text className={styles.data}>
-                    {normalize(liquidity, currency.decimals)}
+                    {normalize(liquidity, currency.decimals, 5)}
                   </Text>
                 </Group>
               </Grid.Col>
@@ -191,7 +191,7 @@ const TrancheCard: React.FC<IProps> = ({
                   <Group mt={4} sx={{ gap: '4px' }}>
                     <Avatar size={24} src={EthereumSvg.src} />
                     <Text className={styles.data}>
-                      {`${normalize(currentUnbonding, currency.decimals)}`}
+                      {`${normalize(currentUnbonding, currency.decimals, 5)}`}
                     </Text>
                   </Group>
                 </Grid.Col>
@@ -210,7 +210,8 @@ const TrancheCard: React.FC<IProps> = ({
                   >
                     {`${normalize(
                       pnl.isZero() ? '0' : pnl,
-                      currency.decimals
+                      currency.decimals,
+                      5
                     )}`}
                   </Text>
                 </Group>
