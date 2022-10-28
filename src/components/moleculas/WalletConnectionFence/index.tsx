@@ -7,7 +7,7 @@ import ConnectBtn from '../WalletNavItem/ConnectBtn';
 const WalletConnectionFence: React.FC<BoxProps> = ({ children, ...props }) => {
   const isMounted = useIsMounted();
   const data = useAccount();
-  if (data && isMounted) return <>{children}</>;
+  if (data.isConnected && isMounted) return <>{children}</>;
   else
     return (
       <Center {...props}>

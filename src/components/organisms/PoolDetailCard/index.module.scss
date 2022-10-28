@@ -1,7 +1,10 @@
 .root {
-  background: #242940;
   height: 100%;
   padding: 24px 28px;
+  background: rgba(27, 29, 44, 0.5);
+  border: 1px solid #575b79;
+  border-radius: 10px;
+
   .icon {
     height: 24px;
     width: 24px;

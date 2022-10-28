@@ -2,6 +2,7 @@ import EthereumSvg from '@assets/icons/ethereum.svg';
 import { Card, Divider, Text, Title } from '@components/base';
 import { useCollectionMetadata } from '@hooks/useCollectionMetadata';
 import { DEFAULT_RESERVE_STATE, useReserve } from '@hooks/useReserve';
+import { useTwap } from '@hooks/useTwap';
 import { Avatar, Group, Skeleton, Stack } from '@mantine/core';
 import { normalize } from '@utils/bn';
 import { BrandDiscord, BrandTelegram, BrandTwitter } from 'tabler-icons-react';
@@ -74,26 +75,52 @@ const PoolDetailCard: React.FC<Props> = ({ collection }) => {
     data: collectionMeta = DEFAULT_RESERVE_METADATA,
     isLoading: isLoadingMetadata,
   } = useCollectionMetadata(collection);
+  const {
+    data: { twap } = { twap: { price: '0' } },
+    isLoading: isLoadingTwap,
+  } = useTwap(collection);
   const { currency, totalLiquidity } = reserve;
+  const isLoading = isLoadingMetadata || isLoadingTwap;
 
   return (
     <Card className={styles.root} style={{ height: '100%' }}>
-      <Skeleton visible={isLoadingMetadata}>
-        <Title>{collectionMeta.name}</Title>
+      <Skeleton visible={isLoading}>
+        <Title mb={20}>{collectionMeta.name}</Title>
       </Skeleton>
       <Stack mt={8} spacing={15} align="stretch">
-        <Skeleton visible={isLoadingMetadata}>
-          <Text>{collectionMeta.description}</Text>
+        <Skeleton visible={isLoading}>
+          <Text sx={{ fontSize: '14px', lineHeight: '16px' }}>
+            {collectionMeta.description}
+          </Text>
         </Skeleton>
         <Group>
-          {collectionMeta.twitterName && (
-            <BrandTwitter size={16} fill="#A4A5A8" strokeWidth={0} />
+          {collectionMeta.twitterUsername && (
+            <a
+              target="_blank"
+              href={`https://twitter.com/${collectionMeta.twitterUsername}`}
+              rel="noopener noreferrer"
+              style={{ display: 'inline-flex' }}
+            >
+              <BrandTwitter
+                size={18}
+                fill="#A4A5A8"
+                strokeWidth={0}
+                style={{ cursor: 'pointer' }}
+              />
+            </a>
           )}
           {collectionMeta.discordUrl && (
-            <BrandDiscord size={16} fill="#A4A5A8" strokeWidth={0} />
+            <a
+              target="_blank"
+              href={collectionMeta.discordUrl}
+              rel="noopener noreferrer"
+              style={{ display: 'inline-flex' }}
+            >
+              <BrandDiscord size={18} fill="#A4A5A8" strokeWidth={0} />
+            </a>
           )}
           {collectionMeta.telegramUrl && (
-            <BrandTelegram size={16} fill="#A4A5A8" strokeWidth={0} />
+            <BrandTelegram size={18} fill="#A4A5A8" strokeWidth={0} />
           )}
         </Group>
 
@@ -137,9 +164,7 @@ const PoolDetailCard: React.FC<Props> = ({ collection }) => {
               </Text>
               <Group spacing={2}>
                 <Avatar size={24} src={EthereumSvg.src} />
-                <Text className={styles.metadataText}>
-                  {collectionMeta.floorSale['1day']}
-                </Text>
+                <Text className={styles.metadataText}>{twap.price}</Text>
               </Group>
             </Stack>
           </Group>

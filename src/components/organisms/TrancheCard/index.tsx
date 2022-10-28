@@ -25,6 +25,7 @@ import CoinsImg from 'assets/two-coins.png';
 import BigNumber from 'bignumber.js';
 import Image from 'next/image';
 import React from 'react';
+import { useAccount } from 'wagmi';
 import styles from './index.module.scss';
 
 type IProps = {
@@ -64,6 +65,7 @@ const TrancheCard: React.FC<IProps> = ({
   isApproving,
   onApproveClick,
 }) => {
+  const account = useAccount();
   const isSeniorTranche = tranche === TrancheType.Senior;
   // exclude vToken shares that are currently in unbonding
   const sharesOutstanding = vToken.totalShares.minus(totalUnbonding);
@@ -154,9 +156,9 @@ const TrancheCard: React.FC<IProps> = ({
               </Text>
             </Grid.Col>
           </Grid>
-          <Divider orientation="horizontal" />
+          <Divider orientation="horizontal" mb={24} />
           <WalletConnectionFence>
-            <Grid mt={24} className={styles.trancheStats}>
+            <Grid className={styles.trancheStats}>
               <Grid.Col md={12}>
                 <Title order={3} sx={{ fontSize: '20px', lineHeight: '24px' }}>
                   Your Pool Stats
@@ -216,8 +218,8 @@ const TrancheCard: React.FC<IProps> = ({
             </Grid>
           </WalletConnectionFence>
         </Grid.Col>
-        <Group position="right" sx={{ flex: '1 0 auto' }}>
-          <WalletConnectionFence>
+        {account.isConnected && (
+          <Group position="right" sx={{ flex: '1 0 auto' }}>
             {isApproved ? (
               <>
                 <Button onClick={onDepositClick} style={{ width: 205 }}>
@@ -255,8 +257,8 @@ const TrancheCard: React.FC<IProps> = ({
                 Approve
               </Button>
             )}
-          </WalletConnectionFence>
-        </Group>
+          </Group>
+        )}
       </Grid>
     </Card>
   );

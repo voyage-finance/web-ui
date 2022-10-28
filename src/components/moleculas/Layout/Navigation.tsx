@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useIsMounted } from '@utils/hooks';
 import WrongNetworkBanner from './WrongNetworkBanner';
 import Link from 'next/link';
-import React from 'react';
+import React, { ReactEventHandler } from 'react';
 
 const HEADER_HEIGHT = 48;
 
@@ -23,15 +23,20 @@ const useStyles = createStyles(() => ({
   },
 }));
 
-const Logo = React.forwardRef(() => {
+const Logo = React.forwardRef<
+  HTMLAnchorElement,
+  Partial<{ href: string; onClick: ReactEventHandler }>
+>((props, ref) => {
   return (
-    <Image
-      src="/logo-voyage-light.svg"
-      alt="Voyage logo"
-      height={25}
-      width={80}
-      style={{ marginRight: 50, cursor: 'pointer' }}
-    />
+    <a {...props} ref={ref} style={{ display: 'inline-flex' }}>
+      <Image
+        src="/logo-voyage-light.svg"
+        alt="Voyage logo"
+        height={25}
+        width={80}
+        style={{ marginRight: 50, cursor: 'pointer' }}
+      />
+    </a>
   );
 });
 
