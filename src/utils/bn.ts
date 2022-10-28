@@ -26,8 +26,13 @@ export function valueToZDBigNumber(amount: BigNumberValue): BigNumber {
   return new BigNumberZeroDecimal(amount);
 }
 
-export function normalize(n: BigNumberValue, decimals: number): string {
-  return normalizeBN(n, decimals).toString(10);
+export function normalize(
+  n: BigNumberValue,
+  decimals: number,
+  dp?: number
+): string {
+  const num = normalizeBN(n, decimals);
+  return num.decimalPlaces(dp ?? num.decimalPlaces()).toString(10);
 }
 
 export function normalizeBN(n: BigNumberValue, decimals: number): BigNumber {
