@@ -3,12 +3,12 @@ import { useReserve } from '@hooks/useReserve';
 import { LoadingOverlay, ModalProps } from '@mantine/core';
 import { TrancheTextMap, TrancheType } from '@types';
 import { useState } from 'react';
-import { Address, useAccount } from 'wagmi';
+import { useAccount } from 'wagmi';
 import DepositStatusStep from './Steps/DepositStatusStep';
 import EnterAmountStep from './Steps/EnterAmountStep';
 
 type IProps = ModalProps & {
-  collection: Address;
+  collection: string;
   tranche: TrancheType;
 };
 

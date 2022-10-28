@@ -24,7 +24,7 @@ import {
 } from 'wagmi';
 
 type IProps = {
-  collection: Address;
+  collection: string;
   tranche: TrancheType;
   onDeposited: (amount: string) => void;
   onError: (message: string) => void;
