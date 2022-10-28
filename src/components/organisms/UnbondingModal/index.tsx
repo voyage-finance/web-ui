@@ -25,6 +25,9 @@ type IProps = ModalProps & {
   onClose: () => void;
 };
 
+// we hardcode 150k as lower numbers may fail at weth::transferFrom
+const CLAIM_GAS_LIMIT_SAFE = 150000;
+
 const UnbondingModal: React.FC<IProps> = ({
   collection,
   onClose,
@@ -52,6 +55,9 @@ const UnbondingModal: React.FC<IProps> = ({
     abi: SeniorDepositTokenABI,
     functionName: 'claim',
     enabled: !isLoadingReserve && !isLoadingAvailableAssets,
+    overrides: {
+      gasLimit: ethers.BigNumber.from(CLAIM_GAS_LIMIT_SAFE),
+    },
   });
   const {
     data,
