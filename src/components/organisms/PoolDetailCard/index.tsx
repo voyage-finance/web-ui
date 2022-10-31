@@ -134,7 +134,7 @@ const PoolDetailCard: React.FC<Props> = ({ collection }) => {
                 Collection Size
               </Text>
               <Text className={styles.metadataText}>
-                {collectionMeta.tokenCount}
+                {collectionMeta.tokenCount ?? '0'}
               </Text>
             </Stack>
             <Stack spacing={4}>
@@ -142,7 +142,7 @@ const PoolDetailCard: React.FC<Props> = ({ collection }) => {
                 Total Owners
               </Text>
               <Text className={styles.metadataText}>
-                {collectionMeta.ownerCount}
+                {collectionMeta.ownerCount ?? '0'}
               </Text>
             </Stack>
           </Group>
@@ -154,7 +154,7 @@ const PoolDetailCard: React.FC<Props> = ({ collection }) => {
               <Group spacing={2}>
                 <Avatar size={24} src={EthereumSvg.src} />
                 <Text className={styles.metadataText}>
-                  {collectionMeta.volume.allTime}
+                  {collectionMeta.volume?.allTime ?? '0'}
                 </Text>
               </Group>
             </Stack>

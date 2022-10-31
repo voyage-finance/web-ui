@@ -7,7 +7,9 @@ export const useTwap = (collection: string) => {
     );
     const data = await res.json();
     if (!res.ok) {
-      throw new Error('Failed to fetch twap: ', data);
+      // TODO: we should throw but this is a stop gap for ultra new collections like gobblers, that do not have a TWAP yet
+      console.warn(`Failed to fetch twap for ${collection}: returning 0`);
+      return { twap: { price: '0' } };
     }
     return data;
   });
