@@ -32,7 +32,7 @@ export function normalize(
   dp?: number
 ): string {
   const num = normalizeBN(n, decimals);
-  return num.decimalPlaces(dp ?? num.decimalPlaces()).toString(10);
+  return num.decimalPlaces(dp ?? num.decimalPlaces() ?? 5).toString(10);
 }
 
 export function normalizeBN(n: BigNumberValue, decimals: number): BigNumber {

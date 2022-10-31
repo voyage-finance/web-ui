@@ -55,7 +55,7 @@ query Reserve($id: ID!, $user: String) {
 }
 
 query Reserves($user: String) {
-  reserves {
+  reserves(where: { configuration_: { isActive: true } }) {
     ...commonFields
     userDeposits(where: { user: $user }) {
       ...userDeposits
