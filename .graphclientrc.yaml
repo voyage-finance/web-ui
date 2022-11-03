@@ -2,7 +2,8 @@ sources:
   - name: voyagev1
     handler:
       graphql:
-        endpoint: https://api.thegraph.com/subgraphs/name/voyage-finance/{context.subgraph:protocol-v1-goerli}
+        # endpoint: https://api.thegraph.com/subgraphs/name/voyage-finance/{context.subgraph:protocol-v1-goerli}
+        endpoint: https://api.thegraph.com/subgraphs/name/voyage-finance/protcol-v1-mainnet
 documents:
   - ./src/graphql/queries/reserve.graphql
   - ./src/graphql/queries/user.graphql
