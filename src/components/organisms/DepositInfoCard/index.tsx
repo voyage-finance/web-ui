@@ -16,13 +16,14 @@ const DepositInfoCard: React.FC = () => {
       return total.plus(position);
     }, new BigNumber(0)) ?? new BigNumber(0);
   const [weightedAverageAPR] = reserves.reduce(
-    ([rate, liquidity], reserve) => {
+    ([rate = Zero, liquidity = Zero], reserve) => {
+      const { depositRate = Zero, totalLiquidity = Zero } = reserve;
       const numer = rayMul(rate, wadToRay(liquidity)).plus(
-        rayMul(reserve.depositRate, wadToRay(reserve.totalLiquidity))
+        rayMul(depositRate, wadToRay(totalLiquidity))
       );
-      const denom = liquidity.plus(reserve.totalLiquidity);
-      const newRate = rayDiv(numer, wadToRay(denom));
-      return [newRate, liquidity.plus(reserve.totalLiquidity)];
+      const denom = liquidity.plus(totalLiquidity);
+      const newRate = denom.isZero() ? Zero : rayDiv(numer, wadToRay(denom));
+      return [newRate, liquidity.plus(totalLiquidity)];
     },
     [Zero, Zero]
   );
